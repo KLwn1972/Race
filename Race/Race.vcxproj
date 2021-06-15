@@ -140,11 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Race.cpp" />
+    <ClCompile Include="Simulation\DrivingSimulator.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
     <ClCompile Include="Simulation\Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h" />
+    <ClInclude Include="Simulation\DrivingSimulator.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
     <ClInclude Include="Simulation\Vehicle.h" />
   </ItemGroup>

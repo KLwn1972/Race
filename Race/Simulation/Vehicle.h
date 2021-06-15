@@ -45,6 +45,7 @@ namespace Simulation
 		double EngineUpperRevLimit; //rpm
 		vector<EngineEntry> EngineTorqueCurve;
 		double EngineInertia;
+		double GearboxEfficiency;
 
 		double WheelWidth; //m /0.205
 		double WheelRatioPercent; //% width to height in Percent /75
@@ -56,6 +57,7 @@ namespace Simulation
 		double VMaxElectric;
 
 		double calcTorqueAtWheel(double Velocity);
+		double calcWheelspeed(double EngineSpeed);
 		int NumberOfGears;
 		map<int, GearEntry> GearData;
 		double FinalDriveRatio;

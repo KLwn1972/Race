@@ -30,6 +30,9 @@
     <ClCompile Include="Simulation\Vehicle.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\DrivingSimulator.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -39,6 +42,9 @@
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\Vehicle.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\DrivingSimulator.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
