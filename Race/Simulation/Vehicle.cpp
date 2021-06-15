@@ -19,7 +19,7 @@ Vehicle* ExampleElectricVehicle()
 	result->EngineTorqueCurve.push_back(EngineEntry(result->EngineUpperRevLimit, 200));
 
 	result->WheelWidth = 205;
-	result->WheelRatio = 75;
+	result->WheelRatioPercent = 75;
 	result->WheelSize = 16;
 
 	result->RollingResistanceCoefficient = 0.02;
@@ -34,4 +34,9 @@ Vehicle* ExampleElectricVehicle()
 	newEntry.ShiftUpLimitMax = result->EngineUpperRevLimit;
 
 	return result;
+}
+
+double Simulation::Vehicle::calcStaticWheelDiameter()
+{
+	return 2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize * 25.4);
 }

@@ -47,7 +47,7 @@ namespace Simulation
 		double EngineInertia;
 
 		double WheelWidth; //mm /205
-		double WheelRatio; //width to height /75
+		double WheelRatioPercent; //width to height /75
 		double WheelSize; //inch R16 => 16
 		//double calcDynamicWheelDiameter(double Velocity);
 		double calcStaticWheelDiameter();
