@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="Race.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Race.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
