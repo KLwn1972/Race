@@ -13,15 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Headerdateien\Simulation">
+      <UniqueIdentifier>{1811640f-bcf7-4212-b320-91b76301248c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Simulation">
+      <UniqueIdentifier>{792e3666-6dc9-4b34-a948-8a010e86effc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Race.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\SimulationEnvironment.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Vehicle.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\SimulationEnvironment.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Vehicle.h">
+      <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
