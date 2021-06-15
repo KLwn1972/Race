@@ -46,8 +46,8 @@ namespace Simulation
 		vector<EngineEntry> EngineTorqueCurve;
 		double EngineInertia;
 
-		double WheelWidth; //mm /205
-		double WheelRatioPercent; //width to height /75
+		double WheelWidth; //m /0.205
+		double WheelRatioPercent; //% width to height in Percent /75
 		double WheelSize; //inch R16 => 16
 		//double calcDynamicWheelDiameter(double Velocity);
 		double calcStaticWheelDiameter();

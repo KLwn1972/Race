@@ -38,5 +38,5 @@ Vehicle* ExampleElectricVehicle()
 
 double Simulation::Vehicle::calcStaticWheelDiameter()
 {
-	return 2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize * 25.4);
+	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize * 25.4));
 }
