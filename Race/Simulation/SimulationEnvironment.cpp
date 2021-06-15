@@ -32,3 +32,5 @@ void Simulation::SimulationEnvironment::setWinddirection(double Winddirection)
 {
 	this->Winddirection = Winddirection;
 }
+
+//test
