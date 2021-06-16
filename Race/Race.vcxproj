@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="OSM.cpp" />
     <ClCompile Include="Race.cpp" />
     <ClCompile Include="Simulation\DrivingSimulator.cpp" />
     <ClCompile Include="Simulation\MovingObject.cpp" />
