@@ -30,6 +30,24 @@
     <ClCompile Include="Simulation\Vehicle.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\DrivingSimulator.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\MovingObject.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\Position.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_ElevationCalculator.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_ElevationDataDownloader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_GeoCoordConversion.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -40,6 +58,24 @@
     </ClInclude>
     <ClInclude Include="Simulation\Vehicle.h">
       <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\DrivingSimulator.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\MovingObject.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Position.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="NASA_ElevationCalculator.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NASA_ElevationDataDownloader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NASA_GeoCoordConversion.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

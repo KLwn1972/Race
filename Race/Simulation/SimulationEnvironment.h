@@ -1,4 +1,7 @@
 #pragma once
+#include <tuple>
+#include <cmath>
+
 namespace Simulation
 {
 	class SimulationEnvironment
@@ -32,4 +35,10 @@ namespace Simulation
 
 	const double MBAR2PASCAL = 100;
 	const double PASCAL2MBAR = 1 / 100.0;
+
+	//Calculate coordinates, for returns see https://stackoverflow.com/questions/321068/returning-multiple-values-from-a-c-function
+	static std::tuple<double, double> GeoCoordinatesLongLat2Karthesian(double GeoLong, double GeoLat);
+	static std::tuple<double, double> GeoCoordinatesLatLong2Karthesian(double Lat, double Long);
+
+	static const double PI = atan(1) * 4;
 }

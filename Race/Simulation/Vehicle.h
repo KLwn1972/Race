@@ -8,25 +8,25 @@ namespace Simulation
 {
 	class ShiftEntry
 	{
-		double EngineSpeed;
-		double PedalPosition;
+		double EngineSpeed = nan("");
+		double PedalPosition = nan("");
 	};
 
 	class GearEntry
 	{
 	public:
-		double ShiftDownLimitMin; //rpm at which driver should shift down
-		double ShiftUpLimitMax; //rpm at which driver should shift up
+		double ShiftDownLimitMin = nan(""); //rpm at which driver should shift down
+		double ShiftUpLimitMax = nan(""); //rpm at which driver should shift up
 		vector<ShiftEntry> LowerShiftLimit;
 		vector<ShiftEntry> UpperShiftLimit;
-		double GearRatio;
+		double GearRatio = nan("");
 	};
 
 	class EngineEntry
 	{
 	public:
-		double EngineSpeed;
-		double Torque;
+		double EngineSpeed = nan("");
+		double Torque = nan("");
 		EngineEntry(double EngineSpeed, double Torque)
 		{
 			this->EngineSpeed = EngineSpeed;
@@ -37,27 +37,29 @@ namespace Simulation
 	class Vehicle
 	{
 	public:
-		double Mass; //kg
+		double Mass = nan(""); //kg
 
-		double FrontalArea; //m^2
-		double DragCoefficient;
+		double FrontalArea = nan(""); //m^2
+		double DragCoefficient = nan("");
 
-		double EngineUpperRevLimit; //rpm
+		double EngineUpperRevLimit = nan(""); //rpm
 		vector<EngineEntry> EngineTorqueCurve;
-		double EngineInertia;
+		double EngineInertia = nan("");
+		double PowertrainEfficiency = nan("");
 
-		double WheelWidth; //m /0.205
-		double WheelRatioPercent; //% width to height in Percent /75
-		double WheelSize; //inch R16 => 16
+		double WheelWidth = nan(""); //m /0.205
+		double WheelRatioPercent = nan(""); //% width to height in Percent /75
+		double WheelSize = nan(""); //inch R16 => 16
 		//double calcDynamicWheelDiameter(double Velocity);
 		double calcStaticWheelDiameter();
-		double RollingResistanceCoefficient;
+		double RollingResistanceCoefficient = nan("");
 
-		double VMaxElectric;
+		double VMaxElectric = nan("");
 
 		double calcTorqueAtWheel(double Velocity);
-		int NumberOfGears;
+		double calcWheelspeed(double EngineSpeed);
+		int NumberOfGears = 0;
 		map<int, GearEntry> GearData;
-		double FinalDriveRatio;
+		double FinalDriveRatio = nan("");
 	};
 }
