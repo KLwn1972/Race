@@ -45,7 +45,7 @@ namespace Simulation
 		double EngineUpperRevLimit; //rpm
 		vector<EngineEntry> EngineTorqueCurve;
 		double EngineInertia;
-		double GearboxEfficiency;
+		double PowertrainEfficiency;
 
 		double WheelWidth; //m /0.205
 		double WheelRatioPercent; //% width to height in Percent /75

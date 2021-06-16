@@ -25,7 +25,7 @@ Vehicle* ExampleElectricVehicle()
 	result->RollingResistanceCoefficient = 0.02;
 	result->VMaxElectric = 250 * KMH2MS;
 
-	result->GearboxEfficiency = 0.95;
+	result->PowertrainEfficiency = 0.95;
 	result->NumberOfGears = 1;
 	result->FinalDriveRatio = 1;
 	result->GearData = map<int, GearEntry>();
