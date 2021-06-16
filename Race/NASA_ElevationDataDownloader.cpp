@@ -19,6 +19,9 @@ string FileDownloader::createDownloadURL(int longitude, int latitude) {
 void FileDownloader::downloadFile(string downloadurl, string targetpath) {
 	std::cout << "URL: \t" << downloadurl << std::endl;
 	std::cout << "Ziepfad: \t" << targetpath << std::endl;
+
+	std::cout << "Hello World von der NASA!" << endl;
+
 	/*
 	downloadurl = "https://curl.se/libcurl/c/curl_easy_perform.html";
 	stringstream curlTargetStream;

@@ -20,5 +20,10 @@ int main()
     TCHAR OutFile[] = _T("C://Temp/38566.json");
 
     HRESULT aaa = DownloadFile(URL, OutFile);
+
+    //NASA
+    FileDownloader testlader;
+    testlader.downloadFile("Ha", "Hi");
+
     return 0;
 }
