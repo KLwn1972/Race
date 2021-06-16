@@ -8,6 +8,7 @@ Simulation::DrivingSimulator::DrivingSimulator(vector<node> input)
 {
 	this->vehicle = Vehicle();
 	this->environment = SimulationEnvironment();
+	this->rawtrack = input;
 }
 
 void Simulation::DrivingSimulator::RunSimulation(std::string configfile)
@@ -27,9 +28,16 @@ void Simulation::DrivingSimulator::initSimulation()
 {
 }
 
+void Simulation::DrivingSimulator::calcNewSpeedLimit()
+{
+	//last entry: this->modifiedtrack[this->modifiedtrack.size()-1];
+	//first entry: this->modifiedtrack[0];
+	simulationNode simNode = this->modifiedtrack[0];
+}
+
 int Simulation::DrivingSimulator::simulateStep()
 {
-	//Calculate the preview (vBremse)
+	//Calculate the decceleration (vBremse)
 
 	//Calculate new velocity
 
