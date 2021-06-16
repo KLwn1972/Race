@@ -17,6 +17,14 @@ void Simulation::DrivingSimulator::RunSimulation(std::string configfile)
 		//this->track.
 }
 
+void Simulation::DrivingSimulator::loadConfiguration(std::string configfile)
+{
+}
+
+void Simulation::DrivingSimulator::initSimulation()
+{
+}
+
 int Simulation::DrivingSimulator::simulateStep()
 {
 	//Calculate the preview (vBremse)
