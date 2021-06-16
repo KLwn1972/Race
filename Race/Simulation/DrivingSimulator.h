@@ -8,13 +8,13 @@ namespace Simulation {
 	class DrivingSimulator
 	{
 	public:
-		DrivingSimulator(graph input, std::string startnode);
+		DrivingSimulator(vector<node> input);
 		void RunSimulation(std::string configfile);
 	private:
 		void loadConfiguration(std::string configfile);
 		void initSimulation();
 		int simulateStep();
-		graph track;
+		vector<node> track;
 		Simulation::Vehicle vehicle;
 		Simulation::SimulationEnvironment environment;
 	};

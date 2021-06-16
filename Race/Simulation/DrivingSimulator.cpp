@@ -4,8 +4,10 @@
 
 using namespace std;
 
-Simulation::DrivingSimulator::DrivingSimulator(graph input, std::string startnode)
+Simulation::DrivingSimulator::DrivingSimulator(vector<node> input)
 {
+	this->vehicle = Vehicle();
+	this->environment = SimulationEnvironment();
 }
 
 void Simulation::DrivingSimulator::RunSimulation(std::string configfile)
