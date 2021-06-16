@@ -34,7 +34,7 @@ void Simulation::SimulationEnvironment::setWinddirection(double Winddirection)
 	this->Winddirection = Winddirection;
 }
 
-std::tuple<double, double> Simulation::GeoCoordinates2KarthesianLongLat(double GeoLong, double GeoLat)
+std::tuple<double, double> Simulation::GeoCoordinatesLongLat2Karthesian(double GeoLong, double GeoLat)
 {
 	double CartX, CartY;
 	const double EarthRadius_m = 6378.137 * 1000;
@@ -44,7 +44,7 @@ std::tuple<double, double> Simulation::GeoCoordinates2KarthesianLongLat(double G
 	return { CartX,CartY };
 }
 
-std::tuple<double, double> Simulation::GeoCoordinates2KarthesianLatLong(double GeoLat, double GeoLong)
+std::tuple<double, double> Simulation::GeoCoordinatesLatLong2Karthesian(double GeoLat, double GeoLong)
 {
-	return GeoCoordinates2KarthesianLongLat(GeoLong, GeoLat);
+	return GeoCoordinatesLongLat2Karthesian(GeoLong, GeoLat);
 }

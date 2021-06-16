@@ -37,8 +37,8 @@ namespace Simulation
 	const double PASCAL2MBAR = 1 / 100.0;
 
 	//Calculate coordinates, for returns see https://stackoverflow.com/questions/321068/returning-multiple-values-from-a-c-function
-	static std::tuple<double, double> GeoCoordinates2KarthesianLongLat(double GeoLong, double GeoLat);
-	static std::tuple<double, double> GeoCoordinates2KarthesianLatLong(double Lat, double Long);
+	static std::tuple<double, double> GeoCoordinatesLongLat2Karthesian(double GeoLong, double GeoLat);
+	static std::tuple<double, double> GeoCoordinatesLatLong2Karthesian(double Lat, double Long);
 
 	constexpr double pi() { return atan(1) * 4; }
 }
