@@ -3,6 +3,10 @@
 
 #include "Race.h"
 
+#include "NASA_ElevationDataDownloader.h"
+#include "NASA_ElevationCalculator.h"
+#include "NASA_GeoCoordConversion.h"
+
 #include<iostream>
 #include "Race.h"
 
