@@ -38,8 +38,8 @@ std::tuple<double, double> Simulation::GeoCoordinatesLongLat2Karthesian(double G
 {
 	double CartX, CartY;
 	const double EarthRadius_m = 6378.137 * 1000;
-	CartX = EarthRadius_m * (GeoLong * pi()) / (180.0);
-	CartY = EarthRadius_m * atanh(sin((GeoLat * pi()) / 180.0));
+	CartX = EarthRadius_m * (GeoLong * PI) / (180.0);
+	CartY = EarthRadius_m * atanh(sin((GeoLat * PI) / 180.0));
 
 	return { CartX,CartY };
 }

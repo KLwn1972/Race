@@ -1,6 +1,6 @@
 #pragma once
 #include <tuple>
-#include <math.h>
+#include <cmath>
 
 namespace Simulation
 {
@@ -40,5 +40,5 @@ namespace Simulation
 	static std::tuple<double, double> GeoCoordinatesLongLat2Karthesian(double GeoLong, double GeoLat);
 	static std::tuple<double, double> GeoCoordinatesLatLong2Karthesian(double Lat, double Long);
 
-	constexpr double pi() { return atan(1) * 4; }
+	static const double PI = atan(1) * 4;
 }
