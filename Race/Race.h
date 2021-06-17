@@ -4,9 +4,8 @@
 #include <tchar.h>
 #include <urlmon.h>
 #include <vector>
+#include "NASA_ElevationCalculator.h"
 #pragma comment (lib, "Urlmon.lib")
-
-HRESULT DownloadFile(wchar_t* URL, wchar_t* OutFile);
 
 class node
 {
