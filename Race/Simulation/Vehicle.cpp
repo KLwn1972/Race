@@ -17,6 +17,7 @@ Vehicle* ExampleElectricVehicle()
 	result->EngineTorqueCurve.push_back(EngineEntry(500 * RPM2HZ, 50));
 	result->EngineTorqueCurve.push_back(EngineEntry(5000 * RPM2HZ, 250));
 	result->EngineTorqueCurve.push_back(EngineEntry(result->EngineUpperRevLimit, 200));
+	result->PowerTrainType = PowerTrainTypes::Electric;
 
 	result->TorqueSpeedCurve = vector<TorqueSpeedEntry>();
 	result->TorqueSpeedCurve.push_back(TorqueSpeedEntry(0, 100));
