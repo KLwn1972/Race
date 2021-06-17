@@ -34,16 +34,16 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 	//first entry: this->modifiedtrack[0];
 	this->modifiedtrack[this->modifiedtrack.size() - 1].newLimit = this->modifiedtrack[this->modifiedtrack.size() - 1].speedLimit;                      //set the new limit at last point 
 	//int NumberofPoints = this->modifiedtrack.size();
-	for (int i = this->modifiedtrack.size() - 1; i > 0; i--) {                                                                                          //calculate the new limit according to the max Brake from last point;
-		if (this->modifiedtrack[i - 1].speedLimit <= this->modifiedtrack[i].newLimit) {                                                                          //no need to brake wenn acceleration 
-			this->modifiedtrack[i - 1].newLimit = this->modifiedtrack[i - 1].speedLimit;
+	for (size_t i = this->modifiedtrack.size() - 1; i > 0; i--) {                                                                                          //calculate the new limit according to the max Brake from last point;
+		if (this->modifiedtrack.at(i - 1).speedLimit <= this->modifiedtrack.at(i).newLimit) {                                                                          //no need to brake wenn acceleration 
+			this->modifiedtrack.at(i - 1).newLimit = this->modifiedtrack.at(i-1).speedLimit;
 		}
 		else {                                                                                                                                                   //calculate the brake velocity wenn decceleration 
 			double BrakeDecceleration = -10;                   //amax as funtion;
-			double localDistance = this->modifiedtrack[i].Coordinates.Distance(this->modifiedtrack[i - 1].Coordinates);                                              //get Distance between local point and previous point
-			double time = SolveQuadraticEquation(0.5 * BrakeDecceleration, -1 * this->modifiedtrack[i].newLimit, localDistance);
-			double BrakeSpeed = this->modifiedtrack[i].newLimit - BrakeDecceleration * time;                                                                     //calculate the brake Velocity
-			this->modifiedtrack[i - 1].newLimit = min(BrakeSpeed, this->modifiedtrack[i - 1].speedLimit);                                                         //get new limit
+			double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i-1).Coordinates);                                              //get Distance between local point and previous point
+			double time = SolveQuadraticEquation(0.5 * BrakeDecceleration, -1 * this->modifiedtrack.at(i).newLimit, localDistance);
+			double BrakeSpeed = this->modifiedtrack.at(i).newLimit - BrakeDecceleration * time;                                                                     //calculate the brake Velocity
+			this->modifiedtrack.at(i-1).newLimit = min(BrakeSpeed, this->modifiedtrack.at(i-1).speedLimit);                                                         //get new limit
 		}
 	}
 }
