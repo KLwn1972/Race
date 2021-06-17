@@ -36,7 +36,7 @@ namespace Simulation {
 
 		//Calculate new speed limit from deccleration
 		void calcNewSpeedLimit();
-		double SolveQuadraticEquation(double a, double b, double c);
+		
 
 		//Calculate is-speed and the local time
 		void calcIsSpeedandTime();

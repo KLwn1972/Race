@@ -105,34 +105,6 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 	}
 }
 
-double Simulation::DrivingSimulator::SolveQuadraticEquation(double a, double b, double c)
-{
-	double x, x1, x2, discriminant, realPart, imaginaryPart;
-	discriminant = b * b - 4 * a * c;
-
-	if (discriminant > 0) {
-		x1 = (-b + sqrt(discriminant)) / (2 * a);
-		x2 = (-b - sqrt(discriminant)) / (2 * a);
-		x = min(abs(x1), abs(x2));
-		cout << "x1 = " << x1 << endl;
-		cout << "x2 = " << x2 << endl;
-		cout << "x = " << x << endl;
-	}
-
-	else if (discriminant == 0) {
-		x = x1 = (-b + sqrt(discriminant)) / (2 * a);
-		cout << "x1 = x2 =" << x1 << endl;
-	}
-
-	else {
-		realPart = -b / (2 * a);
-		imaginaryPart = sqrt(-discriminant) / (2 * a);
-		x = nan("");
-		cout << "no Solution!" << endl;
-	}
-
-	return x;
-}
 
 void Simulation::DrivingSimulator::calcIsSpeedandTime()
 {
@@ -144,8 +116,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i + 1).Coordinates);                                   //get distance between the local point and next point
 		if (this->modifiedtrack.at(i + 1).newLimit > this->modifiedtrack.at(i).speedIs) {
 			double MaxLocalAcceleration = 10;      // amax should be a function
-			double time_temp = SolveQuadraticEquation(0.5 * MaxLocalAcceleration, this->modifiedtrack.at(i).newLimit, -1 * localDistance);
-			double speed_temp = this->modifiedtrack.at(i).speedIs + MaxLocalAcceleration * time_temp;
+			double speed_temp = sqrt((this->modifiedtrack.at(i).speedIs) * (this->modifiedtrack.at(i).speedIs) + 2 * MaxLocalAcceleration * localDistance);
 			if (speed_temp > this->modifiedtrack.at(i + 1).newLimit) {
 				this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;
 				double t1 = (this->modifiedtrack.at(i + 1).speedIs - this->modifiedtrack.at(i).speedIs) / MaxLocalAcceleration;
@@ -165,8 +136,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		}
 		else {
 			double MaxLocalDecceleration = -10; // this should be a function getLocalMaxBrakeDecceleration;
-			double time_temp = SolveQuadraticEquation(0.5 * MaxLocalDecceleration, this->modifiedtrack.at(i).newLimit, -1 * localDistance);
-			double speed_temp = this->modifiedtrack.at(i).speedIs + MaxLocalDecceleration * time_temp;
+			double speed_temp = sqrt((this->modifiedtrack.at(i).speedIs) * (this->modifiedtrack.at(i).speedIs) + 2 * MaxLocalDecceleration * localDistance);
 			if (speed_temp < this->modifiedtrack.at(i + 1).newLimit) {
 				this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;
 				double t1 = (this->modifiedtrack.at(i + 1).speedIs - this->modifiedtrack.at(i).speedIs) / MaxLocalDecceleration;
