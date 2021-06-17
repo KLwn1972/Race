@@ -13,6 +13,7 @@ Vehicle* ExampleElectricVehicle()
 
 	result->EngineUpperRevLimit = 6500 * RPM2HZ;
 	result->EngineInertia = 0.35;
+	result->AxleInertia = 0.07;
 	result->EngineTorqueCurve = vector<EngineEntry>();
 	result->EngineTorqueCurve.push_back(EngineEntry(500 * RPM2HZ, 50));
 	result->EngineTorqueCurve.push_back(EngineEntry(5000 * RPM2HZ, 250));
@@ -29,6 +30,8 @@ Vehicle* ExampleElectricVehicle()
 
 	result->RollingResistanceCoefficient = 0.02;
 	result->VMaxElectric = 250 * KMH2MS;
+
+	result->DeccelerationMax = 10.5;
 
 	result->PowertrainEfficiency = 0.95;
 	result->NumberOfGears = 1;

@@ -63,6 +63,7 @@ namespace Simulation
 		double EngineUpperRevLimit = nan(""); //rpm
 		vector<EngineEntry> EngineTorqueCurve;
 		double EngineInertia = nan("");
+		double AxleInertia = nan("");
 		double PowertrainEfficiency = nan("");
 
 		vector<TorqueSpeedEntry> TorqueSpeedCurve;
@@ -82,5 +83,6 @@ namespace Simulation
 		int NumberOfGears = 0;
 		map<int, GearEntry> GearData;
 		double FinalDriveRatio = nan("");
+		double DeccelerationMax = nan("");
 	};
 }
