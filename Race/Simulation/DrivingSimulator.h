@@ -41,8 +41,6 @@ namespace Simulation {
 		//Calculate is-speed and the local time
 		void calcIsSpeedandTime();
 
-		int simulateStep();
-
 		//Calculate acceleration
 		double calcAcceleration(double velocity, simulationNode TrackPoint);
 		double calcDecceleration(double velocity, simulationNode TrackPoint);
