@@ -76,7 +76,7 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 void Simulation::DrivingSimulator::mapModifiedToRaw()
 {
 	vector<node> result;
-	for (simulationNode simNode : this->modifiedtrack)
+	for (auto const& simNode : this->modifiedtrack)
 	{
 		if (simNode.baseID != INT16_MAX)
 		{
