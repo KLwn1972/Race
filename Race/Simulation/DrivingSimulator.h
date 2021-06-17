@@ -8,6 +8,7 @@
 namespace Simulation {
 	class simulationNode
 	{
+	public:
 		Position Coordinates;
 		double raceDistance;
 		double gradient;
@@ -31,6 +32,7 @@ namespace Simulation {
 
 		//Calculate new speed limit from deccleration
 		void calcNewSpeedLimit();
+		double SolveQuadraticEquation(double a, double b, double c);
 
 		int simulateStep();
 		vector<node> rawtrack;
