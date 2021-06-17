@@ -76,7 +76,7 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 void Simulation::DrivingSimulator::mapModifiedToRaw()
 {
 	vector<node> result;
-	for (simulationNode simNode : this->modifiedtrack)
+	for (auto const& simNode : this->modifiedtrack)
 	{
 		if (simNode.baseID != INT16_MAX)
 		{
@@ -96,12 +96,10 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 		if (this->modifiedtrack.at(i - 1).speedLimit <= this->modifiedtrack.at(i).newLimit) {                                                                          //no need to brake wenn acceleration
 			this->modifiedtrack.at(i - 1).newLimit = this->modifiedtrack.at(i - 1).speedLimit;
 		}
-
 		else {                                                                                                                                                   //calculate the brake velocity wenn decceleration
 			double BrakeDecceleration = -10;                   //amax should be a funtion;
 			double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i - 1).Coordinates);                                              //get Distance between local point and previous point
-			double time = SolveQuadraticEquation(0.5 * BrakeDecceleration, -1 * this->modifiedtrack.at(i).newLimit, localDistance);
-			double BrakeSpeed = this->modifiedtrack.at(i).newLimit - BrakeDecceleration * time;                                                                     //calculate the brake Velocity
+			double BrakeSpeed = sqrt((this->modifiedtrack.at(i).newLimit) * (this->modifiedtrack.at(i).newLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
 			this->modifiedtrack.at(i - 1).newLimit = min(BrakeSpeed, this->modifiedtrack.at(i - 1).speedLimit);                                                         //get new limit
 		}
 	}
