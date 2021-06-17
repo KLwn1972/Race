@@ -97,7 +97,7 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 			this->modifiedtrack.at(i - 1).newLimit = this->modifiedtrack.at(i - 1).speedLimit;
 		}
 		else {                                                                                                                                                   //calculate the brake velocity wenn decceleration
-			double BrakeDecceleration = -10;                   //amax should be a funtion;
+			double BrakeDecceleration = -10;                   //TODO: amax should be a funtion;
 			double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i - 1).Coordinates);                                              //get Distance between local point and previous point
 			double BrakeSpeed = sqrt((this->modifiedtrack.at(i).newLimit) * (this->modifiedtrack.at(i).newLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
 			this->modifiedtrack.at(i - 1).newLimit = min(BrakeSpeed, this->modifiedtrack.at(i - 1).speedLimit);                                                         //get new limit
@@ -113,12 +113,14 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 	this->modifiedtrack.at(0).raceDistance = 0;
 
 	for (size_t i = 0; i < modifiedtrack.size() - 1; i++) {
-		double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i + 1).Coordinates);                                   //get distance between the local point and next point
-		if (this->modifiedtrack.at(i + 1).newLimit > this->modifiedtrack.at(i).speedIs) {
-			double MaxLocalAcceleration = 10;      // amax should be a function
-			double speed_temp = sqrt((this->modifiedtrack.at(i).speedIs) * (this->modifiedtrack.at(i).speedIs) + 2 * MaxLocalAcceleration * localDistance);
-			if (speed_temp > this->modifiedtrack.at(i + 1).newLimit) {
-				this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;
+		double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i + 1).Coordinates);                                             //get distance between the local point and next point
+		
+		if (this->modifiedtrack.at(i + 1).newLimit > this->modifiedtrack.at(i).speedIs) {                                                                              //case 1: acceleration
+			double MaxLocalAcceleration = 10;      // TODO: amax should be a function
+			double speed_temp = sqrt((this->modifiedtrack.at(i).speedIs) * (this->modifiedtrack.at(i).speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
+			                                                                                                                                                              // determine the Is-speed and raceTime according to different situation
+			if (speed_temp > this->modifiedtrack.at(i + 1).newLimit) {                                                                                                          //
+				this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                                                                 //Is-speed = new speed limit wenn the velocity > new speed limit 
 				double t1 = (this->modifiedtrack.at(i + 1).speedIs - this->modifiedtrack.at(i).speedIs) / MaxLocalAcceleration;
 				double s1 = 0.5 * t1 * (this->modifiedtrack.at(i + 1).speedIs + this->modifiedtrack.at(i).speedIs);
 				double s2 = localDistance - s1;
@@ -130,23 +132,21 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + 2 * localDistance / (this->modifiedtrack.at(i).speedIs + this->modifiedtrack.at(i + 1).speedIs);
 			}
 		}
-		else if (this->modifiedtrack.at(i + 1).newLimit == this->modifiedtrack.at(i).speedIs) {
+		else if (this->modifiedtrack.at(i + 1).newLimit == this->modifiedtrack.at(i).speedIs) {                                                                        //case 2: hold speed  
 			this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;
 			this->modifiedtrack.at(i + 1).raceTime = localDistance / this->modifiedtrack.at(i + 1).speedIs;
 		}
-		else {
-			double MaxLocalDecceleration = -10; // this should be a function getLocalMaxBrakeDecceleration;
-			double speed_temp = sqrt((this->modifiedtrack.at(i).speedIs) * (this->modifiedtrack.at(i).speedIs) + 2 * MaxLocalDecceleration * localDistance);
-			if (speed_temp < this->modifiedtrack.at(i + 1).newLimit) {
-				this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;
+		else {                                                                                                                                                         //case 3: decceleration
+			double MaxLocalDecceleration = -10; // this should be a function getLocalMaxBrakeDecceleration;                                                                  
+			this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                                                              // IsSpeed always equal the new limt because the effect of maximal bremsen is already considered 
+			if (this->modifiedtrack.at(i).speedIs < this->modifiedtrack.at(i).newLimit) {                                                                                      //determine the raceTime according to different situation
 				double t1 = (this->modifiedtrack.at(i + 1).speedIs - this->modifiedtrack.at(i).speedIs) / MaxLocalDecceleration;
 				double s1 = 0.5 * t1 * (this->modifiedtrack.at(i + 1).speedIs + this->modifiedtrack.at(i).speedIs);
 				double s2 = localDistance - s1;
 				double t2 = s2 / this->modifiedtrack.at(i).speedIs;
 				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + t1 + t2;
 			}
-			else if (speed_temp = this->modifiedtrack.at(i + 1).newLimit) {
-				this->modifiedtrack.at(i + 1).speedIs = speed_temp;
+			else  {
 				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + 2 * localDistance / (this->modifiedtrack.at(i).speedIs + this->modifiedtrack.at(i + 1).speedIs);
 			}
 		}
