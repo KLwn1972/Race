@@ -34,6 +34,9 @@ namespace Simulation {
 		void calcNewSpeedLimit();
 		double SolveQuadraticEquation(double a, double b, double c);
 
+		//Calculate is-speed and the local time
+		void calcIsSpeedandTime();
+
 		int simulateStep();
 		vector<node> rawtrack;
 		vector<simulationNode> modifiedtrack;
