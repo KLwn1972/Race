@@ -119,13 +119,10 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 			double MaxLocalAcceleration = 10;      // TODO: amax should be a function
 			double speed_temp = sqrt((this->modifiedtrack.at(i).speedIs) * (this->modifiedtrack.at(i).speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
 			                                                                                                                                                              // determine the Is-speed and raceTime according to different situation
-			if (speed_temp > this->modifiedtrack.at(i + 1).newLimit) {                                                                                                          //
+			if (speed_temp > this->modifiedtrack.at(i + 1).newLimit) { 
+                                                                                                         //
 				this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                                                                 //Is-speed = new speed limit wenn the velocity > new speed limit 
-				double t1 = (this->modifiedtrack.at(i + 1).speedIs - this->modifiedtrack.at(i).speedIs) / MaxLocalAcceleration;
-				double s1 = 0.5 * t1 * (this->modifiedtrack.at(i + 1).speedIs + this->modifiedtrack.at(i).speedIs);
-				double s2 = localDistance - s1;
-				double t2 = s2 / this->modifiedtrack.at(i + 1).speedIs;
-				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + t1 + t2;
+				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + calcRaceTimeBetweenTwoPointsWithDifferentAccleration(MaxLocalAcceleration, this->modifiedtrack.at(i).speedIs, this->modifiedtrack.at(i + 1).speedIs, localDistance);
 			}
 			else {
 				this->modifiedtrack.at(i + 1).speedIs = speed_temp;
@@ -139,18 +136,24 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		else {                                                                                                                                                         //case 3: decceleration
 			double MaxLocalDecceleration = -10; // this should be a function getLocalMaxBrakeDecceleration;                                                                  
 			this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                                                              // IsSpeed always equal the new limt because the effect of maximal bremsen is already considered 
+			
 			if (this->modifiedtrack.at(i).speedIs < this->modifiedtrack.at(i).newLimit) {                                                                                      //determine the raceTime according to different situation
-				double t1 = (this->modifiedtrack.at(i + 1).speedIs - this->modifiedtrack.at(i).speedIs) / MaxLocalDecceleration;
-				double s1 = 0.5 * t1 * (this->modifiedtrack.at(i + 1).speedIs + this->modifiedtrack.at(i).speedIs);
-				double s2 = localDistance - s1;
-				double t2 = s2 / this->modifiedtrack.at(i).speedIs;
-				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + t1 + t2;
+				
+				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + calcRaceTimeBetweenTwoPointsWithDifferentAccleration(MaxLocalDecceleration, this->modifiedtrack.at(i).speedIs, this->modifiedtrack.at(i + 1).speedIs, localDistance);;
 			}
 			else  {
 				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + 2 * localDistance / (this->modifiedtrack.at(i).speedIs + this->modifiedtrack.at(i + 1).speedIs);
 			}
 		}
 	}
+}
+
+double Simulation::DrivingSimulator::calcRaceTimeBetweenTwoPointsWithDifferentAccleration(double acceleration, double Speed_LocalPoint, double Speed_nextPoint, double Distance)
+{
+	double TimeAcceleration = (Speed_nextPoint - Speed_LocalPoint) / acceleration;
+	double DistanceAcceleration = 0.5 * TimeAcceleration * (Speed_nextPoint + Speed_LocalPoint);
+	double time = (Distance - DistanceAcceleration) / max(Speed_nextPoint,Speed_LocalPoint) + TimeAcceleration;
+	return time;
 }
 
 double Simulation::DrivingSimulator::calcAcceleration(double velocity, simulationNode TrackPoint)

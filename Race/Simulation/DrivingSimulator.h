@@ -41,6 +41,8 @@ namespace Simulation {
 		//Calculate is-speed and the local time
 		void calcIsSpeedandTime();
 
+		double calcRaceTimeBetweenTwoPointsWithDifferentAccleration(double acceleration, double Speed_LocalPoint, double Speed_nextPoint, double Distance);
+
 		//Calculate acceleration
 		double calcAcceleration(double velocity, simulationNode TrackPoint);
 		double calcDecceleration(double velocity, simulationNode TrackPoint);
