@@ -11,13 +11,19 @@ Simulation::DrivingSimulator::DrivingSimulator(vector<node> input)
 	this->rawtrack = input;
 }
 
-void Simulation::DrivingSimulator::RunSimulation(std::string configfile)
+vector<node> Simulation::DrivingSimulator::RunSimulation(std::string configfile)
 {
 	loadConfiguration(configfile);
 
-	//node startpoint = this->track.
+	createModifiedTrack();
 
-		//this->track.
+	calcNewSpeedLimit();
+
+	calcIsSpeedandTime();
+
+	mapModifiedToRaw();
+
+	return this->rawtrack;
 }
 
 void Simulation::DrivingSimulator::loadConfiguration(std::string configfile)
@@ -65,6 +71,21 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 		oldStepSimNode = stepSimNode;
 	}
 	this->modifiedtrack = newTrack;
+}
+
+void Simulation::DrivingSimulator::mapModifiedToRaw()
+{
+	vector<node> result;
+	for (simulationNode simNode : this->modifiedtrack)
+	{
+		if (simNode.baseID != INT16_MAX)
+		{
+			node newnode = this->rawtrack.at(simNode.baseID);
+			newnode.raceTime = simNode.raceTime;
+			newnode.speedIs = simNode.speedIs;
+			this->rawtrack.at(simNode.baseID) = newnode;
+		}
+	}
 }
 
 void Simulation::DrivingSimulator::calcNewSpeedLimit()

@@ -24,13 +24,15 @@ namespace Simulation {
 	{
 	public:
 		DrivingSimulator(vector<node> input);
-		void RunSimulation(std::string configfile);
+		vector<node> RunSimulation(std::string configfile);
 	private:
 		void loadConfiguration(std::string configfile);
 		void initSimulation();
 
 		//Create a modified track which contains the simulationNodes
 		void createModifiedTrack();
+		//Map back function for the modified track
+		void mapModifiedToRaw();
 
 		//Calculate new speed limit from deccleration
 		void calcNewSpeedLimit();
