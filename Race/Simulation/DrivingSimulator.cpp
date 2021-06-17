@@ -113,7 +113,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 	this->rawtrack.at(0).raceTime = 0;
 	this->modifiedtrack.at(0).raceDistance = 0;
 
-	for (int i = 0; i < modifiedtrack.size() - 1; i++) {
+	for (size_t i = 0; i < modifiedtrack.size() - 1; i++) {
 		double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i + 1).Coordinates);                                   //get distance between the local point and next point
 		if (this->modifiedtrack.at(i + 1).newLimit > this->rawtrack.at(i).speedIs) {
 			double MaxLocalAcceleration = 10;      // amax should be a function
