@@ -42,6 +42,11 @@ namespace Simulation {
 		void calcIsSpeedandTime();
 
 		int simulateStep();
+
+		//Calculate acceleration
+		double calcAcceleration(double velocity, simulationNode TrackPoint);
+		double calcDecceleration(double velocity, simulationNode TrackPoint);
+
 		vector<node> rawtrack;
 		vector<simulationNode> modifiedtrack;
 		Simulation::Vehicle vehicle;
