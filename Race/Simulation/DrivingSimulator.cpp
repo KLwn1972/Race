@@ -183,24 +183,6 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 	}
 }
 
-int Simulation::DrivingSimulator::simulateStep()
-{
-	//Calculate the decceleration (vBremse)
-
-	//Calculate new velocity
-
-	//Calculate the forces
-
-	//Decide which target should be used:
-	//vx < vmax ==> accelerate
-	//brakepoint reached ==> brake
-	//vx == vmax && brakepoint not reached ==> hold speed
-
-	//Calculate new acceleration
-
-	return 0;
-}
-
 double Simulation::DrivingSimulator::calcAcceleration(double velocity, simulationNode TrackPoint)
 {
 	return 0.0;
