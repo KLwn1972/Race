@@ -51,10 +51,14 @@ int Simulation::DrivingSimulator::simulateStep()
 	//Calculate new acceleration
 
 	return 0;
+}
 
 Simulation::simulationNode::simulationNode()
 {
 	this->Coordinates = Position(0, 0, 0);
 }
 
+double Simulation::interpolateValues(double startX, double startValue, double endX, double endValue, double whereToInterPolate)
+{
+	return endValue + ((endValue - startValue) / (endX - startX)) * (whereToInterPolate - startX);
 }

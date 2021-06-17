@@ -40,4 +40,6 @@ namespace Simulation {
 		Simulation::Vehicle vehicle;
 		Simulation::SimulationEnvironment environment;
 	};
+
+	static double interpolateValues(double startX, double startValue, double endX, double endValue, double whereToInterPolate);
 }
