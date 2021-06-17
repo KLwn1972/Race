@@ -201,6 +201,16 @@ int Simulation::DrivingSimulator::simulateStep()
 	return 0;
 }
 
+double Simulation::DrivingSimulator::calcAcceleration(double velocity, simulationNode TrackPoint)
+{
+	return 0.0;
+}
+
+double Simulation::DrivingSimulator::calcDecceleration(double velocity, simulationNode TrackPoint)
+{
+	return 0.0;
+}
+
 Simulation::simulationNode::simulationNode()
 {
 	this->Coordinates = Position(0, 0, 0);
