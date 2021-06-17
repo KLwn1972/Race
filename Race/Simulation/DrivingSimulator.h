@@ -8,13 +8,15 @@
 namespace Simulation {
 	class simulationNode
 	{
+	public:
 		Position Coordinates;
 		double raceDistance;
 		double gradient;
 		double speedLimit;
 		double newLimit;
 		double raceTime;
-		long baseID; //the position of the entry in the base array
+		size_t baseID; //the position of the entry in the base array
+		simulationNode();
 	};
 
 	class DrivingSimulator

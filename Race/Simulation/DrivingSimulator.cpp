@@ -51,4 +51,10 @@ int Simulation::DrivingSimulator::simulateStep()
 	//Calculate new acceleration
 
 	return 0;
+
+Simulation::simulationNode::simulationNode()
+{
+	this->Coordinates = Position(0, 0, 0);
+}
+
 }
