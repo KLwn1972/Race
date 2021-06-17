@@ -10,6 +10,10 @@ double Simulation::Position::Distance(Position OtherPosition)
 	return sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
 }
 
+Simulation::Position::Position()
+{
+}
+
 Simulation::Position::Position(double X, double Y, double Z)
 {
 	this->PositionX = X;
