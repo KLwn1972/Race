@@ -18,6 +18,10 @@ Vehicle* ExampleElectricVehicle()
 	result->EngineTorqueCurve.push_back(EngineEntry(5000 * RPM2HZ, 250));
 	result->EngineTorqueCurve.push_back(EngineEntry(result->EngineUpperRevLimit, 200));
 
+	result->TorqueSpeedCurve = vector<TorqueSpeedEntry>();
+	result->TorqueSpeedCurve.push_back(TorqueSpeedEntry(0, 100));
+	result->TorqueSpeedCurve.push_back(TorqueSpeedEntry(100 * KMH2MS, 1000));
+
 	result->WheelWidth = 205;
 	result->WheelRatioPercent = 75;
 	result->WheelSize = 16;

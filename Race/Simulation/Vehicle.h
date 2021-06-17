@@ -22,6 +22,18 @@ namespace Simulation
 		double GearRatio = nan("");
 	};
 
+	class TorqueSpeedEntry
+	{
+	public:
+		double VehicleSpeed = nan("");
+		double VehicleTorque = nan("");
+		TorqueSpeedEntry(double VehicleSpeed, double VehicleTorque)
+		{
+			this->VehicleSpeed = VehicleSpeed;
+			this->VehicleTorque = VehicleTorque;
+		}
+	};
+
 	class EngineEntry
 	{
 	public:
@@ -32,6 +44,12 @@ namespace Simulation
 			this->EngineSpeed = EngineSpeed;
 			this->Torque = Torque;
 		}
+	};
+
+	enum class PowerTrainTypes
+	{
+		Electric = 1,
+		ICE = 0
 	};
 
 	class Vehicle
@@ -46,6 +64,9 @@ namespace Simulation
 		vector<EngineEntry> EngineTorqueCurve;
 		double EngineInertia = nan("");
 		double PowertrainEfficiency = nan("");
+
+		vector<TorqueSpeedEntry> TorqueSpeedCurve;
+		PowerTrainTypes PowerTrainType = PowerTrainTypes::ICE;
 
 		double WheelWidth = nan(""); //m /0.205
 		double WheelRatioPercent = nan(""); //% width to height in Percent /75
