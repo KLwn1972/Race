@@ -145,6 +145,7 @@
     <ClCompile Include="OSM.cpp" />
     <ClCompile Include="Race.cpp" />
     <ClCompile Include="Simulation\DrivingSimulator.cpp" />
+    <ClCompile Include="Simulation\ImportSimulationConfig.cpp" />
     <ClCompile Include="Simulation\MovingObject.cpp" />
     <ClCompile Include="Simulation\Position.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="NASA_GeoCoordConversion.h" />
     <ClInclude Include="Race.h" />
     <ClInclude Include="Simulation\DrivingSimulator.h" />
+    <ClInclude Include="Simulation\ImportSimulationConfig.h" />
     <ClInclude Include="Simulation\MovingObject.h" />
     <ClInclude Include="Simulation\Position.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
