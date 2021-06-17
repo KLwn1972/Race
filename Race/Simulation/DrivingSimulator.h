@@ -15,6 +15,7 @@ namespace Simulation {
 		double speedLimit = nan("");
 		double newLimit = nan("");
 		double raceTime = nan("");
+		double speedIs = nan("");
 		size_t baseID = INT16_MAX; //the position of the entry in the base array
 		simulationNode();
 	};
