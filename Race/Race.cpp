@@ -14,7 +14,7 @@ using namespace std;
 
 int main()
 {
-   // std::cout << "Hello World!\n";
+   // std::cout << "Hello World!\n"//;
 
     TCHAR URL[] = _T("https://www.openstreetmap.org/api/0.6/relation/38566.json");
     TCHAR OutFile[] = _T("C://Temp/38566.json");
