@@ -9,13 +9,14 @@ namespace Simulation {
 	class simulationNode
 	{
 	public:
-		Position Coordinates;
-		double raceDistance;
-		double gradient;
-		double speedLimit;
-		double newLimit;
-		double raceTime;
-		long baseID; //the position of the entry in the base array
+		Position Coordinates = Position();
+		double raceDistance = nan("");
+		double gradient = nan("");
+		double speedLimit = nan("");
+		double newLimit = nan("");
+		double raceTime = nan("");
+		size_t baseID = INT16_MAX; //the position of the entry in the base array
+		simulationNode();
 	};
 
 	class DrivingSimulator
@@ -28,7 +29,7 @@ namespace Simulation {
 		void initSimulation();
 
 		//Create a modified track which contains the simulationNodes
-		void createModifiedTrack(vector<node> track);
+		void createModifiedTrack();
 
 		//Calculate new speed limit from deccleration
 		void calcNewSpeedLimit();
@@ -43,4 +44,6 @@ namespace Simulation {
 		Simulation::Vehicle vehicle;
 		Simulation::SimulationEnvironment environment;
 	};
+
+	static double interpolateValues(double startX, double startValue, double endX, double endValue, double whereToInterPolate);
 }

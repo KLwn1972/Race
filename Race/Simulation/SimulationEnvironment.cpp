@@ -33,19 +33,3 @@ void Simulation::SimulationEnvironment::setWinddirection(double Winddirection)
 {
 	this->Winddirection = Winddirection;
 }
-
-std::tuple<double, double> Simulation::GeoCoordinatesLongLat2Karthesian(double GeoLong, double GeoLat)
-{
-	double CartX, CartY;
-	//Web Mercator Projektion
-	const double EarthRadius_m = 6378.137 * 1000;
-	CartX = EarthRadius_m * (GeoLong * PI) / (180.0);
-	CartY = EarthRadius_m * atanh(sin((GeoLat * PI) / 180.0));
-
-	return { CartX,CartY };
-}
-
-std::tuple<double, double> Simulation::GeoCoordinatesLatLong2Karthesian(double GeoLat, double GeoLong)
-{
-	return GeoCoordinatesLongLat2Karthesian(GeoLong, GeoLat);
-}
