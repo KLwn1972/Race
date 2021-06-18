@@ -15,6 +15,7 @@ namespace Simulation
 		double getY(double X);
 		std::string getXAxisName();
 		std::string getYAxisName();
+		DataMap2D();
 	private:
 		std::vector<double> xData;
 		std::vector<double> yData;
