@@ -24,6 +24,21 @@ double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
 	return this->Airtemperature + ABSOLUTEZEROTEMP;
 }
 
+double Simulation::SimulationEnvironment::calcRelevantWindSpeed(double VehicleDirection)
+{
+	return 0.0;
+}
+
+double Simulation::SimulationEnvironment::calcRoadResistanceCoefficient()
+{
+	return 0.0;
+}
+
+double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity, double Gradient)
+{
+	return 0.0;
+}
+
 double Simulation::SimulationEnvironment::calcAirDensity(double height)
 {
 	return this->calcAirPressure(height) / (GASCONSTANT * (this->calcAirTemperatureInKelvin()));

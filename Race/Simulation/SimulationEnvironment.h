@@ -1,16 +1,29 @@
 #pragma once
 #include <tuple>
 #include <cmath>
+#include <vector>
 
 namespace Simulation
 {
+	class FrictionEntry {
+	public:
+		double VehicleSpeed = nan("");
+		double FrictionCoefficient = nan("");
+		FrictionEntry(double VehicleSpeed, double FrictionCoefficient)
+		{
+			this->VehicleSpeed = VehicleSpeed;
+			this->FrictionCoefficient = FrictionCoefficient;
+		}
+	};
+
 	class SimulationEnvironment
 	{
 	public:
 		double calcAirPressure(double height);
 		double calcAirTemperatureInKelvin();
-		double calcWindSpeed(double VehicleDirection);
+		double calcRelevantWindSpeed(double VehicleDirection); //Vehicledirection in [°]
 		double calcRoadResistanceCoefficient();
+		double calcFrictionCoefficient(double Velocity, double Gradient);
 		double calcAirDensity(double height);
 
 		void setAirtemperatureCelsius(double Airtemperature);
@@ -23,6 +36,7 @@ namespace Simulation
 		double Airpressure;
 		double Windspeed;
 		double Winddirection; //[°];
+		std::vector<FrictionEntry> FrictionTable;
 	};
 
 	const double GRAVITATIONALCONSTANT = 9.81;
@@ -37,6 +51,9 @@ namespace Simulation
 
 	const double MBAR2PASCAL = 100;
 	const double PASCAL2MBAR = 1 / 100.0;
+
+	static const double RAD2DEG = 180.0 / atan(1) * 4;
+	static const double DEG2RAD = atan(1) * 4 / 180.0;
 
 	static const double PI = atan(1) * 4;
 }
