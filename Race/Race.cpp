@@ -7,6 +7,7 @@
 #include "NASA_ElevationDataDownloader.h"
 #include "NASA_ElevationCalculator.h"
 #include "NASA_GeoCoordConversion.h"
+#include "Simulation/Vehicle.h"
 
 using namespace std;
 
@@ -39,5 +40,9 @@ int main()
     FileDownloader testlader;
     testlader.downloadFile("Ha", "Hi");
 
+  
+    //Fahrphysik
+    Simulation::ExampleElectricVehicle();
+  
     return 0;
 }

@@ -22,6 +22,18 @@ namespace Simulation
 		double GearRatio = nan("");
 	};
 
+	class TorqueSpeedEntry
+	{
+	public:
+		double VehicleSpeed = nan("");
+		double VehicleTorque = nan("");
+		TorqueSpeedEntry(double VehicleSpeed, double VehicleTorque)
+		{
+			this->VehicleSpeed = VehicleSpeed;
+			this->VehicleTorque = VehicleTorque;
+		}
+	};
+
 	class EngineEntry
 	{
 	public:
@@ -32,6 +44,12 @@ namespace Simulation
 			this->EngineSpeed = EngineSpeed;
 			this->Torque = Torque;
 		}
+	};
+
+	enum class PowerTrainTypes
+	{
+		Electric = 1,
+		ICE = 0
 	};
 
 	class Vehicle
@@ -45,12 +63,17 @@ namespace Simulation
 		double EngineUpperRevLimit = nan(""); //rpm
 		vector<EngineEntry> EngineTorqueCurve;
 		double EngineInertia = nan("");
+		double AxleInertia = nan("");
+		double WheelInertia = nan("");
 		double PowertrainEfficiency = nan("");
+
+		vector<TorqueSpeedEntry> TorqueSpeedCurve;
+		PowerTrainTypes PowerTrainType = PowerTrainTypes::ICE;
 
 		double WheelWidth = nan(""); //m /0.205
 		double WheelRatioPercent = nan(""); //% width to height in Percent /75
 		double WheelSize = nan(""); //inch R16 => 16
-		//double calcDynamicWheelDiameter(double Velocity);
+		double calcDynamicWheelRadius();
 		double calcStaticWheelDiameter();
 		double RollingResistanceCoefficient = nan("");
 
@@ -61,5 +84,14 @@ namespace Simulation
 		int NumberOfGears = 0;
 		map<int, GearEntry> GearData;
 		double FinalDriveRatio = nan("");
+		double DeccelerationMax = nan("");
+
+		int getSelectedGear();
+		void setSelectedGear(int GearToSet);
+
+	private:
+		int selectedgear = 0;
 	};
+
+	static Vehicle* ExampleElectricVehicle();
 }

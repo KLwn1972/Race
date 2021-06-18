@@ -1,16 +1,30 @@
 #pragma once
 #include <tuple>
 #include <cmath>
+#include <vector>
 
 namespace Simulation
 {
+	class FrictionEntry {
+	public:
+		double VehicleSpeed = nan("");
+		double FrictionCoefficient = nan("");
+		FrictionEntry(double VehicleSpeed, double FrictionCoefficient)
+		{
+			this->VehicleSpeed = VehicleSpeed;
+			this->FrictionCoefficient = FrictionCoefficient;
+		}
+	};
+
 	class SimulationEnvironment
 	{
 	public:
 		double calcAirPressure(double height);
-		double calcAirTemperature();
-		double calcWindSpeed(double VehicleDirection);
-		double calcRoadResistance();
+		double calcAirTemperatureInKelvin();
+		double calcRelevantWindSpeed(double VehicleDirection); //Vehicledirection in [°]
+		double calcRoadResistanceCoefficient();
+		double calcFrictionCoefficient(double Velocity, double Gradient);
+		double calcAirDensity(double height);
 
 		void setAirtemperatureCelsius(double Airtemperature);
 		void setAirpressure(double Airpressure);
@@ -22,10 +36,13 @@ namespace Simulation
 		double Airpressure;
 		double Windspeed;
 		double Winddirection; //[°];
+		std::vector<FrictionEntry> FrictionTable;
 	};
 
-	static double GRAVITATIONALCONSTANT = 9.81;
-	static double GASCONSTANT = 287.0529;
+	//Conversions
+	const double GRAVITATIONALCONSTANT = 9.81;
+	const double GASCONSTANT = 287.0529;
+	const double ABSOLUTEZEROTEMP = 273.15;
 
 	const double RPM2HZ = 1 / 60.0;
 	const double HZ2RPM = 60;
@@ -36,9 +53,14 @@ namespace Simulation
 	const double MBAR2PASCAL = 100;
 	const double PASCAL2MBAR = 1 / 100.0;
 
-	//Calculate coordinates, for returns see https://stackoverflow.com/questions/321068/returning-multiple-values-from-a-c-function
-	static std::tuple<double, double> GeoCoordinatesLongLat2Karthesian(double GeoLong, double GeoLat);
-	static std::tuple<double, double> GeoCoordinatesLatLong2Karthesian(double Lat, double Long);
+	static const double RAD2DEG = 180.0 / atan(1) * 4;
+	static const double DEG2RAD = atan(1) * 4 / 180.0;
+
+	const double INCH2M = 0.0254;
+	const double M2INCH = 1 / INCH2M;
 
 	static const double PI = atan(1) * 4;
+	//
+
+	static SimulationEnvironment* ExampleSimulationEnvironment();
 }
