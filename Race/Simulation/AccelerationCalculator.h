@@ -1,7 +1,7 @@
 #pragma once
 #include "Vehicle.h"
 #include "DrivingSimulator.h"
-
+/*
 namespace Simulation
 {
 	class AccelerationCalculator
@@ -24,3 +24,4 @@ namespace Simulation
 		simulationNode NextPoint;
 	};
 }
+*/

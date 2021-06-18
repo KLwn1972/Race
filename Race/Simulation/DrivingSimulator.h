@@ -4,6 +4,7 @@
 #include "..\Race.h"
 #include <string>
 #include "Position.h"
+#include "AccelerationCalculator.h"
 
 namespace Simulation {
 	class simulationNode
@@ -46,6 +47,7 @@ namespace Simulation {
 		vector<simulationNode> modifiedtrack;
 		Simulation::Vehicle vehicle;
 		Simulation::SimulationEnvironment environment;
+		//AccelerationCalculator accelerationcalc;
 	};
 
 	static double interpolateValues(double startX, double startValue, double endX, double endValue, double whereToInterPolate);
