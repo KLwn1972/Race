@@ -36,6 +36,4 @@ namespace Simulation {
 		Simulation::SimulationEnvironment environment;
 		//AccelerationCalculator accelerationcalc;
 	};
-
-	static double interpolateValues(double startX, double startValue, double endX, double endValue, double whereToInterPolate);
 }
