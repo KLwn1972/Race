@@ -42,15 +42,6 @@ namespace Simulation {
 
 		double calcRaceTimeBetweenTwoPointsWithDifferentAccleration(double acceleration, double Speed_LocalPoint, double Speed_nextPoint, double Distance);
 
-		//Calculate acceleration
-		double calcAcceleration(double velocity, simulationNode TrackPoint);
-		double calcDecceleration(double velocity, simulationNode TrackPoint);
-		//Forces
-		double calcAirResistance(double velocity, double height);
-		double calcRollingResistance(double velocity);
-		double calcAccelerationForce(double velocity);
-		double calcGradientForce(double gradient);
-
 		vector<node> rawtrack;
 		vector<simulationNode> modifiedtrack;
 		Simulation::Vehicle vehicle;
