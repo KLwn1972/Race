@@ -105,7 +105,6 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 	}
 }
 
-
 void Simulation::DrivingSimulator::calcIsSpeedandTime()
 {
 	this->modifiedtrack.at(0).speedIs = 0;                                                                                                                       //initialize the start point
@@ -114,14 +113,14 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 
 	for (size_t i = 0; i < modifiedtrack.size() - 1; i++) {
 		double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i + 1).Coordinates);                                             //get distance between the local point and next point
-		
+
 		if (this->modifiedtrack.at(i + 1).newLimit > this->modifiedtrack.at(i).speedIs) {                                                                              //case 1: acceleration
 			double MaxLocalAcceleration = 10;      // TODO: amax should be a function
 			double speed_temp = sqrt((this->modifiedtrack.at(i).speedIs) * (this->modifiedtrack.at(i).speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
-			                                                                                                                                                              // determine the Is-speed and raceTime according to different situation
-			if (speed_temp > this->modifiedtrack.at(i + 1).newLimit) { 
-                                                                                                         //
-				this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                                                                 //Is-speed = new speed limit wenn the velocity > new speed limit 
+																																										  // determine the Is-speed and raceTime according to different situation
+			if (speed_temp > this->modifiedtrack.at(i + 1).newLimit) {
+				//
+				this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                                                                 //Is-speed = new speed limit wenn the velocity > new speed limit
 				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + calcRaceTimeBetweenTwoPointsWithDifferentAccleration(MaxLocalAcceleration, this->modifiedtrack.at(i).speedIs, this->modifiedtrack.at(i + 1).speedIs, localDistance);
 			}
 			else {
@@ -129,19 +128,18 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + 2 * localDistance / (this->modifiedtrack.at(i).speedIs + this->modifiedtrack.at(i + 1).speedIs);
 			}
 		}
-		else if (this->modifiedtrack.at(i + 1).newLimit == this->modifiedtrack.at(i).speedIs) {                                                                        //case 2: hold speed  
+		else if (this->modifiedtrack.at(i + 1).newLimit == this->modifiedtrack.at(i).speedIs) {                                                                        //case 2: hold speed
 			this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;
 			this->modifiedtrack.at(i + 1).raceTime = localDistance / this->modifiedtrack.at(i + 1).speedIs;
 		}
 		else {                                                                                                                                                         //case 3: decceleration
-			double MaxLocalDecceleration = -10; // this should be a function getLocalMaxBrakeDecceleration;                                                                  
-			this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                                                              // IsSpeed always equal the new limt because the effect of maximal bremsen is already considered 
-			
+			double MaxLocalDecceleration = -10; // this should be a function getLocalMaxBrakeDecceleration;
+			this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                                                              // IsSpeed always equal the new limt because the effect of maximal bremsen is already considered
+
 			if (this->modifiedtrack.at(i).speedIs < this->modifiedtrack.at(i).newLimit) {                                                                                      //determine the raceTime according to different situation
-				
 				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + calcRaceTimeBetweenTwoPointsWithDifferentAccleration(MaxLocalDecceleration, this->modifiedtrack.at(i).speedIs, this->modifiedtrack.at(i + 1).speedIs, localDistance);;
 			}
-			else  {
+			else {
 				this->modifiedtrack.at(i + 1).raceTime = this->modifiedtrack.at(i).raceTime + 2 * localDistance / (this->modifiedtrack.at(i).speedIs + this->modifiedtrack.at(i + 1).speedIs);
 			}
 		}
@@ -152,7 +150,7 @@ double Simulation::DrivingSimulator::calcRaceTimeBetweenTwoPointsWithDifferentAc
 {
 	double TimeAcceleration = (Speed_nextPoint - Speed_LocalPoint) / acceleration;
 	double DistanceAcceleration = 0.5 * TimeAcceleration * (Speed_nextPoint + Speed_LocalPoint);
-	double time = (Distance - DistanceAcceleration) / max(Speed_nextPoint,Speed_LocalPoint) + TimeAcceleration;
+	double time = (Distance - DistanceAcceleration) / max(Speed_nextPoint, Speed_LocalPoint) + TimeAcceleration;
 	return time;
 }
 
@@ -164,6 +162,11 @@ double Simulation::DrivingSimulator::calcAcceleration(double velocity, simulatio
 double Simulation::DrivingSimulator::calcDecceleration(double velocity, simulationNode TrackPoint)
 {
 	return 0.0;
+}
+
+double Simulation::DrivingSimulator::calcAirResistance(double velocity, double height)
+{
+	return 0.5 * this->vehicle.DragCoefficient * this->vehicle.FrontalArea * this->environment.calcAirDensity(height) * velocity * velocity; //1/2 cw roh A v^2
 }
 
 Simulation::simulationNode::simulationNode()

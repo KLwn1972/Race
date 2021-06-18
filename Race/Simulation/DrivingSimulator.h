@@ -36,7 +36,6 @@ namespace Simulation {
 
 		//Calculate new speed limit from deccleration
 		void calcNewSpeedLimit();
-		
 
 		//Calculate is-speed and the local time
 		void calcIsSpeedandTime();
@@ -46,6 +45,11 @@ namespace Simulation {
 		//Calculate acceleration
 		double calcAcceleration(double velocity, simulationNode TrackPoint);
 		double calcDecceleration(double velocity, simulationNode TrackPoint);
+		//Forces
+		double calcAirResistance(double velocity, double height);
+		double calcRollingResistance(double velocity);
+		double calcAccelerationForce(double velocity);
+		double calcGradientForce(double gradient);
 
 		vector<node> rawtrack;
 		vector<simulationNode> modifiedtrack;

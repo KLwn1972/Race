@@ -8,9 +8,10 @@ namespace Simulation
 	{
 	public:
 		double calcAirPressure(double height);
-		double calcAirTemperature();
+		double calcAirTemperatureInKelvin();
 		double calcWindSpeed(double VehicleDirection);
-		double calcRoadResistance();
+		double calcRoadResistanceCoefficient();
+		double calcAirDensity(double height);
 
 		void setAirtemperatureCelsius(double Airtemperature);
 		void setAirpressure(double Airpressure);
@@ -24,8 +25,9 @@ namespace Simulation
 		double Winddirection; //[°];
 	};
 
-	static double GRAVITATIONALCONSTANT = 9.81;
-	static double GASCONSTANT = 287.0529;
+	const double GRAVITATIONALCONSTANT = 9.81;
+	const double GASCONSTANT = 287.0529;
+	const double ABSOLUTEZEROTEMP = 273.15;
 
 	const double RPM2HZ = 1 / 60.0;
 	const double HZ2RPM = 60;

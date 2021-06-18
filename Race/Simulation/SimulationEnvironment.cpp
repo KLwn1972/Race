@@ -14,6 +14,16 @@ SimulationEnvironment* ExampleSimEnvironment()
 	return result;
 }
 
+double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
+{
+	return this->Airtemperature + ABSOLUTEZEROTEMP;
+}
+
+double Simulation::SimulationEnvironment::calcAirDensity(double height)
+{
+	return this->calcAirPressure(height) / (GASCONSTANT * (this->calcAirTemperatureInKelvin()));
+}
+
 void Simulation::SimulationEnvironment::setAirtemperatureCelsius(double Airtemperature)
 {
 	this->Airtemperature = Airtemperature;
