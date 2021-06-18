@@ -56,6 +56,7 @@
     </ClCompile>
     <ClCompile Include="Simulation\DataMap2D.cpp">
       <Filter>Quelldateien\Simulation</Filter>
+	</ClCompile>
     <ClCompile Include="tinyxml2.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
