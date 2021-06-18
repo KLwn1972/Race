@@ -6,16 +6,20 @@ Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle& vehicle, Sim
 
 double Simulation::AccelerationCalculator::calcAcceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
+	this->TrackPoint = TrackPoint;
+	this->NextPoint = NextPoint;
 	return 0.0;
 }
 
 double Simulation::AccelerationCalculator::calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
-	double effectDeccelerationForce = - (calcAirResistance(velocity, TrackPoint.Coordinates.PositionZ) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
-	return effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcDynamicWheelRadius(this->vehicle.WheelWidth, this->vehicle.WheelRatioPercent, this->vehicle.WheelSize));
+	this->TrackPoint = TrackPoint;
+	this->NextPoint = NextPoint;
+	double effectDeccelerationForce = - (calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
+	return effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcDynamicWheelRadius());
 }
 
-double Simulation::AccelerationCalculator::calcAirResistance(double velocity, double height)
+double Simulation::AccelerationCalculator::calcAirResistance(double velocity)
 {
 	double deltaY = (this->NextPoint.Coordinates.PositionY - this->TrackPoint.Coordinates.PositionY);
 	double deltaX = (this->NextPoint.Coordinates.PositionX - this->TrackPoint.Coordinates.PositionX);
@@ -23,7 +27,7 @@ double Simulation::AccelerationCalculator::calcAirResistance(double velocity, do
 
 	double RelevantWindSpeed = this->environment.calcRelevantWindSpeed(vehicledirection);
 	double VelocityAgainstWind = velocity - RelevantWindSpeed;
-	return 0.5 * this->vehicle.DragCoefficient * this->vehicle.FrontalArea * this->environment.calcAirDensity(height) * velocity * velocity; //1/2 cw roh A v^2
+	return 0.5 * this->vehicle.DragCoefficient * this->vehicle.FrontalArea * this->environment.calcAirDensity(this->TrackPoint.Coordinates.PositionZ) * velocity * velocity; //1/2 cw roh A v^2
 }
 
 double Simulation::AccelerationCalculator::calcRollingResistance(double gradient)
