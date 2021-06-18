@@ -56,6 +56,11 @@
     </ClCompile>
     <ClCompile Include="Simulation\DataMap2D.cpp">
       <Filter>Quelldateien\Simulation</Filter>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Ausgabe-Visualisierung.cpp">
+      <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,5 +105,8 @@
     <None Include="Testconfiguration\SimulationConfig.json">
       <Filter>Ressourcendateien</Filter>
     </None>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

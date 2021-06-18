@@ -13,32 +13,36 @@ using namespace std;
 
 int main()
 {
-	std::cout << "Hello World!\n";
+    std::cout << "Hello World!\n";
 
-	string route = "38566";
-	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
-	int retval = OSM_Nord->GetNodesFromOSM();
+    string route = "38566";
+    OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
+    int retval = OSM_Nord->GetNodesFromOSM();
 
-	// Hier macht Datenaufbereitung weiter
-	if (retval == 0) {
-		vector<node> nodes = OSM_Nord->nodes;
-	}
-	// Wenn nicht mehr benötigt wird
-	delete OSM_Nord;
+    // Hier macht Datenaufbereitung weiter
+    if (retval == 0) {
+        vector<node> nodes = OSM_Nord->nodes;
+    //output_gpx(nodes, "output.gpx"); //funktioniert noch nicht, da raceTime fehlt
+    output_kml(nodes, "output.kml");
+    }
+    // Wenn nicht mehr benötigt wird
+    delete OSM_Nord;
 
-	/* Da noch Sued. Eigentlich eine beliebige Route
-	route = "38567";
-	OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
-	if (OSM_Sued->GetNodesFromOSM() == 0){
-	}
-	delete OSM_Sued;
-	*/
+    /* Da noch Sued. Eigentlich eine beliebige Route
+    route = "38567";
+    OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
+    if (OSM_Sued->GetNodesFromOSM() == 0){
+    }
+    delete OSM_Sued;
+    */
 
-	//NASA
-	FileDownloader testlader;
-	testlader.downloadFile("Ha", "Hi");
+    //NASA
+    FileDownloader testlader;
+    testlader.downloadFile("Ha", "Hi");
 
-	Simulation::ExampleElectricVehicle();
-
-	return 0;
+  
+    //Fahrphysik
+    Simulation::ExampleElectricVehicle();
+  
+    return 0;
 }
