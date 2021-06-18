@@ -56,7 +56,7 @@
     </ClCompile>
     <ClCompile Include="Simulation\DataMap2D.cpp">
       <Filter>Quelldateien\Simulation</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -99,6 +99,9 @@
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\DataMap2D.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\SimulationNode.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,5 @@
 #include "AccelerationCalculator.h"
-/*
+
 Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle& vehicle, SimulationEnvironment& environment) :vehicle(vehicle), environment(environment)
 {
 }
@@ -15,7 +15,7 @@ double Simulation::AccelerationCalculator::calcDecceleration(double velocity, si
 {
 	this->TrackPoint = TrackPoint;
 	this->NextPoint = NextPoint;
-	double effectDeccelerationForce = - (calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
+	double effectDeccelerationForce = -(calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
 	return effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcDynamicWheelRadius());
 }
 
@@ -49,4 +49,3 @@ double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, do
 {
 	return vehicle.Mass * GRAVITATIONALCONSTANT * environment.calcFrictionCoefficient(gradient, velocity) * cos(gradient);
 }
-*/
