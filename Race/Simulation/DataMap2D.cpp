@@ -75,6 +75,12 @@ std::string Simulation::DataMap2D::getYAxisName()
 	return this->xAxisName;
 }
 
+Simulation::DataMap2D::DataMap2D()
+{
+	this->xData = std::vector<double>();
+	this->yData = std::vector<double>();
+}
+
 double Simulation::interpolateValues(double startX, double startValue, double endX, double endValue, double whereToInterPolate)
 {
 	return startValue + ((endValue - startValue) / (endX - startX)) * (whereToInterPolate - startX);
