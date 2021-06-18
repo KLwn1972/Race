@@ -54,6 +54,9 @@
     <ClCompile Include="Simulation\AccelerationCalculator.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
+    <ClCompile Include="OpenStreetMap.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -78,6 +81,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="NASA_GeoCoordConversion.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenStreetMap.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\ImportSimulationConfig.h">
