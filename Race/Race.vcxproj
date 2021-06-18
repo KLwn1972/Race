@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ausgabe-Visualisierung.cpp" />
     <ClCompile Include="NASA_ElevationCalculator.cpp" />
     <ClCompile Include="NASA_ElevationDataDownloader.cpp" />
     <ClCompile Include="NASA_GeoCoordConversion.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Simulation\Position.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
     <ClCompile Include="Simulation\Vehicle.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NASA_ElevationCalculator.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="Simulation\Position.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
     <ClInclude Include="Simulation\Vehicle.h" />
+    <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

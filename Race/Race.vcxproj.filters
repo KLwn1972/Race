@@ -51,6 +51,12 @@
     <ClCompile Include="OpenStreetMap.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Ausgabe-Visualisierung.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -81,6 +87,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="OpenStreetMap.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
