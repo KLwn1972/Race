@@ -33,9 +33,6 @@
     <ClCompile Include="Simulation\DrivingSimulator.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation\MovingObject.cpp">
-      <Filter>Quelldateien\Simulation</Filter>
-    </ClCompile>
     <ClCompile Include="Simulation\Position.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
@@ -69,9 +66,6 @@
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\DrivingSimulator.h">
-      <Filter>Headerdateien\Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="Simulation\MovingObject.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\Position.h">
