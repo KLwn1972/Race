@@ -12,6 +12,9 @@ double Simulation::Position::Distance(Position OtherPosition)
 
 Simulation::Position::Position()
 {
+	this->PositionX = nan("");
+	this->PositionY = nan("");
+	this->PositionZ = nan("");
 }
 
 Simulation::Position::Position(double X, double Y, double Z)
