@@ -4,32 +4,43 @@ Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle& vehicle, Sim
 {
 }
 
-double Simulation::AccelerationCalculator::calcAcceleration(double velocity, simulationNode TrackPoint)
+double Simulation::AccelerationCalculator::calcAcceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
 	return 0.0;
 }
 
-double Simulation::AccelerationCalculator::calcDecceleration(double velocity, simulationNode TrackPoint)
+double Simulation::AccelerationCalculator::calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
 	return 0.0;
 }
 
 double Simulation::AccelerationCalculator::calcAirResistance(double velocity, double height)
 {
+	double deltaY = (this->NextPoint.Coordinates.PositionY - this->TrackPoint.Coordinates.PositionY);
+	double deltaX = (this->NextPoint.Coordinates.PositionX - this->TrackPoint.Coordinates.PositionX);
+	double vehicledirection = asin(deltaY / deltaX);
+
+	double RelevantWindSpeed = this->environment.calcRelevantWindSpeed(vehicledirection);
+	double VelocityAgainstWind = velocity - RelevantWindSpeed;
 	return 0.5 * this->vehicle.DragCoefficient * this->vehicle.FrontalArea * this->environment.calcAirDensity(height) * velocity * velocity; //1/2 cw roh A v^2
 }
 
-double Simulation::AccelerationCalculator::calcRollingResistance(double velocity)
+double Simulation::AccelerationCalculator::calcRollingResistance(double gradient)
+{
+	return vehicle.Mass * GRAVITATIONALCONSTANT * environment.calcRoadResistanceCoefficient() * cos(gradient); //TODO: check gradient format
+}
+
+double Simulation::AccelerationCalculator::calcAccelerationResistance(double velocity)
 {
 	return 0.0;
 }
 
-double Simulation::AccelerationCalculator::calcAccelerationForce(double velocity)
+double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)
 {
 	return 0.0;
 }
 
-double Simulation::AccelerationCalculator::calcGradientForce(double gradient)
+double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, double velocity)
 {
-	return 0.0;
+	return vehicle.Mass * GRAVITATIONALCONSTANT * environment.calcFrictionCoefficient(gradient, velocity) * cos(gradient);
 }
