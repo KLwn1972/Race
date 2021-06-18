@@ -1,5 +1,5 @@
 #include "AccelerationCalculator.h"
-
+/*
 Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle& vehicle, SimulationEnvironment& environment) :vehicle(vehicle), environment(environment)
 {
 }
@@ -49,3 +49,4 @@ double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, do
 {
 	return vehicle.Mass * GRAVITATIONALCONSTANT * environment.calcFrictionCoefficient(gradient, velocity) * cos(gradient);
 }
+*/
