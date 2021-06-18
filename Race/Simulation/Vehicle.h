@@ -86,7 +86,10 @@ namespace Simulation
 		double FinalDriveRatio = nan("");
 		double DeccelerationMax = nan("");
 
-		double getSelectedGear();
-		double setSelectedGear();
+		int getSelectedGear();
+		void setSelectedGear(int GearToSet);
+
+	private:
+		int selectedgear = 0;
 	};
 }
