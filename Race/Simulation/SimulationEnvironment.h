@@ -32,10 +32,10 @@ namespace Simulation
 		void setWinddirection(double Winddirection);
 
 	private:
-		double Airtemperature;
-		double Airpressure;
-		double Windspeed;
-		double Winddirection; //[°];
+		double Airtemperature = nan("");
+		double Airpressure = nan("");
+		double Windspeed = nan("");
+		double Winddirection = nan(""); //[°];
 		std::vector<FrictionEntry> FrictionTable;
 	};
 

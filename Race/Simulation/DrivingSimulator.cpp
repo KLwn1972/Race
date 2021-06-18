@@ -1,6 +1,7 @@
 #include "DrivingSimulator.h"
 #include <string>
 #include "..\Race.h"
+#include "DataMap2D.h"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ Simulation::DrivingSimulator::DrivingSimulator(vector<node> input)
 	this->vehicle = Vehicle();
 	this->environment = SimulationEnvironment();
 	this->rawtrack = input;
+	this->accelerationcalc = new AccelerationCalculator(this->vehicle, this->environment);
 }
 
 vector<node> Simulation::DrivingSimulator::RunSimulation(std::string configfile)
@@ -158,9 +160,4 @@ double Simulation::DrivingSimulator::calcRaceTimeBetweenTwoPointsWithDifferentAc
 Simulation::simulationNode::simulationNode()
 {
 	this->Coordinates = Position(0, 0, 0);
-}
-
-double Simulation::interpolateValues(double startX, double startValue, double endX, double endValue, double whereToInterPolate)
-{
-	return endValue + ((endValue - startValue) / (endX - startX)) * (whereToInterPolate - startX);
 }

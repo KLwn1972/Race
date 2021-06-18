@@ -166,6 +166,7 @@
     <ClInclude Include="Simulation\ImportSimulationConfig.h" />
     <ClInclude Include="Simulation\Position.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
+    <ClInclude Include="Simulation\SimulationNode.h" />
     <ClInclude Include="Simulation\Vehicle.h" />
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
