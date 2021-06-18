@@ -54,6 +54,9 @@
     <ClCompile Include="Simulation\ImportSimulationConfig.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\AccelerationCalculator.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -84,6 +87,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\ImportSimulationConfig.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\AccelerationCalculator.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,6 +14,11 @@ SimulationEnvironment* ExampleSimEnvironment()
 	return result;
 }
 
+double Simulation::SimulationEnvironment::calcAirPressure(double height)
+{
+	return 0.0;
+}
+
 double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
 {
 	return this->Airtemperature + ABSOLUTEZEROTEMP;
