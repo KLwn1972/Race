@@ -169,6 +169,21 @@ double Simulation::DrivingSimulator::calcAirResistance(double velocity, double h
 	return 0.5 * this->vehicle.DragCoefficient * this->vehicle.FrontalArea * this->environment.calcAirDensity(height) * velocity * velocity; //1/2 cw roh A v^2
 }
 
+double Simulation::DrivingSimulator::calcRollingResistance(double velocity)
+{
+	return 0.0;
+}
+
+double Simulation::DrivingSimulator::calcAccelerationForce(double velocity)
+{
+	return 0.0;
+}
+
+double Simulation::DrivingSimulator::calcGradientForce(double gradient)
+{
+	return 0.0;
+}
+
 Simulation::simulationNode::simulationNode()
 {
 	this->Coordinates = Position(0, 0, 0);

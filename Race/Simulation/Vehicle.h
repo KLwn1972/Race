@@ -84,5 +84,8 @@ namespace Simulation
 		map<int, GearEntry> GearData;
 		double FinalDriveRatio = nan("");
 		double DeccelerationMax = nan("");
+
+		double getSelectedGear();
+		double setSelectedGear();
 	};
 }
