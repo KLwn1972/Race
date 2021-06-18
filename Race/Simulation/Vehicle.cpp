@@ -50,7 +50,7 @@ double Simulation::Vehicle::calcStaticWheelDiameter()
 	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize * INCH2M));
 }
 
-double Simulation::Vehicle::calcDynamicWheelDiameter(double WheelWidth, double WheelRatioPercent, double WheelSize)
+double Simulation::Vehicle::calcDynamicWheelRadius()
 {
-	return ((calcStaticWheelDiameter()) * Simulation::PI * 0.97 / (2 * Simulation::PI));
+	return ((calcStaticWheelDiameter()) * 0.97 / (2));
 }
