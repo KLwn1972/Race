@@ -10,6 +10,7 @@ Simulation::DrivingSimulator::DrivingSimulator(vector<node> input)
 	this->vehicle = Vehicle();
 	this->environment = SimulationEnvironment();
 	this->rawtrack = input;
+	this->accelerationcalc = new AccelerationCalculator(this->vehicle, this->environment);
 }
 
 vector<node> Simulation::DrivingSimulator::RunSimulation(std::string configfile)

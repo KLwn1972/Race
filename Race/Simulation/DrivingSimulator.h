@@ -34,6 +34,6 @@ namespace Simulation {
 		vector<simulationNode> modifiedtrack;
 		Simulation::Vehicle vehicle;
 		Simulation::SimulationEnvironment environment;
-		//AccelerationCalculator accelerationcalc;
+		AccelerationCalculator* accelerationcalc;
 	};
 }
