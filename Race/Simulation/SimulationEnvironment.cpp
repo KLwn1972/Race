@@ -3,20 +3,9 @@
 
 using namespace Simulation;
 
-SimulationEnvironment* ExampleSimEnvironment()
-{
-	SimulationEnvironment* result = new SimulationEnvironment();
-	result->setAirpressure(1013 * MBAR2PASCAL);
-	result->setAirtemperatureCelsius(22);
-	result->setWinddirection(0);
-	result->setWindspeed(10);
-
-	return result;
-}
-
 double Simulation::SimulationEnvironment::calcAirPressure(double height)
 {
-	return 0.0;
+	return this->Airpressure; //Todo: Height
 }
 
 double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
@@ -26,7 +15,7 @@ double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
 
 double Simulation::SimulationEnvironment::calcRelevantWindSpeed(double VehicleDirection)
 {
-	return 0.0;
+	return this->Windspeed; //TODO: Winddir
 }
 
 double Simulation::SimulationEnvironment::calcRoadResistanceCoefficient()
@@ -62,4 +51,15 @@ void Simulation::SimulationEnvironment::setWindspeed(double Windspeed)
 void Simulation::SimulationEnvironment::setWinddirection(double Winddirection)
 {
 	this->Winddirection = Winddirection;
+}
+
+SimulationEnvironment* Simulation::ExampleSimulationEnvironment()
+{
+	SimulationEnvironment* result = new SimulationEnvironment();
+	result->setAirpressure(1013 * MBAR2PASCAL);
+	result->setAirtemperatureCelsius(22);
+	result->setWinddirection(0);
+	result->setWindspeed(10);
+
+	return result;
 }

@@ -3,7 +3,30 @@
 
 using namespace Simulation;
 
-Vehicle* ExampleElectricVehicle()
+double Simulation::Vehicle::calcStaticWheelDiameter()
+{
+	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize * INCH2M));
+}
+
+int Simulation::Vehicle::getSelectedGear()
+{
+	return this->selectedgear;
+}
+
+void Simulation::Vehicle::setSelectedGear(int GearToSet)
+{
+	if ((GearToSet < NumberOfGears) && (GearToSet >= 0))
+	{
+		this->selectedgear = GearToSet;
+	}
+}
+
+double Simulation::Vehicle::calcDynamicWheelRadius()
+{
+	return ((calcStaticWheelDiameter()) * 0.97 / (2));
+}
+
+Vehicle* Simulation::ExampleElectricVehicle()
 {
 	Vehicle* result = new Vehicle();
 
@@ -43,27 +66,4 @@ Vehicle* ExampleElectricVehicle()
 	newEntry.ShiftUpLimitMax = result->EngineUpperRevLimit;
 
 	return result;
-}
-
-double Simulation::Vehicle::calcStaticWheelDiameter()
-{
-	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize * INCH2M));
-}
-
-int Simulation::Vehicle::getSelectedGear()
-{
-	return this->selectedgear;
-}
-
-void Simulation::Vehicle::setSelectedGear(int GearToSet)
-{
-	if ((GearToSet < NumberOfGears) && (GearToSet >= 0))
-	{
-		this->selectedgear = GearToSet;
-	}
-}
-
-double Simulation::Vehicle::calcDynamicWheelRadius()
-{
-	return ((calcStaticWheelDiameter()) * 0.97 / (2));
 }

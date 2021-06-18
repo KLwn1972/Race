@@ -39,6 +39,7 @@ namespace Simulation
 		std::vector<FrictionEntry> FrictionTable;
 	};
 
+	//Conversions
 	const double GRAVITATIONALCONSTANT = 9.81;
 	const double GASCONSTANT = 287.0529;
 	const double ABSOLUTEZEROTEMP = 273.15;
@@ -59,4 +60,7 @@ namespace Simulation
 	const double M2INCH = 1 / INCH2M;
 
 	static const double PI = atan(1) * 4;
+	//
+
+	static SimulationEnvironment* ExampleSimulationEnvironment();
 }
