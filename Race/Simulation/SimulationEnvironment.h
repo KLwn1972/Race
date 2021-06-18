@@ -55,5 +55,8 @@ namespace Simulation
 	static const double RAD2DEG = 180.0 / atan(1) * 4;
 	static const double DEG2RAD = atan(1) * 4 / 180.0;
 
+	const double INCH2M = 0.0254;
+	const double M2INCH = 1 / INCH2M;
+
 	static const double PI = atan(1) * 4;
 }
