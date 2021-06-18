@@ -12,7 +12,7 @@ namespace Simulation
 		double calcAcceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint);
 		double calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint);
 	private:
-		double calcAirResistance(double velocity, double height);
+		double calcAirResistance(double velocity);
 		double calcRollingResistance(double velocity);
 		double calcAccelerationResistance(double velocity);
 		double calcGradientResistance(double gradient);

@@ -96,4 +96,9 @@
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Testconfiguration\SimulationConfig.json">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+  </ItemGroup>
 </Project>
