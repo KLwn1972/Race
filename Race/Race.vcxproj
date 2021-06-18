@@ -151,6 +151,7 @@
     <ClCompile Include="Simulation\Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DatAuf.h" />
     <ClInclude Include="NASA_ElevationCalculator.h" />
     <ClInclude Include="NASA_ElevationDataDownloader.h" />
     <ClInclude Include="NASA_GeoCoordConversion.h" />
