@@ -7,7 +7,9 @@
 #include "NASA_ElevationDataDownloader.h"
 #include "NASA_ElevationCalculator.h"
 #include "NASA_GeoCoordConversion.h"
+
 #include "Simulation/Vehicle.h"
+#include "Simulation/DataMap2D.h"
 
 using namespace std;
 
@@ -42,6 +44,12 @@ int main()
 
 	//Fahrphysik
 	//Simulation::ExampleElectricVehicle();
+	vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
+	vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };
+	Simulation::DataMap2D* Datamap = new Simulation::DataMap2D(xdata, ydata);
+	cout << Datamap->getY(-1) << "\n";
+	cout << Datamap->getY(1.9) << "\n";
+	cout << Datamap->getY(800) << "\n";
 
 	return 0;
 }
