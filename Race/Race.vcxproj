@@ -140,9 +140,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ausgabe-Visualisierung.cpp" />
-    <ClCompile Include="NASA_ElevationCalculator.cpp" />
-    <ClCompile Include="NASA_ElevationDataDownloader.cpp" />
-    <ClCompile Include="NASA_GeoCoordConversion.cpp" />
+    <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp" />
+    <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp" />
+    <ClCompile Include="NASA_src\NASA_GeoCoordConversion.cpp" />
     <ClCompile Include="OpenStreetMap.cpp" />
     <ClCompile Include="Race.cpp" />
     <ClCompile Include="Simulation\AccelerationCalculator.cpp" />
@@ -155,9 +155,9 @@
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NASA_ElevationCalculator.h" />
-    <ClInclude Include="NASA_ElevationDataDownloader.h" />
-    <ClInclude Include="NASA_GeoCoordConversion.h" />
+    <ClInclude Include="NASA_src\NASA_DataFileHandler.h" />
+    <ClInclude Include="NASA_src\NASA_ElevationCalculator.h" />
+    <ClInclude Include="NASA_src\NASA_GeoCoordConversion.h" />
     <ClInclude Include="OpenStreetMap.h" />
     <ClInclude Include="Race.h" />
     <ClInclude Include="Simulation\AccelerationCalculator.h" />

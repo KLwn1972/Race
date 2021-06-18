@@ -1,12 +1,11 @@
 // Race.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
 //
 
+
 #include "Race.h"
 #include "OpenStreetMap.h"
 
-#include "NASA_ElevationDataDownloader.h"
-#include "NASA_ElevationCalculator.h"
-#include "NASA_GeoCoordConversion.h"
+
 
 #include "Simulation/Vehicle.h"
 #include "Simulation/DataMap2D.h"
@@ -39,8 +38,17 @@ int main()
 	*/
 
 	//NASA
-	FileDownloader testlader;
-	testlader.downloadFile("Ha", "Hi");
+	double long_stuttgart = 9.206802;
+	double lat_stuttgart = 48.742211;
+	ElevationCalculator calc;
+	cout.setf(ios::fixed, ios::floatfield);
+	cout.precision(6);
+	cout << calc.getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
+	cout << GeoCoordConversion::getGrad_From_WGS84Decimal(long_stuttgart) << endl;
+	cout << setw(20) <<  GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
+	cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
+	cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 12, 24.4872) << endl;
+
 
 	//Fahrphysik
 	//Simulation::ExampleElectricVehicle();
