@@ -12,7 +12,7 @@ double Simulation::AccelerationCalculator::calcAcceleration(double velocity, sim
 double Simulation::AccelerationCalculator::calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
 	double effectDeccelerationForce = - (calcAirResistance(velocity, TrackPoint.Coordinates.PositionZ) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
-	return effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcStaticWheelDiameter());
+	return effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcDynamicWheelRadius(this->vehicle.WheelWidth, this->vehicle.WheelRatioPercent, this->vehicle.WheelSize));
 }
 
 double Simulation::AccelerationCalculator::calcAirResistance(double velocity, double height)
