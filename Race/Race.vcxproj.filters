@@ -45,9 +45,6 @@
     <ClCompile Include="NASA_GeoCoordConversion.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="OSM.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Simulation\ImportSimulationConfig.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
@@ -92,5 +89,10 @@
     <ClInclude Include="Simulation\AccelerationCalculator.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Testconfiguration\SimulationConfig.json">
+      <Filter>Ressourcendateien</Filter>
+    </None>
   </ItemGroup>
 </Project>
