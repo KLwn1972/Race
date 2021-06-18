@@ -64,6 +64,7 @@ namespace Simulation
 		vector<EngineEntry> EngineTorqueCurve;
 		double EngineInertia = nan("");
 		double AxleInertia = nan("");
+		double WheelInertia = nan("");
 		double PowertrainEfficiency = nan("");
 
 		vector<TorqueSpeedEntry> TorqueSpeedCurve;
