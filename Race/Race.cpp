@@ -47,7 +47,7 @@ int main()
 	cout << GeoCoordConversion::getGrad_From_WGS84Decimal(long_stuttgart) << endl;
 	cout << setw(20) <<  GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
 	cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
-	cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 12, 24.4872) << endl;
+	cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
 
 
 	//Fahrphysik
