@@ -8,6 +8,8 @@
 #include "NASA_ElevationCalculator.h"
 #include "NASA_GeoCoordConversion.h"
 
+#include "DatAuf.h"
+
 using namespace std;
 
 int main()
@@ -22,8 +24,15 @@ int main()
     if (retval == 0) {
         vector<node> nodes = OSM_Nord->nodes;
     }
+
+    CalcDatAuf Testcircuit;
+    Testcircuit.DataProcessing();
+
     // Wenn nicht mehr benötigt wird
     delete OSM_Nord;
+
+
+
 
     /* Da noch Sued. Eigentlich eine beliebige Route
     route = "38567";
