@@ -145,6 +145,7 @@
     <ClCompile Include="OpenStreetMap.cpp" />
     <ClCompile Include="Race.cpp" />
     <ClCompile Include="Simulation\AccelerationCalculator.cpp" />
+    <ClCompile Include="Simulation\DataMap2D.cpp" />
     <ClCompile Include="Simulation\DrivingSimulator.cpp" />
     <ClCompile Include="Simulation\ImportSimulationConfig.cpp" />
     <ClCompile Include="Simulation\Position.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="OpenStreetMap.h" />
     <ClInclude Include="Race.h" />
     <ClInclude Include="Simulation\AccelerationCalculator.h" />
+    <ClInclude Include="Simulation\DataMap2D.h" />
     <ClInclude Include="Simulation\DrivingSimulator.h" />
     <ClInclude Include="Simulation\ImportSimulationConfig.h" />
     <ClInclude Include="Simulation\Position.h" />

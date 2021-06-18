@@ -45,9 +45,6 @@
     <ClCompile Include="NASA_GeoCoordConversion.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="OSM.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Simulation\ImportSimulationConfig.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
@@ -56,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="OpenStreetMap.cpp">
       <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\DataMap2D.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +90,9 @@
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\AccelerationCalculator.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\DataMap2D.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
