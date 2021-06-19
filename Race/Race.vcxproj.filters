@@ -54,10 +54,7 @@
     <ClCompile Include="DatAuf.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="DatAufGradient.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="DatAufRadius.cpp">
+    <ClCompile Include="DatAufRadiusGradient.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="DatAufCatmullRom.cpp">
@@ -96,15 +93,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="DatAuf.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="DatAufGradient.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="DatAufRadius.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="DatAufCatmullRom.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
