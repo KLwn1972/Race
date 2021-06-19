@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cJSON.c" />
     <ClCompile Include="NASA_ElevationCalculator.cpp" />
     <ClCompile Include="NASA_ElevationDataDownloader.cpp" />
     <ClCompile Include="NASA_GeoCoordConversion.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Simulation\Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cJSON.h" />
     <ClInclude Include="NASA_ElevationCalculator.h" />
     <ClInclude Include="NASA_ElevationDataDownloader.h" />
     <ClInclude Include="NASA_GeoCoordConversion.h" />
