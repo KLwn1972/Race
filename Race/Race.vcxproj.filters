@@ -33,9 +33,6 @@
     <ClCompile Include="Simulation\DrivingSimulator.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation\MovingObject.cpp">
-      <Filter>Quelldateien\Simulation</Filter>
-    </ClCompile>
     <ClCompile Include="Simulation\Position.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
@@ -48,10 +45,25 @@
     <ClCompile Include="NASA_GeoCoordConversion.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\ImportSimulationConfig.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\AccelerationCalculator.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
     <ClCompile Include="OpenStreetMap.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="cJSON.c">
+      <Filter>Quelldateien</Filter>
+   </ClCompile> 
+    <ClCompile Include="Simulation\DataMap2D.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Ausgabe-Visualisierung.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,9 +78,6 @@
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\DrivingSimulator.h">
-      <Filter>Headerdateien\Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="Simulation\MovingObject.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\Position.h">
@@ -87,6 +96,26 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="cJSON.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\ImportSimulationConfig.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\AccelerationCalculator.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\DataMap2D.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\SimulationNode.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Testconfiguration\SimulationConfig.json">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <ClInclude Include="tinyxml2.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
