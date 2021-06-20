@@ -26,6 +26,20 @@ int main()
         vector<node> nodes = OSM_Nord->nodes;
     }
 
+    // **** DATENAUFBEREITUNG Start ********
+
+    SplineDatAuf Testcircuit;       // Muss Testcircuit über new allokiert werden?!
+    Testcircuit.nodes = OSM_Nord->nodes;
+    //delete OSM_Nord;
+    Testcircuit.DataProcessingCatmullRomSpline();
+
+    RadiusDatAuf Testciruit_Radius;
+    Testciruit_Radius.nodes = Testcircuit.nodes;
+    Testciruit_Radius.DataProcessingRadiusGradient();
+
+    // **** DATENAUFBEREITUNG ENDE *********
+  
+ 
     CalcDatAuf Testcircuit;
     Testcircuit.DataProcessing();
 

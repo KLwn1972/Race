@@ -141,8 +141,7 @@
   <ItemGroup>
     <ClCompile Include="DatAuf.cpp" />
     <ClCompile Include="DatAufCatmullRom.cpp" />
-    <ClCompile Include="DatAufGradient.cpp" />
-    <ClCompile Include="DatAufRadius.cpp" />
+    <ClCompile Include="DatAufRadiusGradient.cpp" />
     <ClCompile Include="NASA_ElevationCalculator.cpp" />
     <ClCompile Include="NASA_ElevationDataDownloader.cpp" />
     <ClCompile Include="NASA_GeoCoordConversion.cpp" />
@@ -157,9 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatAuf.h" />
-    <ClInclude Include="DatAufCatmullRom.h" />
-    <ClInclude Include="DatAufGradient.h" />
-    <ClInclude Include="DatAufRadius.h" />
     <ClInclude Include="NASA_ElevationCalculator.h" />
     <ClInclude Include="NASA_ElevationDataDownloader.h" />
     <ClInclude Include="NASA_GeoCoordConversion.h" />
