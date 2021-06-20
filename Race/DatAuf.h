@@ -12,6 +12,11 @@ class CalcDatAuf{
 public:
 	vector<node> nodes;
 	void DataProcessing();
+	void InsertAdditionalNodes();
+	void CalcFahrtbestimmungData();
+	void CalcHorizontalCurveRad2(int index);
+	void CalcVerticalCurveRad2(int index);
+	void CalcGradientPercentage2(int index);
 	vector <double> Get1Coordinate(int);
 	double GetDistanceMeters(const double&, const double&, const double&, const double&);
 };

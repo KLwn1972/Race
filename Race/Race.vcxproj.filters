@@ -63,6 +63,9 @@
     <ClCompile Include="VectorklassenTest.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="SplineCatmullRom.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -98,16 +101,10 @@
     <ClInclude Include="DatAuf.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="DatAufGradient.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="DatAufRadius.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="DatAufCatmullRom.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="VectorklassenTest.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="SplineCatmullRom.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

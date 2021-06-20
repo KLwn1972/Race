@@ -26,6 +26,7 @@ int main()
         vector<node> nodes = OSM_Nord->nodes;
     }
 
+    /*
     // **** DATENAUFBEREITUNG Start ********
 
     SplineDatAuf Testcircuit;       // Muss Testcircuit über new allokiert werden?!
@@ -38,9 +39,11 @@ int main()
     Testciruit_Radius.DataProcessingRadiusGradient();
 
     // **** DATENAUFBEREITUNG ENDE *********
-  
+    */
+
  
     CalcDatAuf Testcircuit;
+    Testcircuit.nodes = OSM_Nord->nodes;
     Testcircuit.DataProcessing();
 
     VectorTest TestVector1;
