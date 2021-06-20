@@ -63,6 +63,9 @@
     <ClCompile Include="DatAufCatmullRom.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="VectorklassenTest.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -105,6 +108,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="DatAufCatmullRom.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorklassenTest.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

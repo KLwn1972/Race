@@ -1,8 +1,10 @@
-#pragma once
 #include <iostream>
+#include <vector>
+#include "Race.h"
 
 class VectorTest {
 public:
-	void VectorTest();
+	vector<node> nodes;
+	void ProcessingVectorTest();
 
 };

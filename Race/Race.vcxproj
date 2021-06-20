@@ -153,7 +153,7 @@
     <ClCompile Include="Simulation\Position.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
     <ClCompile Include="Simulation\Vehicle.cpp" />
-    <ClCompile Include="VektorklassenTest.cpp" />
+    <ClCompile Include="VectorklassenTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatAuf.h" />
