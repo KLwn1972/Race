@@ -16,6 +16,7 @@ using namespace std;
 
 int main()
 {
+
 	std::cout << "Hello World!\n";
 
 	string route = "38566";
@@ -25,8 +26,7 @@ int main()
 	// Hier macht Datenaufbereitung weiter
 	if (retval == 0) {
 		vector<node> nodes = OSM_Nord->nodes;
-		//output_gpx(nodes, "output.gpx"); //funktioniert noch nicht, da raceTime fehlt
-		output_kml(nodes, "output.kml");
+		ausgabe_visualisierung(nodes);
 	}
 	// Wenn nicht mehr benötigt wird
 	delete OSM_Nord;
@@ -62,4 +62,5 @@ int main()
 	cout << Datamap->getY(800) << "\n";
 
 	return 0;
+
 }
