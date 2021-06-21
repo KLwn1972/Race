@@ -30,20 +30,23 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 	void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
 		cout << "DatAuf: InsertAdditionalNodes aufgerufen" << endl;
 
+		int iterator = 0;
+
 		int NodeItem = 0;
 		int NodeItemInsert;
 		int NodeItemCurrent = 0;
 		int NodeItemNext = 0;
 		int MaxNumberNodes = this->nodes.size();
 		int NumberAdditionalNodes;
-		node Node1, Node2, NewNode;
+		int InsertMode = 0;
+		node Node1, Node2, NewNode, PrevNode;
 		std::vector<node>::iterator NewNodeItemInsert;
 		double DistanceTwoNodes = 0.0;
-		double Delta_t;
+		double Delta_t, t_previous, t_current;
 		SplineCatmullRom SplineSegment;
 		SplineSegment.SplineKnotsReset();
 
-		// Schleife �ber alle "nodes"
+		// Schleife ueber alle "nodes"
 		//Start bei Index "1" und Ende bei "MaxNumberNodes - 1" (Behandlung von Index "0" und "Max" wird danach gemacht 
 		NodeItem = 1;
 		MaxNumberNodes = MaxNumberNodes - 1;
@@ -71,30 +74,85 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(Node1, Node2);
 
+			InsertMode = 1;
+
 			if (nodes[NodeItem].distanceToNext > 1.0) {
-				NumberAdditionalNodes = int(nodes[NodeItem].distanceToNext);
+				
+				switch (InsertMode) {
+				case 0:
+					NumberAdditionalNodes = int(nodes[NodeItem].distanceToNext);
 
-				Delta_t = 1.0 / NumberAdditionalNodes;
+					Delta_t = 1.0 / NumberAdditionalNodes;
 
-				for (int i = 1;i < NumberAdditionalNodes;i++) {
-					//cout << "Eingefuegter Node #" << i << endl;
-					SplineSegment.InterpolKnotReset();
-					SplineSegment.CalcInterpolKnot(i * Delta_t);
-					NewNode.longitude = SplineSegment.InterpolKnot[0];
-					NewNode.latitude = SplineSegment.InterpolKnot[1];
-					NewNode.elevation = SplineSegment.InterpolKnot[2];
-					NewNodeItemInsert = nodes.begin() + NodeItem + i;
-					this->nodes.insert(NewNodeItemInsert, NewNode);
+					for (int i = 1;i < NumberAdditionalNodes;i++) {
+						//cout << "Eingefuegter Node #" << i << endl;
+						SplineSegment.InterpolKnotReset();
+						SplineSegment.CalcInterpolKnot(i * Delta_t);
+						NewNode.longitude = SplineSegment.InterpolKnot[0];
+						NewNode.latitude = SplineSegment.InterpolKnot[1];
+						NewNode.elevation = SplineSegment.InterpolKnot[2];
+						NewNodeItemInsert = nodes.begin() + NodeItem + i;
+						this->nodes.insert(NewNodeItemInsert, NewNode);
+					}
+										
+					// Zaehler mit eingefuegten Punkten ergaenzen, "-1", da ohne einfuegen der Zaehler automatisch um 1 erhoeht wird
+					NodeItem += NumberAdditionalNodes-1;
+
+					break;
+
+				case 1:
+					Delta_t = 1.0 / int(nodes[NodeItem].distanceToNext);
+
+					PrevNode = nodes[NodeItem];
+
+					t_previous = 0.0;
+					t_current = t_previous + Delta_t;
+					NumberAdditionalNodes = 0;
+
+					while (t_current < 1.0) {
+						iterator += 1;
+
+						SplineSegment.InterpolKnotReset();
+						SplineSegment.CalcInterpolKnot(t_current);
+						NewNode.longitude = SplineSegment.InterpolKnot[0];
+						NewNode.latitude = SplineSegment.InterpolKnot[1];
+						NewNode.elevation = SplineSegment.InterpolKnot[2];
+
+						DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
+						if (DistanceTwoNodes > 1.0) {
+							Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
+							t_current = t_previous + Delta_t;
+						}
+						else if (DistanceTwoNodes < 0.98){
+							Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
+							t_current = t_previous + Delta_t;
+						}
+						else {
+							NumberAdditionalNodes += 1;
+							NewNodeItemInsert = nodes.begin() + NodeItem + NumberAdditionalNodes;
+							this->nodes.insert(NewNodeItemInsert, NewNode);
+							PrevNode = NewNode;
+							//NumberAdditionalNodes += 1;
+							t_previous = t_current;
+							t_current = t_current + Delta_t;
+						}
+
+					}
+
+					NodeItem += NumberAdditionalNodes;
+
+					break;
+
 				}
 
-				// Zaehler mit eingefuegten Punkten ergaenzen, "-1", da ohne einfuegen der Zaehler automatisch um 1 erhoeht wird
-				NodeItem += NumberAdditionalNodes-1;
 			}
 			//NodeItem hochzaehlen
 			NodeItem += 1;
 			// MaxNumberNodes updaten nach Einf�gen weiterer "nodes"
 			MaxNumberNodes = this->nodes.size();
 		}
+
+		cout << "Iteratorwert = " << iterator << endl;
 
 		MaxNumberNodes = this->nodes.size();
 		for (NodeItem = 0;NodeItem < MaxNumberNodes-1;NodeItem++) {
@@ -159,7 +217,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 			distance2D = (D * (1 + earth_flattening * H1 * sin(F) * sin(F) * cos(G) * cos(G) - earth_flattening * H2 * cos(F) * cos(F) * sin(G) * sin(G)))*1000;
 		}
-		cout << "DatAuf: GetDistanceMeters2D-Funktion wurde aufgerufen. Die Distanz betraegt: " << distance2D<< " Meter." <<endl;	
+		//cout << "DatAuf: GetDistanceMeters2D-Funktion wurde aufgerufen. Die Distanz betraegt: " << distance2D<< " Meter." <<endl;	
 		return distance2D;
 	}
 
@@ -176,7 +234,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 			double DiffElevation = (node2.elevation - node1.elevation);
 			distance3D = sqrt(distance2D * distance2D + DiffElevation * DiffElevation);
 		}
-		cout << "DatAuf: GetDistanceMeters3D-Funktion wurde aufgerufen. Die Distanz betraegt: " << distance3D << " Meter." <<endl;
+		//cout << "DatAuf: GetDistanceMeters3D-Funktion wurde aufgerufen. Die Distanz betraegt: " << distance3D << " Meter." <<endl;
 		return distance3D;
 	}
 
