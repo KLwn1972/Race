@@ -20,7 +20,6 @@ using namespace tinyxml2;
 class node
 {
 public:
-	string id = "";
 	double longitude = nan("");				//Grad
 	double latitude = nan("");				//Grad
 	double elevation = nan("");				//[m]
