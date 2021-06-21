@@ -113,10 +113,10 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 	for (size_t i = 0; i < modifiedtrack.size() - 1; i++) {
 		simulationNode& currentPos = this->modifiedtrack.at(i);
 		simulationNode& nextPos = this->modifiedtrack.at(i + 1);
-		double localDistance = currentPos.Coordinates.Distance(nextPos.Coordinates);        //TODO: Use References                                     //get distance between the local point and next point
+		double localDistance = currentPos.Coordinates.Distance(nextPos.Coordinates);                                                         //get distance between the local point and next point
 		//case 1: acceleration
 		if (nextPos.newLimit > currentPos.speedIs) {
-			double MaxLocalAcceleration = 10;      // TODO: amax should be a function
+			double MaxLocalAcceleration = this->accelerationcalc->calcAcceleration(currentPos.speedIs, currentPos, nextPos);                //get amax
 			double speed_temp = sqrt((currentPos.speedIs) * (currentPos.speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
 			 // determine the Is-speed and raceTime according to different situation
 			if (speed_temp > nextPos.newLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
