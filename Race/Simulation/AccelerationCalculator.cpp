@@ -8,7 +8,8 @@ double Simulation::AccelerationCalculator::calcAcceleration(double velocity, sim
 {
 	this->TrackPoint = TrackPoint;
 	this->NextPoint = NextPoint;
-	return 0.0;
+
+	return 10;
 }
 
 double Simulation::AccelerationCalculator::calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
@@ -35,14 +36,26 @@ double Simulation::AccelerationCalculator::calcRollingResistance(double gradient
 	return vehicle.Mass * GRAVITATIONALCONSTANT * environment.calcRoadResistanceCoefficient() * cos(gradient); //TODO: check gradient format
 }
 
-double Simulation::AccelerationCalculator::calcAccelerationResistance(double velocity)
-{
-	return 0.0;
-}
-
 double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)
 {
 	return vehicle.Mass * GRAVITATIONALCONSTANT * sin(gradient);
+}
+
+double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gradient, double velocity)
+{
+	double maximumTorque = 0;
+	if (this->vehicle.PowerTrainType == PowerTrainTypes::Electric)
+	{
+		maximumTorque = this->vehicle.TorqueSpeedCurve->getY(velocity);
+	}
+	else if (this->vehicle.PowerTrainType == PowerTrainTypes::ICE)
+	{
+		maximumTorque = 0.0; //TODO!
+	}
+	double longitudalPowertrainForce = maximumTorque * this->vehicle.FinalDriveRatio * this->vehicle.PowertrainEfficiency / this->vehicle.calcDynamicWheelRadius();
+	double Adhesionlimit = this->calcAdhesionLimit(gradient, velocity);
+	double ResultingForce = min(longitudalPowertrainForce, Adhesionlimit);
+	return 0.0;
 }
 
 double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, double velocity)
