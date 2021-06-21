@@ -1,8 +1,6 @@
 // Race.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
 //
 
-
-
 #include<stdio.h>
 #include "Race.h"
 #include "OpenStreetMap.h"
@@ -48,6 +46,7 @@ int main()
 
 	//Fahrphysik
 	//Simulation::ExampleElectricVehicle();
+	//TODO: Build Testtrack;
 	string SimulationConfigFile = "SimulationConfig.json";
 	//Simulation::ImportSimulationConfig SimulationConfig(SimulationConfigFile);
 	vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
@@ -56,9 +55,6 @@ int main()
 	cout << Datamap->getY(-1) << "\n";
 	cout << Datamap->getY(1.9) << "\n";
 	cout << Datamap->getY(800) << "\n";
-
-	
-
 
 	return 0;
 }

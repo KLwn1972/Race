@@ -16,5 +16,6 @@ namespace Simulation {
 		ImportSimulationConfig(std::string SimulationConfigFile);
 		void saveSimulationConfig(std::string ConfigFileAsString);
 		~ImportSimulationConfig();
+	private:
 	};
 }

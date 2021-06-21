@@ -19,7 +19,7 @@ Simulation::DrivingSimulator::~DrivingSimulator()
 	delete this->accelerationcalc;
 }
 
-vector<node> Simulation::DrivingSimulator::RunSimulation(std::string configfile)
+vector<node> Simulation::DrivingSimulator::RunSimulation()
 {
 	createModifiedTrack();
 
@@ -34,7 +34,7 @@ vector<node> Simulation::DrivingSimulator::RunSimulation(std::string configfile)
 
 void Simulation::DrivingSimulator::createModifiedTrack()
 {
-	const size_t NumberOfInterpolationPoints = 1;
+	const size_t NumberOfInterpolationPoints = 1; //TODO
 	size_t TotalNumberOfPoints = (this->rawtrack.size() - 1) * NumberOfInterpolationPoints;
 	vector<simulationNode> newTrack = vector<simulationNode>(TotalNumberOfPoints, simulationNode());
 
@@ -110,7 +110,8 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 	this->modifiedtrack.at(0).raceDistance = 0;
 
 	for (size_t i = 0; i < modifiedtrack.size() - 1; i++) {
-		double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i + 1).Coordinates);                                             //get distance between the local point and next point
+		//TODO: simulationNode& currentPos = this->modifiedtrack.at(i);
+		double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i + 1).Coordinates);        //TODO: Use References                                     //get distance between the local point and next point
 		//case 1: acceleration
 		if (this->modifiedtrack.at(i + 1).newLimit > this->modifiedtrack.at(i).speedIs) {
 			double MaxLocalAcceleration = 10;      // TODO: amax should be a function

@@ -15,7 +15,7 @@ namespace Simulation {
 		DrivingSimulator(vector<node> input, ImportSimulationConfig config);
 		~DrivingSimulator();
 
-		vector<node> RunSimulation(std::string configfile);
+		vector<node> RunSimulation();
 	private:
 		//Create a modified track which contains the simulationNodes
 		void createModifiedTrack();
@@ -31,7 +31,7 @@ namespace Simulation {
 		double calcRaceTimeBetweenTwoPointsWithDifferentAccleration(double acceleration, double Speed_LocalPoint, double Speed_nextPoint, double Distance);
 
 		vector<node> rawtrack;
-		vector<simulationNode> modifiedtrack;
+		vector<simulationNode> modifiedtrack; //Switch to normal nodes
 		Simulation::Vehicle vehicle;
 		Simulation::SimulationEnvironment environment;
 		AccelerationCalculator* accelerationcalc;

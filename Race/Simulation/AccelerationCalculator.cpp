@@ -6,7 +6,7 @@ Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle& vehicle, Sim
 
 double Simulation::AccelerationCalculator::calcAcceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
-	this->TrackPoint = TrackPoint;
+	this->TrackPoint = TrackPoint; //TODO: CalcAcc
 	this->NextPoint = NextPoint;
 
 	return 10;
@@ -14,7 +14,7 @@ double Simulation::AccelerationCalculator::calcAcceleration(double velocity, sim
 
 double Simulation::AccelerationCalculator::calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
-	this->TrackPoint = TrackPoint;
+	this->TrackPoint = TrackPoint; //TODO: Check Calculation
 	this->NextPoint = NextPoint;
 	double effectDeccelerationForce = -(calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
 	return effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcDynamicWheelRadius());
@@ -22,7 +22,7 @@ double Simulation::AccelerationCalculator::calcDecceleration(double velocity, si
 
 double Simulation::AccelerationCalculator::calcAirResistance(double velocity)
 {
-	double deltaY = (this->NextPoint.Coordinates.PositionY - this->TrackPoint.Coordinates.PositionY);
+	double deltaY = (this->NextPoint.Coordinates.PositionY - this->TrackPoint.Coordinates.PositionY); //TODO: Check with Excel
 	double deltaX = (this->NextPoint.Coordinates.PositionX - this->TrackPoint.Coordinates.PositionX);
 	double vehicledirection = asin(deltaY / deltaX);
 
