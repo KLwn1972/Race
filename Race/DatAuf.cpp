@@ -117,10 +117,12 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//überprüfung auf nan-Werte?
 
 
 	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(int index) {
-		cout << "DatAuf: CalcHorizontalCurveRad2-Funktion wurde aufgerufen." << endl;
+		is nodes[0].id==nodes
+		
+		//3 Knoten werden benötigt
 
 		this->nodes[index].horizontalCurveRadius = index;
-
+		cout << "DatAuf: CalcHorizontalCurveRad2-Funktion wurde aufgerufen." << endl;
 		return;
 	}
 

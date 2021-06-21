@@ -20,6 +20,7 @@ public:
 	double speedLimit = nan("");				//[m/s]
 	double speedIs = nan("");					//[m/s]*/
 	double raceTime = nan("");				//[s]
+	string id;
 };
 
 //Übergaben als vector<node>()
