@@ -7,19 +7,30 @@
 
 using namespace std;
 
+namespace DatAuf {
 
-class CalcDatAuf{
-public:
-	vector<node> nodes;
-	void DataProcessing();
-	vector <double> Get1Coordinate(int);
-	double GetDistanceMeters(const double&, const double&, const double&, const double&);
 
-private:
-	const double MaxDistance = 1.0;
-};
+	class CalcDatAuf {
+	public:
+		vector<node> nodes;
+		void DataProcessing();
+		void InsertAdditionalNodes();
+		void CalcFahrtbestimmungData();
+		//double GetDistanceMeters(const double&, const double&, const double&, const double&);
+	private:
+		void CalcHorizontalCurveRad2(int index);
+		void CalcVerticalCurveRad2(int index);
+		void CalcGradientPercentage2(int index);
+		vector <double> Get1Coordinate(int);
 
-class SplineDatAuf:public CalcDatAuf {
+	};
+
+	static double GetDistanceMeters(const double&, const double&, const double&, const double&);
+
+}
+
+/*
+class SplineDatAuf :public CalcDatAuf {
 public:
 	// SplineDatAuf() {} -> Konstruktor ist wann nötig?
 	void DataProcessingCatmullRomSpline();
@@ -30,7 +41,7 @@ private:
 	void insertPoint(int index_prePoint);
 };
 
-class RadiusDatAuf:public CalcDatAuf {
+class RadiusDatAuf :public CalcDatAuf {
 public:
 	void DataProcessingRadiusGradient();
 private:
@@ -38,7 +49,7 @@ private:
 	double CalcVerticalCurveRad(int index);
 	double CalcGradientPercentage(int index);
 };
-
+*/
 
 
 

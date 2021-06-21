@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include "DatAuf.h"
 #include "Race.h"
@@ -28,3 +29,5 @@ double RadiusDatAuf::CalcGradientPercentage(int index) {
 	cout << "DatAuf: CalcGradientPercentage-Funktion wurde aufgerufen." << endl;
 	return 5;
 }
+
+*/

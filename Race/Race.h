@@ -13,6 +13,7 @@ public:
 	double longitude = nan("");				//Grad
 	double latitude = nan("");				//Grad
 	double elevation = nan("");				//[m]
+	double distanceToNext = nan("");
 	double horizontalCurveRadius = nan("");	//[m]
 	double verticalCurveRadius = nan("");		//[m] +: Kuppe, -: Senke
 	double gradient = nan("");				//[%], evtl. als [°]

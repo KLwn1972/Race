@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include "DatAuf.h"
 #include "Race.h"
@@ -40,3 +41,4 @@ void SplineDatAuf::insertPoint(int index_prePoint) {
 	// Dummy-Funktion
 	cout << "DatAuf: InsertPoint-Funktion wurde aufgerufen." << endl;
 }
+*/

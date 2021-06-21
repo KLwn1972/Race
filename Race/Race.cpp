@@ -26,8 +26,8 @@ int main()
     }
 
     // **** DATENAUFBEREITUNG Start ********
-
-    SplineDatAuf Testcircuit;       // Muss Testcircuit über new allokiert werden?!
+/*
+    SplineDatAuf Testcircuit;       
     Testcircuit.nodes = OSM_Nord->nodes;
     //delete OSM_Nord;
     Testcircuit.DataProcessingCatmullRomSpline();
@@ -35,9 +35,22 @@ int main()
     RadiusDatAuf Testciruit_Radius;
     Testciruit_Radius.nodes = Testcircuit.nodes;
     Testciruit_Radius.DataProcessingRadiusGradient();
+ */
+    DatAuf::CalcDatAuf Testcircuit; // Muss Testcircuit über new allokiert werden?!
+    Testcircuit.nodes = OSM_Nord->nodes;
+    Testcircuit.DataProcessing();
+    DatAuf::GetDistanceMeters(1, 2, 3, 4);
+
+
+    /*
+    VectorTest TestVector1;
+    TestVector1.nodes = OSM_Nord->nodes;
+    //TestVector1.nodes = nodes;
+    TestVector1.ProcessingVectorTest();
+    */
 
     // **** DATENAUFBEREITUNG ENDE *********
-  
+ 
  
     // Wenn nicht mehr benötigt wird
     delete OSM_Nord;

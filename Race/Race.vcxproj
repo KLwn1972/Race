@@ -140,8 +140,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DatAuf.cpp" />
-    <ClCompile Include="DatAufCatmullRom.cpp" />
-    <ClCompile Include="DatAufRadiusGradient.cpp" />
+    <ClCompile Include="DatAuf_alt.cpp" />
+    <ClCompile Include="DatAufCatmullRom_alt.cpp" />
+    <ClCompile Include="DatAufRadiusGradient_alt.cpp" />
     <ClCompile Include="NASA_ElevationCalculator.cpp" />
     <ClCompile Include="NASA_ElevationDataDownloader.cpp" />
     <ClCompile Include="NASA_GeoCoordConversion.cpp" />
@@ -152,9 +153,11 @@
     <ClCompile Include="Simulation\Position.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
     <ClCompile Include="Simulation\Vehicle.cpp" />
+    <ClCompile Include="DatAuf_SplineCatmullRom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatAuf.h" />
+    <ClInclude Include="DatAuf_alt.h" />
     <ClInclude Include="NASA_ElevationCalculator.h" />
     <ClInclude Include="NASA_ElevationDataDownloader.h" />
     <ClInclude Include="NASA_GeoCoordConversion.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="Simulation\Position.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
     <ClInclude Include="Simulation\Vehicle.h" />
+    <ClInclude Include="DatAuf_SplineCatmullRom.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
