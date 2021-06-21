@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -152,6 +152,8 @@
     <ClCompile Include="Simulation\Position.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
     <ClCompile Include="Simulation\Vehicle.cpp" />
+    <ClCompile Include="SplineCatmullRom.cpp" />
+    <ClCompile Include="VectorklassenTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatAuf.h" />
@@ -165,6 +167,8 @@
     <ClInclude Include="Simulation\Position.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
     <ClInclude Include="Simulation\Vehicle.h" />
+    <ClInclude Include="SplineCatmullRom.h" />
+    <ClInclude Include="VectorklassenTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

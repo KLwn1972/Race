@@ -1,19 +1,49 @@
 #include <iostream>
 #include "DatAuf.h"
 #include "Race.h"
+#include "SplineCatmullRom.h"
 
 using namespace std;
 
 
 
 void CalcDatAuf::DataProcessing() {
-	// Dummy-Funktion
-	/*
-	double distance = this->GetDistanceMeters(1, 2, 3, 4);
-	cout << "DatAuf: GetDistanceMeters-Funktion wurde aufgerufen, Distanz: " << distance << endl;	
-	vector<double> Test_coordinates = this->GetCoordinates(3);
-	//CatmullRomSpline();
-	*/
+	
+	cout << "DatAuf: DataProcessing aufgerufen" << endl;	
+	
+	// Check and insert if necessary additional knots
+	this->InsertAdditionalNodes();
+
+	// Calculate Data for SOLL-Fahrtbestimmmung 
+	this->CalcFahrtbestimmungData();
+
+}
+
+void CalcDatAuf::InsertAdditionalNodes() {
+	cout << "DatAuf: InsertAdditionalKnots aufgerufen" << endl;
+
+	double DistanceTwoNodes=0.0;
+	SplineCatmullRom SplineSegment;
+	SplineSegment.SplineKnotsReset();
+	SplineSegment.CalcInterpolKnot(0.65);
+
+
+}
+
+void CalcDatAuf::CalcFahrtbestimmungData() {
+	cout << "DatAuf: CalcFahrtbestimmungData aufgerufen" << endl;
+
+	int MaxNumberNodes = this->nodes.size();
+
+	for (int index = 0;index < MaxNumberNodes;index++) {
+
+		this->CalcHorizontalCurveRad2(index);
+		this->CalcVerticalCurveRad2(index);
+		this->CalcGradientPercentage2(index);
+
+	}
+
+	return;
 }
 
 vector<double> CalcDatAuf::Get1Coordinate(int index) {
@@ -33,4 +63,26 @@ double CalcDatAuf::GetDistanceMeters(const double& longitude1, const double& lat
 	return 2;
 }
 
+void CalcDatAuf::CalcHorizontalCurveRad2(int index) {
+	cout << "DatAuf: CalcHorizontalCurveRad2-Funktion wurde aufgerufen." << endl;
 
+	this->nodes[index].horizontalCurveRadius = index;
+
+	return;
+}
+
+void CalcDatAuf::CalcVerticalCurveRad2(int index) {
+	cout << "DatAuf: CalcVerticalCurveRad2-Funktion wurde aufgerufen." << endl;
+
+	this->nodes[index].verticalCurveRadius = index * 2.0;
+
+	return;
+}
+
+void CalcDatAuf::CalcGradientPercentage2(int index) {
+	cout << "DatAuf: CalcGradientPercentage2-Funktion wurde aufgerufen." << endl;
+
+	this->nodes[index].gradient = index * 3.0;
+	
+	return;
+}

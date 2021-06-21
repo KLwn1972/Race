@@ -9,6 +9,7 @@
 #include "NASA_GeoCoordConversion.h"
 
 #include "DatAuf.h"
+#include "VectorklassenTest.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ int main()
         vector<node> nodes = OSM_Nord->nodes;
     }
 
+    /*
     // **** DATENAUFBEREITUNG Start ********
 
     SplineDatAuf Testcircuit;       // Muss Testcircuit über new allokiert werden?!
@@ -37,8 +39,18 @@ int main()
     Testciruit_Radius.DataProcessingRadiusGradient();
 
     // **** DATENAUFBEREITUNG ENDE *********
-  
+    */
+
  
+    CalcDatAuf Testcircuit;
+    Testcircuit.nodes = OSM_Nord->nodes;
+    Testcircuit.DataProcessing();
+
+    VectorTest TestVector1;
+    TestVector1.nodes = OSM_Nord->nodes;
+    //TestVector1.nodes = nodes;
+    TestVector1.ProcessingVectorTest();
+
     // Wenn nicht mehr benötigt wird
     delete OSM_Nord;
 
