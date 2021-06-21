@@ -41,7 +41,8 @@ int main()
     DatAuf::CalcDatAuf Testcircuit; // Muss Testcircuit über new allokiert werden?!
     Testcircuit.nodes = OSM_Nord->nodes;
     Testcircuit.DataProcessing();
-    DatAuf::GetDistanceMeters(1, 2, 3, 4);
+    node node1, node2;
+    //DatAuf::GetDistanceMeters(node1, node2);
 
 
     /*
