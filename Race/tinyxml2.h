@@ -45,7 +45,7 @@ distribution.
 #include <stdint.h>
 
 /*
-   TODO: intern strings instead of allocation.
+   intern strings instead of allocation.
 */
 /*
 	gcc:
