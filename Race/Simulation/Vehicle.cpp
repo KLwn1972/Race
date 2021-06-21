@@ -23,6 +23,8 @@ void Simulation::Vehicle::setSelectedGear(int GearToSet)
 
 Simulation::Vehicle::Vehicle()
 {
+	this->EngineTorqueCurve = new DataMap2D();
+	this->TorqueSpeedCurve = new DataMap2D();
 }
 
 Simulation::Vehicle::~Vehicle()
@@ -78,4 +80,8 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	newEntry.ShiftUpLimitMax = result->EngineUpperRevLimit;
 
 	return result;
+}
+
+Simulation::GearEntry::GearEntry()
+{
 }

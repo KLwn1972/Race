@@ -86,12 +86,12 @@ Simulation::ImportSimulationConfig::~ImportSimulationConfig()
 {
 }
 
-Simulation::Vehicle Simulation::ImportSimulationConfig::getVehicle()
+Simulation::Vehicle* Simulation::ImportSimulationConfig::getVehicle()
 {
-	return Vehicle();
+	return new Vehicle();
 }
 
-Simulation::SimulationEnvironment Simulation::ImportSimulationConfig::getEnvironment()
+Simulation::SimulationEnvironment* Simulation::ImportSimulationConfig::getEnvironment()
 {
-	return SimulationEnvironment();
+	return new SimulationEnvironment();
 }
