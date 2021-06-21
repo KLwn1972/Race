@@ -9,6 +9,7 @@
 #include "NASA_GeoCoordConversion.h"
 
 #include "DatAuf.h"
+#include "VectorklassenTest.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ int main()
         vector<node> nodes = OSM_Nord->nodes;
     }
 
+    /*
     // **** DATENAUFBEREITUNG Start ********
 /*
     SplineDatAuf Testcircuit;       
