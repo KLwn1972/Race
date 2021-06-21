@@ -35,7 +35,7 @@ double Simulation::AccelerationCalculator::calcAirResistance(double velocity)
 
 double Simulation::AccelerationCalculator::calcRollingResistance(double gradient)
 {
-	return vehicle.Mass * GRAVITATIONALCONSTANT * environment.calcRoadResistanceCoefficient() * cos(gradient); //TODO: check gradient format
+	return vehicle.Mass * GRAVITATIONALCONSTANT * this->environment.getRoadResistanceCoefficient() * cos(gradient); //TODO: check gradient format
 }
 
 double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)

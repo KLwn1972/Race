@@ -18,9 +18,14 @@ double Simulation::SimulationEnvironment::calcRelevantWindSpeed(double VehicleDi
 	return this->Windspeed; //TODO: Windir
 }
 
-double Simulation::SimulationEnvironment::calcRoadResistanceCoefficient()
+void Simulation::SimulationEnvironment::setRoadResistanceCoefficient(double RoadResistanceCoefficient)
 {
-	return 0.0; //TODO: Roadresistancecoeff
+	this->RoadResistanceCoefficient = RoadResistanceCoefficient;
+}
+
+double Simulation::SimulationEnvironment::getRoadResistanceCoefficient()
+{
+	return this->RoadResistanceCoefficient;
 }
 
 double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity, double Gradient)

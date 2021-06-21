@@ -19,6 +19,8 @@ namespace Simulation {
 		SimulationEnvironment* getEnvironment();
 		ImportSimulationConfig(std::string SimulationConfigFile);
 		void saveSimulationConfig(std::string ConfigFileAsString);
+		double getDoubleFromcJSON(cJSON*, const char* const string);
+		string getStringFromcJSON(cJSON*, const char* const string);
 		~ImportSimulationConfig();
 
 	private:
