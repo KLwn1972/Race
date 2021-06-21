@@ -11,6 +11,7 @@
 
 #include "Simulation/Vehicle.h"
 #include "Simulation/DataMap2D.h"
+#include "Simulation/DrivingSimulator.h"
 #include "Simulation/ImportSimulationConfig.h"
 
 using namespace std;
@@ -18,9 +19,11 @@ using namespace std;
 int main()
 {
 	std::cout << "Hello World!\n";
-
+	
 	string route = "38566";
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
+	/*Ei: Langer Import der Knoten auskommentiert
+	
 	int retval = OSM_Nord->GetNodesFromOSM();
 
 	// Hier macht Datenaufbereitung weiter
@@ -43,18 +46,25 @@ int main()
 	//NASA
 	FileDownloader testlader;
 	testlader.downloadFile("Ha", "Hi");
-
+	
+	
 	//Fahrphysik
 	//Simulation::ExampleElectricVehicle();
 	//TODO: Build Testtrack;
-	string SimulationConfigFile = "SimulationConfig.json";
-	//Simulation::ImportSimulationConfig SimulationConfig(SimulationConfigFile);
 	vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
 	vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };
 	Simulation::DataMap2D* Datamap = new Simulation::DataMap2D(xdata, ydata);
 	cout << Datamap->getY(-1) << "\n";
 	cout << Datamap->getY(1.9) << "\n";
 	cout << Datamap->getY(800) << "\n";
+
+	//
+	vector<node> nodes = OSM_Nord->nodes;
+	//
+
+	string SimulationConfigFile = "Testconfiguration/SimulationConfig.json";
+	Simulation::ImportSimulationConfig SimulationConfig(SimulationConfigFile);
+	Simulation::DrivingSimulator(nodes, SimulationConfig);
 
 	return 0;
 }
