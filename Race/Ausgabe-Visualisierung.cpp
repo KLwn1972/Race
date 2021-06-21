@@ -134,7 +134,7 @@ XMLError output_kml(vector <node> nordschleife, string filepath) {
     pRoot->InsertEndChild(Element_Document);
     xmlDoc.InsertEndChild(pRoot);
 
-    XMLError eResult = xmlDoc.SaveFile("racetrack.kml");
+    XMLError eResult = xmlDoc.SaveFile(filepath.c_str());
     return eResult;
 }
 
@@ -155,7 +155,7 @@ void add_node_gpx(tinyxml2::XMLDocument* xmlDoc, node* node_to_add, XMLElement* 
     parent_element->InsertEndChild(Element_trkpt);
 }
 
-XMLError output_gpx(vector <node> nordschleife, string filename_output) {
+XMLError output_gpx(vector <node> nordschleife, string filepath) {
     time_t startTime;
     time(&startTime);
     string timestr;
@@ -188,6 +188,6 @@ XMLError output_gpx(vector <node> nordschleife, string filename_output) {
     xmlDoc.InsertEndChild(pRoot);
 
 
-    XMLError eResult = xmlDoc.SaveFile("racetrack.gpx");
+    XMLError eResult = xmlDoc.SaveFile(filepath.c_str());
     return eResult;
 }
