@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cJSON.c" />
     <ClCompile Include="Ausgabe-Visualisierung.cpp" />
     <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp" />
     <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp" />

@@ -2,6 +2,8 @@
 //
 
 
+
+#include<stdio.h>
 #include "Race.h"
 #include "OpenStreetMap.h"
 
