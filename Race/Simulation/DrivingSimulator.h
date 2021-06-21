@@ -4,22 +4,10 @@
 #include "..\Race.h"
 #include <string>
 #include "Position.h"
+#include "AccelerationCalculator.h"
+#include "SimulationNode.h"
 
 namespace Simulation {
-	class simulationNode
-	{
-	public:
-		Position Coordinates = Position();
-		double raceDistance = nan("");
-		double gradient = nan("");
-		double speedLimit = nan("");
-		double newLimit = nan("");
-		double raceTime = nan("");
-		double speedIs = nan("");
-		size_t baseID = INT16_MAX; //the position of the entry in the base array
-		simulationNode();
-	};
-
 	class DrivingSimulator
 	{
 	public:
@@ -46,7 +34,6 @@ namespace Simulation {
 		vector<simulationNode> modifiedtrack;
 		Simulation::Vehicle vehicle;
 		Simulation::SimulationEnvironment environment;
+		AccelerationCalculator* accelerationcalc;
 	};
-
-	static double interpolateValues(double startX, double startValue, double endX, double endValue, double whereToInterPolate);
 }

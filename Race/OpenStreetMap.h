@@ -1,5 +1,6 @@
 #pragma once
 #include "Race.h"
+#include "cJSON.h"
 
 using namespace std;
 
@@ -19,8 +20,9 @@ private:
 	string BuidFileName(string name);
 	wchar_t* StrToTchar(string in);
 	HRESULT DownloadFile(string URL, string OutFile);
-	vector<string> GetWays(string relation, string FileName);
-	vector<string> GetNodes(string way, string FileName);
-	vector<double> GetCoordinates(string node, string FileName);
+	cJSON* JSON_ReadFileToStructur(string FileName);
+	vector<string> GetWays(string FileName);
+	vector<string> GetNodes(string FileName);
+	vector<double> GetCoordinates(string FileName);
 };
 

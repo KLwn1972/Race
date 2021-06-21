@@ -2,48 +2,20 @@
 
 #include <vector>
 #include <map>
+#include "DataMap2D.h"
 using namespace std;
 
 namespace Simulation
 {
-	class ShiftEntry
-	{
-		double EngineSpeed = nan("");
-		double PedalPosition = nan("");
-	};
-
 	class GearEntry
 	{
 	public:
 		double ShiftDownLimitMin = nan(""); //rpm at which driver should shift down
 		double ShiftUpLimitMax = nan(""); //rpm at which driver should shift up
-		vector<ShiftEntry> LowerShiftLimit;
-		vector<ShiftEntry> UpperShiftLimit;
+		DataMap2D LowerShiftLimit; //DataMap with engine speed [1/s], low shift pedal point
+		DataMap2D UpperShiftLimit; //DataMap with engine speed [1/s], upshift pedal point
 		double GearRatio = nan("");
-	};
-
-	class TorqueSpeedEntry
-	{
-	public:
-		double VehicleSpeed = nan("");
-		double VehicleTorque = nan("");
-		TorqueSpeedEntry(double VehicleSpeed, double VehicleTorque)
-		{
-			this->VehicleSpeed = VehicleSpeed;
-			this->VehicleTorque = VehicleTorque;
-		}
-	};
-
-	class EngineEntry
-	{
-	public:
-		double EngineSpeed = nan("");
-		double Torque = nan("");
-		EngineEntry(double EngineSpeed, double Torque)
-		{
-			this->EngineSpeed = EngineSpeed;
-			this->Torque = Torque;
-		}
+		GearEntry();
 	};
 
 	enum class PowerTrainTypes
@@ -61,13 +33,13 @@ namespace Simulation
 		double DragCoefficient = nan("");
 
 		double EngineUpperRevLimit = nan(""); //rpm
-		vector<EngineEntry> EngineTorqueCurve;
+		DataMap2D* EngineTorqueCurve; //Curve with enginespeed, torque [1/s, Nm]
 		double EngineInertia = nan("");
 		double AxleInertia = nan("");
 		double WheelInertia = nan("");
 		double PowertrainEfficiency = nan("");
 
-		vector<TorqueSpeedEntry> TorqueSpeedCurve;
+		DataMap2D* TorqueSpeedCurve; //Curve with speed, torque [m/s, Nm]
 		PowerTrainTypes PowerTrainType = PowerTrainTypes::ICE;
 
 		double WheelWidth = nan(""); //m /0.205
@@ -88,7 +60,8 @@ namespace Simulation
 
 		int getSelectedGear();
 		void setSelectedGear(int GearToSet);
-
+		Vehicle();
+		~Vehicle();
 	private:
 		int selectedgear = 0;
 	};

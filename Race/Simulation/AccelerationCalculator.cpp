@@ -15,7 +15,7 @@ double Simulation::AccelerationCalculator::calcDecceleration(double velocity, si
 {
 	this->TrackPoint = TrackPoint;
 	this->NextPoint = NextPoint;
-	double effectDeccelerationForce = - (calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
+	double effectDeccelerationForce = -(calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
 	return effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcDynamicWheelRadius());
 }
 
@@ -42,7 +42,7 @@ double Simulation::AccelerationCalculator::calcAccelerationResistance(double vel
 
 double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)
 {
-	return 0.0;
+	return vehicle.Mass * GRAVITATIONALCONSTANT * sin(gradient);
 }
 
 double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, double velocity)

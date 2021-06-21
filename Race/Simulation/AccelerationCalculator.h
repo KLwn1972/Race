@@ -1,6 +1,7 @@
 #pragma once
 #include "Vehicle.h"
-#include "DrivingSimulator.h"
+#include "SimulationNode.h"
+#include "SimulationEnvironment.h"
 
 namespace Simulation
 {
