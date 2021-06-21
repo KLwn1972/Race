@@ -2,6 +2,7 @@
 //#define _VECTOR_H
 
 #include <iostream>
+#include "DatAuf_SplineCatmullRom.h"
 #include "Race.h"
 
 
@@ -21,6 +22,7 @@ namespace DatAuf {
 		void CalcHorizontalCurveRad(int index);
 		void CalcVerticalCurveRad(int index);
 		void CalcGradientPercentage(int index);
+		void InsertOneNodeRecursiv(node Node1, node Node2, SplineCatmullRom SplineSegment);
 		double Get1Coordinate(int);
 		double deg2rad(double grad);
 
