@@ -16,19 +16,19 @@ namespace DatAuf {
 		void DataProcessing();
 		void InsertAdditionalNodes();
 		void CalcRadiusGradientData();
-
+		static double GetDistanceMeters2D(node node1, node node2);
+		void GetTestData();
 	private:
 		void CalcHorizontalCurveRad(int index);
 		void CalcVerticalCurveRad(int index);
 		void CalcGradientPercentage(int index);
 		double Get1Coordinate(int);
-		double deg2rad(double grad);
-
 
 	};
 
-	static double GetDistanceMeters(node node1, node node2);
-
+	static double GetDistanceMeters3D(node node1, node node2);
+	static double deg2rad(double grad);
+	//static double rad2deg(double rad);
 }
 
 
