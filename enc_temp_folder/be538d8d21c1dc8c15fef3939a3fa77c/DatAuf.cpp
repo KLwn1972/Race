@@ -149,7 +149,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		int preIndex = index - 1;
 		int postIndex= index +1;
 
-		if (this->isLoop()) {																			// Bedingung: Letzter Knoten ist gleich erster Knoten -> ueberpruefen im OSM_Nord!
+		if (this->isLoop()) {								// Bedingung: Letzter Knoten ist gleich erster Knoten ueberpruefen im OSM_Nord!
 			if (index == 0) {preIndex = MaxIndexNodes-1;}
 			if (index == MaxIndexNodes) {postIndex = 1;}
 		}
@@ -183,7 +183,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		double radiusIndex= 0.5 * sqrt(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / (dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost));
 
 		if (radiusIndex < 10E-6 || radiusIndex > 10E6) {
-			cout << "Warnung:  CalcHorizontalCurveRad limit....." << endl;										// Error Handling: offen
+			cout << "Warnung:  CalcHorizontalCurveRad limit....." << endl;						// Error Handling
 		}
 		this->nodes[index].horizontalCurveRadius = radiusIndex;
 

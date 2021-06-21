@@ -26,9 +26,9 @@ void SplineCatmullRom::CalcInterpolKnot(double t) {
 	this->CalcCoeffValue();
 
 	// Begin: Temp values for Test
-	this->InterpolKnot[0] = 1;
-	this->InterpolKnot[1] = 2;
-	this->InterpolKnot[2] = 3;
+	//this->InterpolKnot[0] = 1;
+	//this->InterpolKnot[1] = 2;
+	//this->InterpolKnot[2] = 3;
 	// End: Temp Values for Test
 
 	for (int i = 0; i < 4; i++) {
