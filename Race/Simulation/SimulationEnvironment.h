@@ -1,4 +1,7 @@
 #pragma once
+#ifndef SIMENVIRONMENT
+#define SIMENVIRONMENT
+
 #include <tuple>
 #include <cmath>
 #include <vector>
@@ -52,5 +55,7 @@ namespace Simulation
 	static const double PI = atan(1) * 4;
 	//
 
-	static SimulationEnvironment* ExampleSimulationEnvironment();
+	SimulationEnvironment* ExampleSimulationEnvironment();
 }
+
+#endif

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Simulation::DrivingSimulator::DrivingSimulator(vector<node> input, ImportSimulationConfig config)
+Simulation::DrivingSimulator::DrivingSimulator(vector<node> input, IImportSimulationConfig& config)
 {
 	this->vehicle = Vehicle(); //TODO
 	this->environment = SimulationEnvironment(); //TODO

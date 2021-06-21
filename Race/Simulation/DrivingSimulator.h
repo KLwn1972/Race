@@ -1,4 +1,7 @@
 #pragma once
+#ifndef  DRIVINGSIMULATOR
+#define DRIVINGSIMULATOR
+
 #include "Vehicle.h"
 #include "SimulationEnvironment.h"
 #include "..\Race.h"
@@ -7,12 +10,13 @@
 #include "AccelerationCalculator.h"
 #include "SimulationNode.h"
 #include "ImportSimulationConfig.h"
+#include "IImportSimulationConfig.h"
 
 namespace Simulation {
 	class DrivingSimulator
 	{
 	public:
-		DrivingSimulator(vector<node> input, ImportSimulationConfig config);
+		DrivingSimulator(vector<node> input, IImportSimulationConfig& config);
 		~DrivingSimulator();
 
 		vector<node> RunSimulation();
@@ -37,3 +41,5 @@ namespace Simulation {
 		AccelerationCalculator* accelerationcalc;
 	};
 }
+
+#endif

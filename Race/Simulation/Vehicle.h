@@ -66,5 +66,5 @@ namespace Simulation
 		int selectedgear = 0;
 	};
 
-	static Vehicle* ExampleElectricVehicle();
+	Vehicle* ExampleElectricVehicle();
 }
