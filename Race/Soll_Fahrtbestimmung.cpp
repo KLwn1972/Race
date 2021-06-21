@@ -15,6 +15,22 @@ using namespace std;
 using namespace Simulation;
 
 //Soll_Fahrtbestimmung::Soll_Fahrtbestimmung(double _g) : g(_g) {}
+//
+//Soll_Fahrtbestimmung::Soll_Fahrtbestimmung(Vehicle& vehicle, SimulationEnvironment& environment)
+//{
+//	this->vehicle = vehicle;
+//	this->environment = environment;
+//}
+
+void Soll_Fahrtbestimmung::setVehicle(Vehicle* vehicle)
+{
+	this->vehicle = vehicle;
+}
+
+void Soll_Fahrtbestimmung::setEnvironment(SimulationEnvironment* environment)
+{
+	this->environment = environment;
+}
 
 void Soll_Fahrtbestimmung::set_node(node k) {
 }
@@ -103,6 +119,8 @@ double Soll_Fahrtbestimmung::F_antrieb_max(double V) {
 }
 
 double Soll_Fahrtbestimmung::V_max() {
+	double mass = this->vehicle->Mass;
+	this->vehicle->TorqueSpeedCurve->getY(10);
 	for (int Vel = 0; Vel <= int(V_max_Fzg / 3.6); Vel++) {
 		//17.06.21 //funktioniert erst wenn kein Null Radius zugelassen is !!!
 		cout << "Diff_" << min(F_haft_laengs(Vel), F_antrieb_max(Vel)) - F_fahrwiderstand(Vel) << "\n";

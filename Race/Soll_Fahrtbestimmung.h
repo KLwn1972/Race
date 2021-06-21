@@ -9,11 +9,15 @@
 #include "Simulation/SimulationEnvironment.h"
 
 using namespace std;
+using namespace Simulation;
 
 class Soll_Fahrtbestimmung : public node
 {
 public:
-	//Soll_Fahrtbestimmung(double);
+	//Soll_Fahrtbestimmung(Vehicle& vehicle, SimulationEnvironment& environment);
+	void setVehicle(Vehicle* vehicle);
+	void setEnvironment(SimulationEnvironment* environment);
+
 	void set_node(node k);
 
 	double F_quer(double V);
@@ -48,6 +52,8 @@ private:
 	double FrictionCoefficient = 0.1; //Klären mit Gruppe 6 wie die Kurve abzufragen !
 
 	vector<node> n;
+	Vehicle* vehicle;
+	SimulationEnvironment* environment;
 
 	double const Airdensity = 1.121;
 };

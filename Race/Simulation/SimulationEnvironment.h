@@ -62,5 +62,5 @@ namespace Simulation
 	static const double PI = atan(1) * 4;
 	//
 
-	static SimulationEnvironment* ExampleSimulationEnvironment();
+	SimulationEnvironment* ExampleSimulationEnvironment();
 }
