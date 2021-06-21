@@ -29,13 +29,17 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
 		cout << "DatAuf: InsertAdditionalNodes aufgerufen" << endl;
-		/*
+
 		int NodeItem = 0;
+		int NodeItemInsert;
 		int NodeItemCurrent = 0;
 		int NodeItemNext = 0;
 		int MaxNumberNodes = this->nodes.size();
-		node Node1, Node2;
+		int NumberAdditionalNodes;
+		node Node1, Node2, NewNode;
+		std::vector<node>::iterator NewNodeItemInsert;
 		double DistanceTwoNodes = 0.0;
+		double Delta_t;
 		SplineCatmullRom SplineSegment;
 		SplineSegment.SplineKnotsReset();
 
@@ -43,29 +47,64 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		//Start bei Index "1" und Ende bei "MaxNumberNodes - 1" (Behandlung von Index "0" und "Max" wird danach gemacht 
 		NodeItem = 1;
 		MaxNumberNodes = MaxNumberNodes - 1;
+		//SChleife fuer NICHT geschlossenen Kurs
+		while (NodeItem < MaxNumberNodes - 2) {
 
-		while (NodeItem < MaxNumberNodes) {
+		//Schleife fuer geschlossenen Kurs
+		//while (NodeItem < MaxNumberNodes - 2) {
 			NodeItemCurrent = NodeItem;
 			NodeItemNext = NodeItem + 1;
 
 			//Nodes-Info auf lokalen SplineSegment kopieren
-			for (int i = NodeItem - 1;i < NodeItem + 3;i++) {
-				SplineSegment.SplineKnots[i][0] = this->nodes[i].longitude;
-				SplineSegment.SplineKnots[i][1] = this->nodes[i].latitude;
-				SplineSegment.SplineKnots[i][2] = this->nodes[i].elevation;
+			//for (int i = NodeItem - 1;i < NodeItem + 3;i++) {
+			for (int i = 0;i < 4;i++) {
+				SplineSegment.SplineKnots[i][0] = this->nodes[NodeItem-1+i].longitude;
+				SplineSegment.SplineKnots[i][1] = this->nodes[NodeItem-1+i].latitude;
+				SplineSegment.SplineKnots[i][2] = this->nodes[NodeItem-1+i].elevation;
 			}
 			
 			Node1 = this->nodes[NodeItem];
 			Node2 = this->nodes[NodeItem + 1];
 
-			InsertOneNodeRecursiv(Node1, Node2, SplineSegment);
+			// Aufruf Knoteneinfügen rekursiv
+			//InsertOneNodeRecursiv(Node1, Node2, SplineSegment);
 
+			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(Node1, Node2);
 
+			if (nodes[NodeItem].distanceToNext > 1.0) {
+				NumberAdditionalNodes = int(nodes[NodeItem].distanceToNext);
+
+				Delta_t = 1.0 / NumberAdditionalNodes;
+
+				for (int i = 1;i < NumberAdditionalNodes;i++) {
+					//cout << "Eingefuegter Node #" << i << endl;
+					SplineSegment.InterpolKnotReset();
+					SplineSegment.CalcInterpolKnot(i * Delta_t);
+					NewNode.longitude = SplineSegment.InterpolKnot[0];
+					NewNode.latitude = SplineSegment.InterpolKnot[1];
+					NewNode.elevation = SplineSegment.InterpolKnot[2];
+					NewNodeItemInsert = nodes.begin() + NodeItem + i;
+					this->nodes.insert(NewNodeItemInsert, NewNode);
+				}
+
+				// Zaehler mit eingefuegten Punkten ergaenzen, "-1", da ohne einfuegen der Zaehler automatisch um 1 erhoeht wird
+				NodeItem += NumberAdditionalNodes-1;
+			}
+			//NodeItem hochzaehlen
+			NodeItem += 1;
 			// MaxNumberNodes updaten nach Einf�gen weiterer "nodes"
 			MaxNumberNodes = this->nodes.size();
 		}
+
+		MaxNumberNodes = this->nodes.size();
+		for (NodeItem = 0;NodeItem < MaxNumberNodes-1;NodeItem++) {
+			Node1 = this->nodes[NodeItem];
+			Node2 = this->nodes[NodeItem + 1];
+
+			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(Node1, Node2);
+		}
+
 		SplineSegment.CalcInterpolKnot(0.65);
-		*/
 
 	}
 
@@ -73,7 +112,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		int MaxNumberNodes = this->nodes.size();
 
-		for (int index = 1; index < MaxNumberNodes; index++) {//0
+		for (int index = 0; index < MaxNumberNodes; index++) {
 
 			this->CalcHorizontalCurveRad(index);
 			this->CalcVerticalCurveRad(index);
@@ -216,7 +255,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	}
 
-	double DatAuf::deg2rad(double grad) {
+	double DatAuf::CalcDatAuf::deg2rad(double grad) {
 		double rad = grad * 3.14159265358979 / 180;
 		return rad;
 	}
