@@ -255,7 +255,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	}
 
-	double DatAuf::CalcDatAuf::deg2rad(double grad) {
+	double DatAuf::deg2rad(double grad) {
 		double rad = grad * 3.14159265358979 / 180;
 		return rad;
 	}
