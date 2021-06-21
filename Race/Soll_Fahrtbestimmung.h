@@ -5,8 +5,8 @@
 #include <math.h>
 #include "race.h"
 
-#include "Vehicle.h"
-#include "SimulationEnvironment.h"
+#include "Simulation/Vehicle.h"
+#include "Simulation/SimulationEnvironment.h"
 
 using namespace std;
 
@@ -20,12 +20,10 @@ public:
 	double F_kuppe(double V);
 	double F_normal(double V);
 
-
 	double F_luft(double V);
 	double F_gewicht();
 	double F_roll(double V);
 	double F_fahrwiderstand(double V);
-
 
 	double F_haft_laengs(double V);
 
@@ -51,6 +49,5 @@ private:
 
 	vector<node> n;
 
-	double const Airdensity = 1.121; 
+	double const Airdensity = 1.121;
 };
-
