@@ -8,7 +8,7 @@
 
 using namespace std;
 
-OpenStreetMap::OpenStreetMap(string route){
+OpenStreetMap::OpenStreetMap(string route) {
 	this->route = route;
 	// Get TEMP path
 	_Post_ _Notnull_ char* var;
@@ -16,7 +16,8 @@ OpenStreetMap::OpenStreetMap(string route){
 	errno_t err = _dupenv_s(&var, &len, "TEMP");
 	if (err) {
 		this->LocalPath = "C:\\Temp";
-	} else { 
+	}
+	else {
 		this->LocalPath = var;
 	}
 }
@@ -25,7 +26,7 @@ OpenStreetMap::~OpenStreetMap() {
 	this->nodes.clear();
 }
 
-int OpenStreetMap::GetNodesFromOSM(){
+int OpenStreetMap::GetNodesFromOSM() {
 	string URL = "";
 	string FileName = "";
 	// Dounload Route
@@ -126,21 +127,22 @@ cJSON* OpenStreetMap::JSON_ReadFileToStructur(string FileName) {
 		FileContent.assign((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
 		t.close();
 		return cJSON_Parse(FileContent.c_str());
-	} else {
+	}
+	else {
 		return NULL;
 	}
 }
 
 HRESULT OpenStreetMap::DownloadFile(string URL, string OutFile) {
 	HRESULT result = URLDownloadToFile(NULL, this->StrToTchar(URL), this->StrToTchar(OutFile), NULL, NULL);
-	#ifdef DEBUG
-		cout << endl << URL << endl << OutFile << endl;
-		switch (result) {
-			case S_OK: cout << "Download was successful." << endl; break;
-			case E_OUTOFMEMORY: cout << "#####ERROR: The buffer length is invalid, or there is insufficient memory to complete the operation." << endl; break;
-			case INET_E_DOWNLOAD_FAILURE: cout << "#####ERROR: The specified resource or callback interface was invalid." << endl; break;
-		}
-	#endif
+#ifdef DEBUG
+	cout << endl << URL << endl << OutFile << endl;
+	switch (result) {
+	case S_OK: cout << "Download was successful." << endl; break;
+	case E_OUTOFMEMORY: cout << "#####ERROR: The buffer length is invalid, or there is insufficient memory to complete the operation." << endl; break;
+	case INET_E_DOWNLOAD_FAILURE: cout << "#####ERROR: The specified resource or callback interface was invalid." << endl; break;
+	}
+#endif
 	return result;
 }
 
@@ -168,6 +170,3 @@ wchar_t* OpenStreetMap::StrToTchar(string in) {
 	std::copy(in.begin(), in.end(), retval);
 	return retval;
 }
-
-
-

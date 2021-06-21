@@ -12,6 +12,8 @@ namespace Simulation {
 	{
 	public:
 		DrivingSimulator(vector<node> input);
+		~DrivingSimulator();
+
 		vector<node> RunSimulation(std::string configfile);
 	private:
 		void loadConfiguration(std::string configfile);
