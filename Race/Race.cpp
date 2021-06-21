@@ -13,6 +13,7 @@
 #include "Simulation/DataMap2D.h"
 #include "Simulation/ImportSimulationConfig.h"
 #include "Simulation/DrivingSimulator.h"
+#include "Simulation/MockSimulationConfig.h"
 
 using namespace std;
 
@@ -49,8 +50,12 @@ int main()
 	//Simulation::ExampleElectricVehicle();
 	//TODO: Build Testtrack;
 	auto track = vector<node>();
+	////Fahrphysik
+	////Simulation::ExampleElectricVehicle();
+	////TODO: Build Testtrack;
+	auto track = ExampleStraightTrack(0);
 	string SimulationConfigFile = "SimulationConfig.json";
-	auto SimulationConfig = Simulation::ImportSimulationConfig(SimulationConfigFile);
+	auto SimulationConfig = Simulation::MockSimulationConfig();
 	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
 	vector<node> result = Drivingsim.RunSimulation();
 
