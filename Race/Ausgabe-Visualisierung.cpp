@@ -11,7 +11,9 @@
 using namespace std;
 using namespace tinyxml2;
 string timeConversion(double raceTime, time_t startTime) {
-    time_t rawtime = (time_t)raceTime + startTime;
+    time_t rawtime;
+    if (isnan(raceTime)) rawtime = (time_t)0 + startTime;
+    else rawtime = (time_t)raceTime + startTime;
     struct tm timeinfo;
     localtime_s(&timeinfo, &rawtime);
 
@@ -21,12 +23,12 @@ string timeConversion(double raceTime, time_t startTime) {
     return buffer;
 }
 
-//void output(vector <node> nordschleife) {
-//    XMLError fault_flag_gpx, fault_flag_kml;
-//    string filename_output;
-//    fault_flag_gpx = output_gpx(nordschleife, filename_output);
-//    fault_flag_kml = output_kml(nordschleife, filename_output);
-//}
+void ausgabe_visualisierung(vector <node>& nordschleife) {
+    XMLError fault_flag_gpx, fault_flag_kml;
+    string filename_output = "Race.";
+    fault_flag_gpx = output_gpx(nordschleife, filename_output + "gpx");
+    fault_flag_kml = output_kml(nordschleife, filename_output + "kml");
+}
 
 void insertElementKML(tinyxml2::XMLDocument& xmlDoc, XMLElement* Element_parent, string elementName, string text) {
     XMLElement* Element_child = xmlDoc.NewElement(elementName.c_str());
@@ -83,9 +85,6 @@ XMLError output_kml(vector <node> nordschleife, string filepath) {
     xmlDoc.LinkEndChild(xmlDoc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\""));
 
     XMLNode* pRoot = xmlDoc.NewElement("kml");
-    //pRoot->SetAttribute("itemCount", "ABC");
-    //XMLDeclaration * decl = new XMLDeclaration("1.0   ", "UTF-8 ");
-    //XMLDeclaration* decl = xmlDoc.NewDeclaration("sfdfsdff");
     xmlDoc.InsertFirstChild(pRoot);
     XMLElement* Element_Document = xmlDoc.NewElement("Document");
 
@@ -135,7 +134,7 @@ XMLError output_kml(vector <node> nordschleife, string filepath) {
     pRoot->InsertEndChild(Element_Document);
     xmlDoc.InsertEndChild(pRoot);
 
-    XMLError eResult = xmlDoc.SaveFile(filepath.c_str());;
+    XMLError eResult = xmlDoc.SaveFile("racetrack.kml");
     return eResult;
 }
 
@@ -156,22 +155,15 @@ void add_node_gpx(tinyxml2::XMLDocument* xmlDoc, node* node_to_add, XMLElement* 
     parent_element->InsertEndChild(Element_trkpt);
 }
 
-
 XMLError output_gpx(vector <node> nordschleife, string filename_output) {
     time_t startTime;
     time(&startTime);
     string timestr;
 
     tinyxml2::XMLDocument xmlDoc;
-    XMLDeclaration* decl = xmlDoc.NewDeclaration("test123");
-    //decl->ToDeclaration();
-    //xmlDoc->InsertEndChild(decl);
-    //XMLDeclaration*decl=xmlDoc.NewDeclaration("null");
+    xmlDoc.LinkEndChild(xmlDoc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\""));
     XMLNode* pRoot = xmlDoc.NewElement("gpx");
 
-    //pRoot->SetAttribute("itemCount", "ABC");
-    //XMLDeclaration * decl = new XMLDeclaration("1.0   ", "UTF-8 ");
-    //XMLDeclaration* decl = xmlDoc.NewDeclaration("sfdfsdff");
     xmlDoc.InsertFirstChild(pRoot);
 
     XMLElement* Element_trk = xmlDoc.NewElement("trk");
@@ -197,8 +189,5 @@ XMLError output_gpx(vector <node> nordschleife, string filename_output) {
 
 
     XMLError eResult = xmlDoc.SaveFile("racetrack.gpx");
-    ////XMLCheckResult(eResult); 
-
-    //cout << "eResult:" <<eResult  ;
     return eResult;
 }

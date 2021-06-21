@@ -27,6 +27,7 @@ public:
 };
 
 //Funktionsdeklaration Gruppe Ausgabe
+void ausgabe_visualisierung(vector <node>&);
 string timeConversion(double, time_t);
 void insertElementKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
 void insertColorDefinitionKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
