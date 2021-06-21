@@ -6,8 +6,7 @@
 using namespace std;
 
 
-
-void CalcDatAuf::DataProcessing() {
+void DatAuf::CalcDatAuf::DataProcessing() {
 
 	cout << "DatAuf: DataProcessing aufgerufen" << endl;
 
@@ -15,11 +14,11 @@ void CalcDatAuf::DataProcessing() {
 	this->InsertAdditionalNodes();
 
 	// Calculate Data for SOLL-Fahrtbestimmmung 
-	this->CalcFahrtbestimmungData();
+	this->CalcRadiusGradientData();
 
 }
 
-void CalcDatAuf::InsertAdditionalNodes() {
+void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
 	cout << "DatAuf: InsertAdditionalKnots aufgerufen" << endl;
 
 	double DistanceTwoNodes = 0.0;
@@ -30,23 +29,28 @@ void CalcDatAuf::InsertAdditionalNodes() {
 
 }
 
-void CalcDatAuf::CalcFahrtbestimmungData() {
-	cout << "DatAuf: CalcFahrtbestimmungData aufgerufen" << endl;
+void DatAuf::CalcDatAuf::CalcRadiusGradientData() {
 
 	int MaxNumberNodes = this->nodes.size();
 
 	for (int index = 0; index < MaxNumberNodes; index++) {
 
-		this->CalcHorizontalCurveRad2(index);
-		this->CalcVerticalCurveRad2(index);
-		this->CalcGradientPercentage2(index);
+		this->CalcHorizontalCurveRad(index);
+		this->CalcVerticalCurveRad(index);
+		this->CalcGradientPercentage(index);
 
 	}
+
+	// Dummy-Funktion
+	CalcHorizontalCurveRad(5);
+	CalcVerticalCurveRad(5);
+	CalcGradientPercentage(5);
+	cout << "DatAuf: CalcRadiusGradientData-Funktion wurde aufgerufen." << endl;
 
 	return;
 }
 
-vector<double> CalcDatAuf::Get1Coordinate(int index) {
+vector<double> DatAuf::CalcDatAuf::Get1Coordinate(int index) {
 	// Dummy-Funktion
 	vector<double> oneNode;
 	oneNode.push_back(nodes[index].longitude);
@@ -57,7 +61,7 @@ vector<double> CalcDatAuf::Get1Coordinate(int index) {
 }
 
 
-double CalcDatAuf::GetDistanceMeters(const double& longitude1, const double& latitude1, const double& longitude2, const double& latitude2) {	// double reicht aus oder? -> nodes[index].longitude
+double DatAuf::GetDistanceMeters(const double& longitude1, const double& latitude1, const double& longitude2, const double& latitude2) {	//GetDistance(node node1, node node2)
 	// Dummy-Funktion
 	cout << "DatAuf: GetDistanceMeters-Funktion wurde aufgerufen." << endl;
 	// Dummy-Funktion
@@ -74,7 +78,7 @@ double CalcDatAuf::GetDistanceMeters(const double& longitude1, const double& lat
 	return 2;
 }
 
-void CalcDatAuf::CalcHorizontalCurveRad2(int index) {
+void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(int index) {
 	cout << "DatAuf: CalcHorizontalCurveRad2-Funktion wurde aufgerufen." << endl;
 
 	this->nodes[index].horizontalCurveRadius = index;
@@ -82,7 +86,7 @@ void CalcDatAuf::CalcHorizontalCurveRad2(int index) {
 	return;
 }
 
-void CalcDatAuf::CalcVerticalCurveRad2(int index) {
+void DatAuf::CalcDatAuf::CalcVerticalCurveRad(int index) {
 	cout << "DatAuf: CalcVerticalCurveRad2-Funktion wurde aufgerufen." << endl;
 
 	this->nodes[index].verticalCurveRadius = index * 2.0;
@@ -90,7 +94,7 @@ void CalcDatAuf::CalcVerticalCurveRad2(int index) {
 	return;
 }
 
-void CalcDatAuf::CalcGradientPercentage2(int index) {
+void DatAuf::CalcDatAuf::CalcGradientPercentage(int index) {
 	cout << "DatAuf: CalcGradientPercentage2-Funktion wurde aufgerufen." << endl;
 
 	this->nodes[index].gradient = index * 3.0;

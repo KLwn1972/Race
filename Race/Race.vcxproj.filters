@@ -51,25 +51,10 @@
     <ClCompile Include="OpenStreetMap.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="DatAuf_alt.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="DatAufRadiusGradient_alt.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="DatAufCatmullRom_alt.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="DatAuf.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="DatAuf_SplineCatmullRom.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="VectorklassenTest.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="SplineCatmullRom.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -102,9 +87,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="OpenStreetMap.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="DatAuf_alt.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="DatAuf.h">
