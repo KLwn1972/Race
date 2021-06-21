@@ -98,7 +98,8 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 		}
 		else {                                                                                                                                                   //calculate the brake velocity wenn decceleration
 			double BrakeDecceleration = this->accelerationcalc->calcDecceleration(currentPos.newLimit, previousPos, currentPos);   //get max decceleration at current point
-			double localDistance = currentPos.Coordinates.Distance(previousPos.Coordinates);                                              //get Distance between local point and previous point
+			//double localDistance = currentPos.Coordinates.Distance(previousPos.Coordinates);                                              
+			double localDistance = calcDistanceBetweenTwoPoints(this->rawtrack.at(i - 1), this->rawtrack.at(i));                        //get Distance between local point and previous point
 			double BrakeSpeed = sqrt((currentPos.newLimit) * (currentPos.newLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
 			previousPos.newLimit = min(BrakeSpeed, previousPos.speedLimit);                                                         //get new limit
 		}
@@ -113,7 +114,8 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 	for (size_t i = 0; i < modifiedtrack.size() - 1; i++) {
 		simulationNode& currentPos = this->modifiedtrack.at(i);
 		simulationNode& nextPos = this->modifiedtrack.at(i + 1);
-		double localDistance = currentPos.Coordinates.Distance(nextPos.Coordinates);                                                         //get distance between the local point and next point
+		double localDistance = calcDistanceBetweenTwoPoints(this->rawtrack.at(i), this->rawtrack.at(i + 1));
+		//double localDistance = currentPos.Coordinates.Distance(nextPos.Coordinates);                                                         //get distance between the local point and next point
 		//case 1: acceleration
 		if (nextPos.newLimit > currentPos.speedIs) {
 			double MaxLocalAcceleration = this->accelerationcalc->calcAcceleration(currentPos.speedIs, currentPos, nextPos);                //get amax
@@ -154,6 +156,13 @@ double Simulation::DrivingSimulator::calcRaceTimeBetweenTwoPointsWithDifferentAc
 	double DistanceAcceleration = 0.5 * TimeAcceleration * (Speed_nextPoint + Speed_LocalPoint);
 	double time = (Distance - DistanceAcceleration) / max(Speed_nextPoint, Speed_LocalPoint) + TimeAcceleration;
 	return time;
+}
+
+double Simulation::DrivingSimulator::calcDistanceBetweenTwoPoints(node TrackPoint, node NextPoint)
+{
+	double horizontDistance = TrackPoint.distanceToNext;
+	double verticalDistance = TrackPoint.elevation - NextPoint.elevation;
+	return sqrt(horizontDistance * horizontDistance + verticalDistance * verticalDistance);
 }
 
 Simulation::simulationNode::simulationNode()
