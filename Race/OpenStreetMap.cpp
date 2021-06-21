@@ -1,4 +1,3 @@
-#include <sal.h>
 #include <fstream>
 #include <string>
 
@@ -10,13 +9,11 @@ using namespace std;
 
 OpenStreetMap::OpenStreetMap(string route){
 	this->route = route;
-	// Get TEMP path
-	_Post_ _Notnull_ char* var;
+	// Get Temp folder
+	char* var;
 	size_t len;
-	errno_t err = _dupenv_s(&var, &len, "TEMP");
-	if (err) {
-		this->LocalPath = "C:\\Temp";
-	} else { 
+	int err = _dupenv_s(&var, &len, "TEMP");
+	if (!err && var != nullptr) {
 		this->LocalPath = var;
 	}
 }
@@ -36,7 +33,7 @@ int OpenStreetMap::GetNodesFromOSM(){
 	}
 	// Get Ways
 	vector<string> ways = this->GetWays(FileName);
-	for (vector<string>::iterator way_item = ways.begin() + 3; way_item != ways.end(); ++way_item) {
+	for (vector<string>::iterator way_item = ways.begin() + waysOffset; way_item != ways.end(); ++way_item) {
 		// Download Way
 		string way_id = *way_item;
 		URL = this->BuildLink("way", way_id);
@@ -145,6 +142,8 @@ HRESULT OpenStreetMap::DownloadFile(string URL, string OutFile) {
 			case E_OUTOFMEMORY: cout << "#####ERROR: The buffer length is invalid, or there is insufficient memory to complete the operation." << endl; break;
 			case INET_E_DOWNLOAD_FAILURE: cout << "#####ERROR: The specified resource or callback interface was invalid." << endl; break;
 		}
+	#else
+		cout << "=";
 	#endif
 	return result;
 }

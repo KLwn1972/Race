@@ -20,6 +20,7 @@ using namespace tinyxml2;
 class node
 {
 public:
+	string id = "";
 	double longitude = nan("");				//Grad
 	double latitude = nan("");				//Grad
 	double elevation = nan("");				//[m]
@@ -32,8 +33,6 @@ public:
 	double speedLimit = nan("");				//[m/s]
 	double speedIs = nan("");					//[m/s]*/
 	double raceTime = nan("");				//[s]
-
-	string id = "";
 };
 
 //Funktionsdeklaration Gruppe Ausgabe
