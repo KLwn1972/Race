@@ -29,6 +29,8 @@ public:
 //Funktionsdeklaration Gruppe Ausgabe
 string timeConversion(double, time_t);
 void insertElementKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
+void insertColorDefinitionKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
+string generate_color_code(double, double, double);
 XMLError output_kml(vector<node>, string);
 void add_node_gpx(tinyxml2::XMLDocument*, node*, XMLElement*, time_t);
 XMLError output_gpx(vector<node>, string);
