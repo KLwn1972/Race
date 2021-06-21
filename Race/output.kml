@@ -1,0 +1,27 @@
+<kml>
+    <Document>
+        <name>Name</name>
+        <description>description</description>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Style id="orange">
+            <LineStyle>
+                <color>ff00aaff</color>
+                <width>12</width>
+            </LineStyle>
+        </Style>
+        <Placemark>
+            <visibility>1</visibility>
+            <open>0</open>
+            <styleUrl>#orange</styleUrl>
+            <name>Beispieltext</name>
+            <description>Track no. 1</description>
+            <LineString>
+                <extrude>true</extrude>
+                <tessellate>true</tessellate>
+                <altitudeMode>clampToGround</altitudeMode>
+                <coordinates>6.988916,50.374619,1.234560 6.988916,50.374619,1.234560 6.988916,50.374619,1.234560 6.988916,50.374619,1.234560 6.988916,50.374619,1.234560 6.988916,50.374619,1.234560 6.988916,50.374619,1.234560 6.988916,50.374619,1.234560 6.988916,50.374619,1.234560 </coordinates>
+            </LineString>
+        </Placemark>
+    </Document>
+</kml>

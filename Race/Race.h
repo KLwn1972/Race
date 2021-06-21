@@ -3,10 +3,13 @@
 #define DEBUG
 
 #include <iostream>
+#include <iomanip>
 #include <tchar.h>
 #include <urlmon.h>
 #include <vector>
-#include "NASA_ElevationCalculator.h"
+#include "NASA_src/NASA_DataFileHandler.h"
+#include "NASA_src/NASA_ElevationCalculator.h"
+#include "NASA_src/NASA_GeoCoordConversion.h"
 #include "tinyxml2.h"
 #include <string>
 #pragma comment (lib, "Urlmon.lib")
