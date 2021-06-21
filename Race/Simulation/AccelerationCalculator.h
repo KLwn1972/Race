@@ -15,8 +15,8 @@ namespace Simulation
 	private:
 		double calcAirResistance(double velocity);
 		double calcRollingResistance(double velocity);
-		double calcAccelerationResistance(double velocity);
 		double calcGradientResistance(double gradient);
+		double calcEffectiveWheelForceLong(double gradient, double velocity);
 		double calcAdhesionLimit(double gradient, double velocity);
 
 		Vehicle& vehicle;
