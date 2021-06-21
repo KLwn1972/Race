@@ -21,6 +21,7 @@ int main()
 
 	string route = "38566";
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
+	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
 	int retval = OSM_Nord->GetNodesFromOSM();
 
 	// Hier macht Datenaufbereitung weiter
