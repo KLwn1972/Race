@@ -2,20 +2,10 @@
 #include <tuple>
 #include <cmath>
 #include <vector>
+#include "DataMap2D.h"
 
 namespace Simulation
 {
-	class FrictionEntry {
-	public:
-		double VehicleSpeed = nan("");
-		double FrictionCoefficient = nan("");
-		FrictionEntry(double VehicleSpeed, double FrictionCoefficient)
-		{
-			this->VehicleSpeed = VehicleSpeed;
-			this->FrictionCoefficient = FrictionCoefficient;
-		}
-	};
-
 	class SimulationEnvironment
 	{
 	public:
@@ -36,7 +26,7 @@ namespace Simulation
 		double Airpressure = nan("");
 		double Windspeed = nan("");
 		double Winddirection = nan(""); //[°];
-		std::vector<FrictionEntry> FrictionTable;
+		DataMap2D FrictionTable; //VehicleSpeed[m/s], µ [-]
 	};
 
 	//Conversions
