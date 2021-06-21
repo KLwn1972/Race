@@ -14,6 +14,9 @@ public:
 	void DataProcessing();
 	vector <double> Get1Coordinate(int);
 	double GetDistanceMeters(const double&, const double&, const double&, const double&);
+
+private:
+	const double MaxDistance = 1.0;
 };
 
 class SplineDatAuf:public CalcDatAuf {
