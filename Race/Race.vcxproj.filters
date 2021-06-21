@@ -63,6 +63,15 @@
     <ClCompile Include="Ausgabe-Visualisierung.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="NASA_GeoCoordConversion.cpp">
+      <Filter>Quelldateien\NASA</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_ElevationCalculator.cpp">
+      <Filter>Quelldateien\NASA</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_ElevationDataDownloader.cpp">
+      <Filter>Quelldateien\NASA</Filter>
+    </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
       <Filter>Quelldateien\External Libraries</Filter>
     </ClCompile>
@@ -70,13 +79,13 @@
       <Filter>Quelldateien\External Libraries</Filter>
     </ClCompile>
     <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp">
-      <Filter>Quelldateien\NASA</Filter>
+      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp">
-      <Filter>Quelldateien\NASA</Filter>
+      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="NASA_src\NASA_GeoCoordConversion.cpp">
-      <Filter>Quelldateien\NASA</Filter>
+      <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,17 +119,14 @@
     <ClInclude Include="Simulation\SimulationNode.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="tinyxml2.h">
+    <ClInclude Include="NASA_src\NASA_DataFileHandler.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NASA_src\NASA_ElevationCalculator.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="NASA_src\NASA_GeoCoordConversion.h">
-      <Filter>Headerdateien\NASA</Filter>
-    </ClInclude>
-    <ClInclude Include="NASA_src\NASA_DataFileHandler.h">
-      <Filter>Headerdateien\NASA</Filter>
-    </ClInclude>
-    <ClInclude Include="NASA_src\NASA_ElevationCalculator.h">
-      <Filter>Headerdateien\NASA</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
