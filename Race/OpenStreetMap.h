@@ -1,5 +1,6 @@
 #pragma once
 #include "Race.h"
+#include "cJSON.h"
 
 using namespace std;
 
@@ -15,12 +16,13 @@ private:
 	const string LinkPart = "https://www.openstreetmap.org/api/0.6";
 	const string FileExtension = ".json";
 	string LocalPath = "";
-	string BuidLink(string type, string name);
-	string BuidFileName(string name);
+	string BuildLink(string type, string name);
+	string BuildFileName(string name);
 	wchar_t* StrToTchar(string in);
 	HRESULT DownloadFile(string URL, string OutFile);
-	vector<string> GetWays(string relation, string FileName);
-	vector<string> GetNodes(string way, string FileName);
-	vector<double> GetCoordinates(string node, string FileName);
+	cJSON* JSON_ReadFileToStructur(string FileName);
+	vector<string> GetWays(string FileName);
+	vector<string> GetNodes(string FileName);
+	vector<double> GetCoordinates(string FileName);
 };
 

@@ -2,36 +2,26 @@
 
 #include <vector>
 #include <map>
+#include "DataMap2D.h"
 using namespace std;
 
 namespace Simulation
 {
-	class ShiftEntry
-	{
-		double EngineSpeed = nan("");
-		double PedalPosition = nan("");
-	};
-
 	class GearEntry
 	{
 	public:
 		double ShiftDownLimitMin = nan(""); //rpm at which driver should shift down
 		double ShiftUpLimitMax = nan(""); //rpm at which driver should shift up
-		vector<ShiftEntry> LowerShiftLimit;
-		vector<ShiftEntry> UpperShiftLimit;
+		DataMap2D LowerShiftLimit; //DataMap with engine speed [1/s], low shift pedal point
+		DataMap2D UpperShiftLimit; //DataMap with engine speed [1/s], upshift pedal point
 		double GearRatio = nan("");
+		GearEntry();
 	};
 
-	class EngineEntry
+	enum class PowerTrainTypes
 	{
-	public:
-		double EngineSpeed = nan("");
-		double Torque = nan("");
-		EngineEntry(double EngineSpeed, double Torque)
-		{
-			this->EngineSpeed = EngineSpeed;
-			this->Torque = Torque;
-		}
+		Electric = 1,
+		ICE = 0
 	};
 
 	class Vehicle
@@ -43,14 +33,19 @@ namespace Simulation
 		double DragCoefficient = nan("");
 
 		double EngineUpperRevLimit = nan(""); //rpm
-		vector<EngineEntry> EngineTorqueCurve;
+		DataMap2D* EngineTorqueCurve; //Curve with enginespeed, torque [1/s, Nm]
 		double EngineInertia = nan("");
+		double AxleInertia = nan("");
+		double WheelInertia = nan("");
 		double PowertrainEfficiency = nan("");
+
+		DataMap2D* TorqueSpeedCurve; //Curve with speed, torque [m/s, Nm]
+		PowerTrainTypes PowerTrainType = PowerTrainTypes::ICE;
 
 		double WheelWidth = nan(""); //m /0.205
 		double WheelRatioPercent = nan(""); //% width to height in Percent /75
 		double WheelSize = nan(""); //inch R16 => 16
-		//double calcDynamicWheelDiameter(double Velocity);
+		double calcDynamicWheelRadius();
 		double calcStaticWheelDiameter();
 		double RollingResistanceCoefficient = nan("");
 
@@ -61,5 +56,15 @@ namespace Simulation
 		int NumberOfGears = 0;
 		map<int, GearEntry> GearData;
 		double FinalDriveRatio = nan("");
+		double DeccelerationMax = nan("");
+
+		int getSelectedGear();
+		void setSelectedGear(int GearToSet);
+		Vehicle();
+		~Vehicle();
+	private:
+		int selectedgear = 0;
 	};
+
+	static Vehicle* ExampleElectricVehicle();
 }
