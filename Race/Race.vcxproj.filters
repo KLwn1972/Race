@@ -54,6 +54,9 @@
     <ClCompile Include="OpenStreetMap.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>Quelldateien</Filter>
+   </ClCompile> 
     <ClCompile Include="Simulation\DataMap2D.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
@@ -90,6 +93,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="OpenStreetMap.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\ImportSimulationConfig.h">
