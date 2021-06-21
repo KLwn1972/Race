@@ -6,19 +6,17 @@
 #include "Position.h"
 #include "AccelerationCalculator.h"
 #include "SimulationNode.h"
+#include "ImportSimulationConfig.h"
 
 namespace Simulation {
 	class DrivingSimulator
 	{
 	public:
-		DrivingSimulator(vector<node> input);
+		DrivingSimulator(vector<node> input, ImportSimulationConfig config);
 		~DrivingSimulator();
 
 		vector<node> RunSimulation(std::string configfile);
 	private:
-		void loadConfiguration(std::string configfile);
-		void initSimulation();
-
 		//Create a modified track which contains the simulationNodes
 		void createModifiedTrack();
 		//Map back function for the modified track

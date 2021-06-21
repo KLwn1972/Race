@@ -2,13 +2,14 @@
 #include <string>
 #include "..\Race.h"
 #include "DataMap2D.h"
+#include "ImportSimulationConfig.h"
 
 using namespace std;
 
-Simulation::DrivingSimulator::DrivingSimulator(vector<node> input)
+Simulation::DrivingSimulator::DrivingSimulator(vector<node> input, ImportSimulationConfig config)
 {
-	this->vehicle = Vehicle();
-	this->environment = SimulationEnvironment();
+	this->vehicle = Vehicle(); //TODO
+	this->environment = SimulationEnvironment(); //TODO
 	this->rawtrack = input;
 	this->accelerationcalc = new AccelerationCalculator(this->vehicle, this->environment);
 }
@@ -20,8 +21,6 @@ Simulation::DrivingSimulator::~DrivingSimulator()
 
 vector<node> Simulation::DrivingSimulator::RunSimulation(std::string configfile)
 {
-	loadConfiguration(configfile);
-
 	createModifiedTrack();
 
 	calcNewSpeedLimit();
@@ -31,15 +30,6 @@ vector<node> Simulation::DrivingSimulator::RunSimulation(std::string configfile)
 	mapModifiedToRaw();
 
 	return this->rawtrack;
-}
-
-void Simulation::DrivingSimulator::loadConfiguration(std::string configfile)
-{
-	this->accelerationcalc = new AccelerationCalculator(this->vehicle, this->environment); // Need to feed the new data to the accelerationcalculator
-}
-
-void Simulation::DrivingSimulator::initSimulation()
-{
 }
 
 void Simulation::DrivingSimulator::createModifiedTrack()

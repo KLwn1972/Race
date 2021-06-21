@@ -50,7 +50,7 @@ double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gr
 	}
 	else if (this->vehicle.PowerTrainType == PowerTrainTypes::ICE)
 	{
-		maximumTorque = 0.0; //TODO!
+		maximumTorque = 0.0; //TODO: Manual Gearbox Torque Calculation
 	}
 	double longitudalPowertrainForce = maximumTorque * this->vehicle.FinalDriveRatio * this->vehicle.PowertrainEfficiency / this->vehicle.calcDynamicWheelRadius();
 	double Adhesionlimit = this->calcAdhesionLimit(gradient, velocity);
