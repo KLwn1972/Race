@@ -99,7 +99,7 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 			this->modifiedtrack.at(i - 1).newLimit = this->modifiedtrack.at(i - 1).speedLimit;
 		}
 		else {                                                                                                                                                   //calculate the brake velocity wenn decceleration
-			double BrakeDecceleration = -10;                   //TODO: amax should be a funtion;
+			double BrakeDecceleration = this->accelerationcalc->calcDecceleration(this->modifiedtrack.at(i).newLimit,this->modifiedtrack.at(i-1),this->modifiedtrack.at(i));   //get max decceleration at current point
 			double localDistance = this->modifiedtrack.at(i).Coordinates.Distance(this->modifiedtrack.at(i - 1).Coordinates);                                              //get Distance between local point and previous point
 			double BrakeSpeed = sqrt((this->modifiedtrack.at(i).newLimit) * (this->modifiedtrack.at(i).newLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
 			this->modifiedtrack.at(i - 1).newLimit = min(BrakeSpeed, this->modifiedtrack.at(i - 1).speedLimit);                                                         //get new limit
@@ -136,7 +136,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		}
 		//case 3: decceleration
 		else {
-			double MaxLocalDecceleration = -10; // TODO: this should be a function getLocalMaxBrakeDecceleration;
+			double MaxLocalDecceleration = this->accelerationcalc->calcDecceleration(this->modifiedtrack.at(i).speedIs, this->modifiedtrack.at(i), this->modifiedtrack.at(i+1));
 			this->modifiedtrack.at(i + 1).speedIs = this->modifiedtrack.at(i + 1).newLimit;                                       // IsSpeed always equal the new limt because the effect of maximal bremsen is already considered
 			//determine the raceTime according to different situation
 			if (this->modifiedtrack.at(i).speedIs < this->modifiedtrack.at(i).newLimit) {                                         // IsSpeed at current point smaller than speed limit, hold speed till the speed limit reached  then brake with max decceleration

@@ -42,7 +42,7 @@ double Simulation::AccelerationCalculator::calcAccelerationResistance(double vel
 
 double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)
 {
-	return 0.0;
+	return vehicle.Mass * GRAVITATIONALCONSTANT * sin(gradient);
 }
 
 double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, double velocity)
