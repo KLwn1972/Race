@@ -8,8 +8,8 @@ using namespace std;
 
 Simulation::DrivingSimulator::DrivingSimulator(vector<node> input, IImportSimulationConfig& config)
 {
-	this->vehicle = config.getVehicle(); //TODO
-	this->environment = config.getEnvironment(); //TODO
+	this->vehicle = config.getVehicle();
+	this->environment = config.getEnvironment();
 	this->rawtrack = input;
 	this->accelerationcalc = new AccelerationCalculator(this->vehicle, this->environment);
 }
@@ -34,7 +34,7 @@ vector<node> Simulation::DrivingSimulator::RunSimulation()
 
 void Simulation::DrivingSimulator::createModifiedTrack()
 {
-	const size_t NumberOfInterpolationPoints = 1; //TODO
+	const size_t NumberOfInterpolationPoints = 1;
 	vector<node> newTrack = vector<node>();
 
 	node oldStepSimNode = node();
