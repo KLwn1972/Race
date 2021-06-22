@@ -17,7 +17,7 @@ namespace DatAuf {
 		void DataProcessing();
 		void InsertAdditionalNodes();
 		void CalcRadiusGradientData();
-		static double GetDistanceMeters2D(node node1, node node2);
+		double GetDistanceMeters2D(node node1, node node2);
 		void GetTestData();
 		bool isLoop();
 	private:
