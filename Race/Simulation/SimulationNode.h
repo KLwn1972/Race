@@ -7,7 +7,10 @@
 namespace Simulation
 {
 	class SimulationNode :public node {
+	public:
 		double MaxAcceleration = nan("");
+		SimulationNode();
+		SimulationNode(node input);
 	};
 }
 

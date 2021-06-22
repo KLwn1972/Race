@@ -35,12 +35,12 @@ vector<node> Simulation::DrivingSimulator::RunSimulation()
 void Simulation::DrivingSimulator::createModifiedTrack()
 {
 	const size_t NumberOfInterpolationPoints = 1;
-	vector<node> newTrack = vector<node>();
+	vector<SimulationNode> newTrack = vector<SimulationNode>();
 
-	node oldStepSimNode = node();
+	SimulationNode oldStepSimNode = SimulationNode();
 	for (size_t i = 0; i < this->rawtrack.size(); i++)
 	{
-		node currentNode = rawtrack[i];
+		SimulationNode currentNode = SimulationNode(rawtrack[i]);
 		//insert values between stepsimnode and oldstepsimnode through interpolation
 		if (i > 0)
 		{
@@ -50,7 +50,7 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 			for (int j = 1; j <= NumberOfInterpolationPoints; j++) //TODO: Check boundaries
 			{
 				double DistanceToCheck = j * DistanceBetweenPoints;
-				node interpolatedNode = node();
+				SimulationNode interpolatedNode = SimulationNode();
 				interpolatedNode.latitude = interpolateValues(0, oldStepSimNode.latitude, DistanceOldNew, currentNode.latitude, DistanceToCheck);
 				interpolatedNode.longitude = interpolateValues(0, oldStepSimNode.longitude, DistanceOldNew, currentNode.longitude, DistanceToCheck);
 				interpolatedNode.elevation = interpolateValues(0, oldStepSimNode.elevation, DistanceOldNew, currentNode.elevation, DistanceToCheck);
