@@ -70,6 +70,9 @@ SimulationEnvironment* Simulation::ExampleSimulationEnvironment()
 	result->setWinddirection(0);
 	result->setWindspeed(10);
 	result->setRollingResistanceCoefficient(0.014);
+	std::vector<double> frictiondataSpeed = { 10 * KMH2MS,50 * KMH2MS,100 * KMH2MS };
+	std::vector<double> frictiondataCoeff = { 1.15, 1.0, 0.8 };
+	result->setFrictionTable(frictiondataSpeed, frictiondataCoeff);
 
 	return result;
 }

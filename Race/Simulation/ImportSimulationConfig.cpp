@@ -1,6 +1,5 @@
 #include "ImportSimulationConfig.h"
 
-
 //using namespace std;
 Simulation::ImportSimulationConfig::ImportSimulationConfig(std::string SimulationConfigFile) {
 	std::fstream ConfigFileStream;
@@ -55,7 +54,7 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 
 }
 
-std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string){
+std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string) {
 	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
 	std::vector<double> AxisValues;
 	for (int i = 0; i < cJSON_GetArraySize(input); i++) {
