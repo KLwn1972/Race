@@ -108,7 +108,7 @@ vector<node> ExampleStraightTrack(double length)
 	for (int i = 0; i <= 1000; i++)
 	{
 		auto newnode = node();
-		newnode.distanceToNext = distance / 1000;
+		newnode.distanceToNext = distance / numberOfSteps;
 		newnode.elevation = Simulation::interpolateValues(0, startelevation, distance, endelevation, i * stepWidth);
 		newnode.latitude = Simulation::interpolateValues(0, startlat, distance, endlat, i * stepWidth);
 		newnode.longitude = Simulation::interpolateValues(0, startlong, distance, endlong, i * stepWidth);

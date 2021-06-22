@@ -99,6 +99,9 @@
     <ClCompile Include="Simulation\MiscFunctions.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\SimulationNode.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -150,6 +153,9 @@
       <Filter>Headerdateien\Simulation\SimulationConfig</Filter>
     </ClInclude>
     <ClInclude Include="Simulation\MiscFunctions.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\SimulationNode.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
