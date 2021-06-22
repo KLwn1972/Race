@@ -39,7 +39,7 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	//VehicleData
 	VehicleObject->Manufacturer = getStringFromcJSON(VehicleData, "Manufacturer");
 	VehicleObject->Model = getStringFromcJSON(VehicleData, "Model");
-	//VehicleObject->PowertrainType = getStringFromcJSON(VehicleData, "PowertrainType");
+	(getStringFromcJSON(VehicleData, "PowertrainType") == "Electric" ? VehicleObject->PowertrainType = PowerTrainTypes::Electric : VehicleObject->PowertrainType = PowerTrainTypes::ICE);
 	VehicleObject->VMaxLimited = getDoubleFromcJSON(VehicleData, "VMaxLimited");
 	VehicleObject->NumberOfGears = getDoubleFromcJSON(VehicleData, "NumberOfGears");
 	VehicleObject->EngineInertia = getDoubleFromcJSON(VehicleData, "EngineInertia [kgm2]");
