@@ -15,7 +15,7 @@ double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
 
 double Simulation::SimulationEnvironment::calcRelevantWindSpeed(double VehicleDirection)
 {
-	return this->Windspeed; //TODO: Windir
+	return this->Windspeed * cos(VehicleDirection);
 }
 
 void Simulation::SimulationEnvironment::setRollingResistanceCoefficient(double Coefficient)
