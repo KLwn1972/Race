@@ -1,7 +1,7 @@
 #pragma once
 #include "Vehicle.h"
-#include "SimulationNode.h"
 #include "SimulationEnvironment.h"
+#include "../Race.h"
 
 namespace Simulation
 {
@@ -10,8 +10,8 @@ namespace Simulation
 	public:
 		AccelerationCalculator(Vehicle& vehicle, SimulationEnvironment& environment);
 		//Calculate acceleration
-		double calcAcceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint);
-		double calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint);
+		double calcAcceleration(double velocity, node TrackPoint, node NextPoint);
+		double calcDecceleration(double velocity, node TrackPoint, node NextPoint);
 	private:
 		double calcAirResistance(double velocity);
 		double calcRollingResistance(double velocity);
@@ -21,7 +21,7 @@ namespace Simulation
 
 		Vehicle& vehicle;
 		SimulationEnvironment& environment;
-		simulationNode TrackPoint;
-		simulationNode NextPoint;
+		node TrackPoint;
+		node NextPoint;
 	};
 }
