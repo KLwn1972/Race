@@ -1,7 +1,7 @@
 #include "MiscFunctions.h"
 #include <fstream>
 #include <locale>
-
+#include "SimulationEnvironment.h"
 void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 {
 	std::ofstream exportFile;
@@ -12,7 +12,7 @@ void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 	}
 	else {
 		exportFile.imbue(std::locale("de")); //Set the locale to get commas in the exportfile
-		exportFile << "lat;" << "long;" << "elevation;" << "gradient;"<< "distance;" << "racetime;" << "speedIs;" << "speedLimit;" << "MaxAcceleration;";
+		exportFile << "lat;" << "long;" << "elevation;" << "gradient;" << "distance;" << "racetime;" << "speedIs;" << "speedLimit;" << "MaxAcceleration;";
 		exportFile << "\n";
 		double distance = 0 - input.at(0).distanceToNext;
 		for (auto& currentnode : input) {
@@ -23,8 +23,8 @@ void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 			exportFile << currentnode.gradient << ";";
 			exportFile << distance << ";";
 			exportFile << currentnode.raceTime << ";";
-			exportFile << currentnode.speedIs << ";";
-			exportFile << currentnode.speedLimit << ";";
+			exportFile << currentnode.speedIs * MS2KMH << ";";
+			exportFile << currentnode.speedLimit * MS2KMH << ";";
 			exportFile << currentnode.MaxAcceleration << ";";
 			exportFile << "\n";
 		}
@@ -32,4 +32,9 @@ void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 		cout << "\nExport finished. Please find results here: " << filename << endl;
 		return;
 	}
+}
+
+double Simulation::angleRadFromGradientVector(double gradient)
+{
+	return atan(gradient / 100);
 }
