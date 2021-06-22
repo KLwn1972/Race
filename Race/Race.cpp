@@ -20,18 +20,18 @@ int main()
 {
 	//std::cout << "Hello World!\n";
 
-	//string route = "38566";
-	//OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
-	//OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
-	//int retval = OSM_Nord->GetNodesFromOSM();
+	string route = "38566";
+	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
+	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
+	int retval = OSM_Nord->GetNodesFromOSM();
 
 	//// Hier macht Datenaufbereitung weiter
-	//if (retval == 0) {
-	//	vector<node> nodes = OSM_Nord->nodes;
-	//	ausgabe_visualisierung(nodes);
-	//}
-	//// Wenn nicht mehr benötigt wird
-	//delete OSM_Nord;
+	if (retval == 0) {
+		vector<node> nodes = OSM_Nord->nodes;
+		ausgabe_visualisierung(nodes);
+	}
+	// Wenn nicht mehr benötigt wird
+	delete OSM_Nord;
 
 	///* Da noch Sued. Eigentlich eine beliebige Route
 	//route = "38567";
