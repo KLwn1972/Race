@@ -2,6 +2,9 @@
 
 //using namespace std;
 Simulation::ImportSimulationConfig::ImportSimulationConfig(std::string SimulationConfigFile) {
+	this->vehicle = new Vehicle();
+	this->environment = new SimulationEnvironment();
+
 	std::fstream ConfigFileStream;
 	ConfigFileStream.open(SimulationConfigFile, std::ios_base::in);
 	if (!ConfigFileStream) {
@@ -21,41 +24,24 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	cJSON* completeConfigFile = cJSON_Parse(ConfigFileAsString.c_str());
 	cJSON* Environment = cJSON_GetObjectItemCaseSensitive(completeConfigFile, "Environment");
 	Environment = Environment->child;
-
-	Vehicle* VehicleObject = new Vehicle;
-	SimulationEnvironment* EnvironmentObject = new SimulationEnvironment;
-
-	EnvironmentObject->setAirtemperatureCelsius(getDoubleFromcJSON(Environment, "Airtemperature [C]"));
-	EnvironmentObject->setWindspeed(getDoubleFromcJSON(Environment, "Windspeed [km/h]"));
-	EnvironmentObject->setRollingResistanceCoefficient(getDoubleFromcJSON(Environment, "RollingResistanceCoefficient [-]"));
-	EnvironmentObject->setFrictionTable(getVectorFromcJSON(Environment, "FrictionCoefficient_v_CUR [km/h]"), getVectorFromcJSON(Environment, "FrictionCoefficient_fac_CUR [-]"));
-	/*
-	cJSON* FrictionCoefficient_v_CUR = cJSON_GetObjectItemCaseSensitive(Environment, "FrictionCoefficient_v_CUR [-]");
-	for (int i = 0; i < cJSON_GetArraySize(FrictionCoefficient_v_CUR);i++) {
-		cJSON* CUR_Element = cJSON_GetArrayItem(FrictionCoefficient_v_CUR, i);
-		cout << CUR_Element->valuedouble << endl;
-	}
-	cJSON* FrictionCoefficient_fac_CUR = cJSON_GetObjectItemCaseSensitive(Environment, "FrictionCoefficient_fac_CUR [-]");
-	for (int i = 0; i < cJSON_GetArraySize(FrictionCoefficient_fac_CUR); i++) {
-		cJSON* CUR_Element = cJSON_GetArrayItem(FrictionCoefficient_fac_CUR, i);
-		cout << CUR_Element->valuedouble << endl;
-	}
-	*/
-
-	//cJSON* FrictionCoefficient_v_CUR = cJSON_GetObjectItemCaseSensitive(Environment, "FrictionCoefficient_v_CUR [km/h]");
-	//cJSON* FrictionCoefficient_fac_CUR = cJSON_GetObjectItemCaseSensitive(Environment, "FrictionCoefficient_fac_CUR [-]");
-	//for (int i = 0; i < min(cJSON_GetArraySize(FrictionCoefficient_v_CUR), cJSON_GetArraySize(FrictionCoefficient_fac_CUR)); i++) {
-	//	cJSON* CUR_Element_x = cJSON_GetArrayItem(FrictionCoefficient_v_CUR, i);
-	//	cJSON* CUR_Element_y = cJSON_GetArrayItem(FrictionCoefficient_fac_CUR, i);
-	//	cout << CUR_Element_x->valuedouble << endl;
-	//	cout << CUR_Element_y->valuedouble << endl;
-	//}
-
-	//VehicleData
 	cJSON* VehicleData = cJSON_GetObjectItemCaseSensitive(completeConfigFile, "VehicleData");
 	VehicleData = VehicleData->child;
+
+	Vehicle* VehicleObject = getVehicle();
+	SimulationEnvironment* EnvironmentObject = getEnvironment();
+
+	//EnvironmentData
+	EnvironmentObject->setAirtemperatureCelsius(getDoubleFromcJSON(Environment, "Airtemperature [C]"));
+	EnvironmentObject->setWindspeed(getDoubleFromcJSON(Environment, "Windspeed [km/h]") * KMH2MS);
+	EnvironmentObject->setRollingResistanceCoefficient(getDoubleFromcJSON(Environment, "RollingResistanceCoefficient [-]"));
+	EnvironmentObject->setFrictionTable(getVectorFromcJSON(Environment, "FrictionCoefficient_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(Environment, "FrictionCoefficient_fac_CUR [-]"));
+
+	//VehicleData
 	VehicleObject->Manufacturer = getStringFromcJSON(VehicleData, "Manufacturer");
 	VehicleObject->Model = getStringFromcJSON(VehicleData, "Model");
+	(getStringFromcJSON(VehicleData, "PowertrainType") == "Electric" ? VehicleObject->PowertrainType = PowerTrainTypes::Electric : VehicleObject->PowertrainType = PowerTrainTypes::ICE);
+	VehicleObject->VMaxLimited = getDoubleFromcJSON(VehicleData, "VMaxLimited");
+	VehicleObject->NumberOfGears = getDoubleFromcJSON(VehicleData, "NumberOfGears");
 	VehicleObject->EngineInertia = getDoubleFromcJSON(VehicleData, "EngineInertia [kgm2]");
 	VehicleObject->AxleInertia = getDoubleFromcJSON(VehicleData, "AxleInertia [kgm2]");
 	VehicleObject->Mass = getDoubleFromcJSON(VehicleData, "Mass [kg]");
@@ -64,38 +50,33 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	VehicleObject->FinalDriveRatio = getDoubleFromcJSON(VehicleData, "FinalDriveRatio [-]");
 	VehicleObject->PowertrainEfficiency = getDoubleFromcJSON(VehicleData, "PowertrainEfficiency [-]");
 	VehicleObject->DeccelerationMax = getDoubleFromcJSON(VehicleData, "DeccelerationMax [m/s2]");
-	VehicleObject->WheelWidth = getDoubleFromcJSON(VehicleData, "WheelWidth");
-	VehicleObject->WheelRatioPercent = getDoubleFromcJSON(VehicleData, "WheelRatioPercent");
-	VehicleObject->WheelSize = getDoubleFromcJSON(VehicleData, "WheelSize");
+	VehicleObject->WheelWidth = getDoubleFromcJSON(VehicleData, "WheelWidth [mm]") / 1000;
+	VehicleObject->WheelRatioPercent = getDoubleFromcJSON(VehicleData, "WheelRatioPercent [%]");
+	VehicleObject->WheelSize = getDoubleFromcJSON(VehicleData, "WheelSize [inch]") * INCH2M;
 	VehicleObject->WheelInertia = getDoubleFromcJSON(VehicleData, "WheelInertia [kgm2]");
-	VehicleObject->TorqueSpeedCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "EngineTorque_v_CUR [km/h]"), getVectorFromcJSON(VehicleData, "EngineTorque_trq_CUR [Nm]"));
+	VehicleObject->VehiclespeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "VehiclespeedTorque_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(VehicleData, "VehiclespeedTorque_trq_CUR [Nm]"));
+	VehicleObject->EnginespeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "EnginespeedTorque_n_CUR [1/min]", RPM2HZ), getVectorFromcJSON(VehicleData, "EnginespeedTorque_trq_CUR [Nm]"));
 
-	//cJSON* EngineTorque_v_CUR = cJSON_GetObjectItemCaseSensitive(VehicleData, "EngineTorque_v_CUR [km/h]");
-	//for (int i = 0; i < cJSON_GetArraySize(EngineTorque_v_CUR); i++) {
-	//	cJSON* CUR_Element = cJSON_GetArrayItem(EngineTorque_v_CUR, i);
-	//	cout << CUR_Element->valuedouble << endl;
-	//}
-
-	//cJSON* EngineTorque_trq_CUR = cJSON_GetObjectItemCaseSensitive(VehicleData, "EngineTorque_trq_CUR [N]");
-	//for (int i = 0; i < cJSON_GetArraySize(EngineTorque_trq_CUR); i++) {
-	//	cJSON* CUR_Element = cJSON_GetArrayItem(EngineTorque_trq_CUR, i);
-	//	cout << CUR_Element->valuedouble << endl;
-	//}
-
-	//cJSON* EngineTorque_v_CUR = cJSON_GetObjectItemCaseSensitive(VehicleData, "EngineTorque_v_CUR [km/h]");
-	//cJSON* EngineTorque_trq_CUR = cJSON_GetObjectItemCaseSensitive(VehicleData, "EngineTorque_trq_CUR [N]");
-	//for (int i = 0; i < min(cJSON_GetArraySize(EngineTorque_v_CUR), cJSON_GetArraySize(EngineTorque_trq_CUR)); i++) {
-	//	cJSON* CUR_Element_x = cJSON_GetArrayItem(EngineTorque_v_CUR, i);
-	//	cJSON* CUR_Element_y = cJSON_GetArrayItem(EngineTorque_trq_CUR, i);
-	//}
+	this->vehicle = VehicleObject;
+	this->environment = EnvironmentObject;
 }
 
-std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string) {
+std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const ConfigString) {
+	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, ConfigString);
+	std::vector<double> AxisValues;
+	for (int i = 0; i < cJSON_GetArraySize(input); i++) {
+		cJSON* CUR_Element = cJSON_GetArrayItem(input, i);
+		AxisValues.push_back(CUR_Element->valuedouble);
+	}
+	return AxisValues;
+}
+
+std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string, const double ConversionFacto) {
 	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
 	std::vector<double> AxisValues;
 	for (int i = 0; i < cJSON_GetArraySize(input); i++) {
 		cJSON* CUR_Element = cJSON_GetArrayItem(input, i);
-		AxisValues[i] = CUR_Element->valuedouble;
+		AxisValues.push_back(CUR_Element->valuedouble * ConversionFacto);
 	}
 	return AxisValues;
 }
@@ -116,10 +97,10 @@ Simulation::ImportSimulationConfig::~ImportSimulationConfig()
 
 Simulation::Vehicle* Simulation::ImportSimulationConfig::getVehicle()
 {
-	return new Vehicle();
+	return this->vehicle;
 }
 
 Simulation::SimulationEnvironment* Simulation::ImportSimulationConfig::getEnvironment()
 {
-	return new SimulationEnvironment();
+	return this->environment;
 }

@@ -7,22 +7,29 @@
 		"FrictionCoefficient_fac_CUR [-]": [1.15, 1.1, 1.05, 1]
 	}],
 
-	"VehicleData": [{
-		"Manufacturer": "Tesla",
-		"Model": "Model S",
-		"EngineTorque_v_CUR [km/h]": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250],
-		"EngineTorque_trq_CUR [Nm]": [1140, 1140, 1140, 1140, 1140, 1140, 1090, 1040, 990, 940, 890, 840, 790, 740, 690, 640, 590, 540, 490, 440, 390, 340, 290, 240, 190, 140],
-		"EngineInertia [kgm2]": 0.19,
-		"AxleInertia [kgm2]": 0.07,
-		"Mass [kg]": 2300,
-		"FrontalArea [m2]": 2.34,
-		"DragCoefficient(cw) [-]": 0.24,
-		"FinalDriveRatio [-]": 9.1,
-		"PowertrainEfficiency [-]": 0.95,
-		"DeccelerationMax [m/s2]": 10.5,
-		"WheelWidth [mm]": 245,
-		"WheelRatioPercent [%]": 35,
-		"WheelSize [inch]": 21,
-		"WheelInertia [kgm2]": 1.0947
-	}]
+	"VehicleData": [
+		{
+			"Manufacturer": "Tesla",
+			"Model": "Model S",
+			"PowertrainType": "Electric",
+			"VMaxLimited": 261,
+			"NumberOfGears": 1,
+			"VehiclespeedTorque_v_CUR [km/h]": [ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250 ],
+			"VehiclespeedTorque_trq_CUR [Nm]": [ 1140, 1140, 1140, 1140, 1140, 1140, 1090, 1040, 990, 940, 890, 840, 790, 740, 690, 640, 590, 540, 490, 440, 390, 340, 290, 240, 190, 140 ],
+			"EnginespeedTorque_n_CUR [1/min]": [ 10],
+			"EnginespeedTorque_trq_CUR [Nm]": [ 1140],
+			"EngineInertia [kgm2]": 0.19,
+			"AxleInertia [kgm2]": 0.07,
+			"Mass [kg]": 2300,
+			"FrontalArea [m2]": 2.34,
+			"DragCoefficient(cw) [-]": 0.24,
+			"FinalDriveRatio [-]": 9.1,
+			"PowertrainEfficiency [-]": 0.95,
+			"DeccelerationMax [m/s2]": 10.5,
+			"WheelWidth [mm]": 245,
+			"WheelRatioPercent [%]": 35,
+			"WheelSize [inch]": 21,
+			"WheelInertia [kgm2]": 1.0947
+		}
+	]
 }

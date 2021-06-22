@@ -10,33 +10,6 @@
 
 namespace Simulation
 {
-	class SimulationEnvironment
-	{
-	public:
-		double calcAirPressure(double height);
-		double calcAirTemperatureInKelvin();
-		double calcRelevantWindSpeed(double VehicleDirection); //Vehicledirection in [°]
-		double calcFrictionCoefficient(double Velocity);
-		double calcAirDensity(double height);
-		double getRollingResistanceCoefficient();
-
-		void setAirtemperatureCelsius(double Airtemperature);
-		void setRollingResistanceCoefficient(double RoadResistanceCoefficient);
-
-		void setAirpressure(double Airpressure);
-		void setWindspeed(double Windspeed);
-		void setWinddirection(double Winddirection);
-		void setFrictionTable(std::vector<double>, std::vector<double>);
-
-	private:
-		double Airtemperature = nan("");
-		double Airpressure = nan("");
-		double Windspeed = nan("");
-		double Winddirection = nan(""); //[°];
-		double RollingResistanceCoefficient = nan("");
-		DataMap2D FrictionTable; //VehicleSpeed[m/s], µ [-]
-	};
-
 	//Conversions
 	const double GRAVITATIONALCONSTANT = 9.81;
 	const double GASCONSTANT = 287.0529;
@@ -59,7 +32,37 @@ namespace Simulation
 
 	static const double PI = atan(1) * 4;
 	const std::string INTERPOLATEDIDENT = std::string("INTERPOLATEDIDENT");
-	//
+
+	const double TEMPERATUREGRADIENT = 0.0065;
+
+	class SimulationEnvironment
+	{
+	public:
+		double calcAirPressure(double height);
+		double calcAirTemperatureInKelvin();
+		double calcRelevantWindSpeed(double VehicleDirection); //Vehicledirection in [°]
+		double calcFrictionCoefficient(double Velocity);
+		double calcAirDensity(double height);
+		double getRollingResistanceCoefficient();
+
+		void setAirtemperatureCelsius(double Airtemperature);
+		void setRollingResistanceCoefficient(double RoadResistanceCoefficient);
+
+		void setAirpressure(double Airpressure);
+		void setAirpressureHeight(double PressureHeight);
+		void setWindspeed(double Windspeed);
+		void setWinddirection(double Winddirection);
+		void setFrictionTable(std::vector<double>, std::vector<double>);
+
+	private:
+		double Airtemperature = nan("");
+		double Airpressure = 1013 * MBAR2PASCAL;
+		double PressureHeight = 0.0;
+		double Windspeed = nan("");
+		double Winddirection = nan(""); //[°];
+		double RollingResistanceCoefficient = nan("");
+		DataMap2D FrictionTable; //VehicleSpeed[m/s], µ [-]
+	};
 
 	SimulationEnvironment* ExampleSimulationEnvironment();
 }

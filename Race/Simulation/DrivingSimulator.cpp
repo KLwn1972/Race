@@ -35,12 +35,12 @@ vector<node> Simulation::DrivingSimulator::RunSimulation()
 void Simulation::DrivingSimulator::createModifiedTrack()
 {
 	const size_t NumberOfInterpolationPoints = 1;
-	vector<node> newTrack = vector<node>();
+	vector<SimulationNode> newTrack = vector<SimulationNode>();
 
-	node oldStepSimNode = node();
+	SimulationNode oldStepSimNode = SimulationNode();
 	for (size_t i = 0; i < this->rawtrack.size(); i++)
 	{
-		node currentNode = rawtrack[i];
+		SimulationNode currentNode = SimulationNode(rawtrack[i]);
 		//insert values between stepsimnode and oldstepsimnode through interpolation
 		if (i > 0)
 		{
@@ -50,7 +50,7 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 			for (int j = 1; j <= NumberOfInterpolationPoints; j++) //TODO: Check boundaries
 			{
 				double DistanceToCheck = j * DistanceBetweenPoints;
-				node interpolatedNode = node();
+				SimulationNode interpolatedNode = SimulationNode();
 				interpolatedNode.latitude = interpolateValues(0, oldStepSimNode.latitude, DistanceOldNew, currentNode.latitude, DistanceToCheck);
 				interpolatedNode.longitude = interpolateValues(0, oldStepSimNode.longitude, DistanceOldNew, currentNode.longitude, DistanceToCheck);
 				interpolatedNode.elevation = interpolateValues(0, oldStepSimNode.elevation, DistanceOldNew, currentNode.elevation, DistanceToCheck);
@@ -81,9 +81,10 @@ void Simulation::DrivingSimulator::mapModifiedToRaw()
 			{
 				if (this->rawtrack.at(nodeIt).id == simNode.id)
 				{
-					node resultNode = node();
+					node resultNode = this->rawtrack.at(nodeIt);
 					resultNode.raceTime = simNode.raceTime;
 					resultNode.speedIs = simNode.speedIs;
+					result.push_back(resultNode);
 					break;
 				}
 			}
@@ -137,7 +138,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		//case 2: hold speed
 		else if (nextPos.speedLimit == currentPos.speedIs) {
 			nextPos.speedIs = nextPos.speedLimit;
-			nextPos.raceTime = localDistance / nextPos.speedIs;
+			nextPos.raceTime = currentPos.raceTime + (localDistance / nextPos.speedIs);
 		}
 		//case 3: decceleration
 		else {

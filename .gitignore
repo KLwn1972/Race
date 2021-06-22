@@ -389,3 +389,4 @@ FodyWeavers.xsd
 
 # RaceOutputs
 Race/output.kml
+Race/simulationresult.csv
