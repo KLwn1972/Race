@@ -45,9 +45,11 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 		if (i > 0)
 		{
 			double DistanceOldNew = oldStepSimNode.distanceToNext;
+			double DistanceBetweenPoints = DistanceOldNew / (NumberOfInterpolationPoints + 1);
+			newTrack.at(i - 1).distanceToNext = DistanceBetweenPoints;
 			for (int j = 1; j <= NumberOfInterpolationPoints; j++) //TODO: Check boundaries
 			{
-				double DistanceToCheck = j * DistanceOldNew / (NumberOfInterpolationPoints + 1);
+				double DistanceToCheck = j * DistanceBetweenPoints;
 				node interpolatedNode = node();
 				interpolatedNode.latitude = interpolateValues(0, oldStepSimNode.latitude, DistanceOldNew, currentNode.latitude, DistanceToCheck);
 				interpolatedNode.longitude = interpolateValues(0, oldStepSimNode.longitude, DistanceOldNew, currentNode.longitude, DistanceToCheck);
@@ -57,6 +59,7 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 				interpolatedNode.horizontalCurveRadius = interpolateValues(0, oldStepSimNode.horizontalCurveRadius, DistanceOldNew, currentNode.horizontalCurveRadius, DistanceToCheck);
 				interpolatedNode.verticalCurveRadius = interpolateValues(0, oldStepSimNode.verticalCurveRadius, DistanceOldNew, currentNode.verticalCurveRadius, DistanceToCheck);
 				interpolatedNode.id = INTERPOLATEDIDENT;
+				interpolatedNode.distanceToNext = DistanceBetweenPoints;
 				newTrack.push_back(interpolatedNode);
 			}
 		}
