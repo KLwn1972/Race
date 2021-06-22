@@ -18,14 +18,14 @@ double Simulation::SimulationEnvironment::calcRelevantWindSpeed(double VehicleDi
 	return this->Windspeed; //TODO: Windir
 }
 
-void Simulation::SimulationEnvironment::setRoadResistanceCoefficient(double RoadResistanceCoefficient)
+void Simulation::SimulationEnvironment::setRollingResistanceCoefficient(double Coefficient)
 {
-	this->RoadResistanceCoefficient = RoadResistanceCoefficient;
+	this->RollingResistanceCoefficient = Coefficient;
 }
 
-double Simulation::SimulationEnvironment::getRoadResistanceCoefficient()
+double Simulation::SimulationEnvironment::getRollingResistanceCoefficient()
 {
-	return this->RoadResistanceCoefficient;
+	return this->RollingResistanceCoefficient;
 }
 
 double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity, double Gradient)
@@ -65,6 +65,7 @@ SimulationEnvironment* Simulation::ExampleSimulationEnvironment()
 	result->setAirtemperatureCelsius(22);
 	result->setWinddirection(0);
 	result->setWindspeed(10);
+	result->setRollingResistanceCoefficient(0.014);
 
 	return result;
 }

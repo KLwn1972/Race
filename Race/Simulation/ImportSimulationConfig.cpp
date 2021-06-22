@@ -27,7 +27,7 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 
 	environment->setAirtemperatureCelsius(getDoubleFromcJSON(Environment, "Airtemperature [C]"));
 	environment->setWindspeed(getDoubleFromcJSON(Environment, "Windspeed [km/h]"));
-	environment->setRoadResistanceCoefficient(getDoubleFromcJSON(Environment, "RollingResistanceCoefficient [-]"));
+	environment->setRollingResistanceCoefficient(getDoubleFromcJSON(Environment, "RollingResistanceCoefficient [-]"));
 
 	cJSON* FrictionCoefficient_v_CUR = cJSON_GetObjectItemCaseSensitive(Environment, "FrictionCoefficient_v_CUR [-]");
 	for (int i = 0; i < cJSON_GetArraySize(FrictionCoefficient_v_CUR);i++) {

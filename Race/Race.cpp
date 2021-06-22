@@ -56,6 +56,7 @@ int main()
 	//Fahrphysik
 	auto track = ExampleStraightTrack(0);
 	string SimulationConfigFile = "SimulationConfig.json";
+	track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
 	auto SimulationConfig = Simulation::MockSimulationConfig();
 	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
 	vector<node> result = Drivingsim.RunSimulation();

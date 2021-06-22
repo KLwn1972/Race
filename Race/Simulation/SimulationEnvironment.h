@@ -17,10 +17,10 @@ namespace Simulation
 		double calcRelevantWindSpeed(double VehicleDirection); //Vehicledirection in [°]
 		double calcFrictionCoefficient(double Velocity, double Gradient);
 		double calcAirDensity(double height);
-		double getRoadResistanceCoefficient();
+		double getRollingResistanceCoefficient();
 
 		void setAirtemperatureCelsius(double Airtemperature);
-		void setRoadResistanceCoefficient(double RoadResistanceCoefficient);
+		void setRollingResistanceCoefficient(double RoadResistanceCoefficient);
 
 		void setAirpressure(double Airpressure);
 		void setWindspeed(double Windspeed);
@@ -31,7 +31,7 @@ namespace Simulation
 		double Airpressure = nan("");
 		double Windspeed = nan("");
 		double Winddirection = nan(""); //[°];
-		double RoadResistanceCoefficient = nan("");
+		double RollingResistanceCoefficient = nan("");
 		DataMap2D FrictionTable; //VehicleSpeed[m/s], µ [-]
 	};
 

@@ -64,6 +64,7 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	result->WheelWidth = 205;
 	result->WheelRatioPercent = 75;
 	result->WheelSize = 16;
+	result->WheelInertia = 0.35;
 
 	result->RollingResistanceCoefficient = 0.02;
 	result->VMaxElectric = 250 * KMH2MS;

@@ -35,8 +35,8 @@ namespace Simulation {
 
 		vector<node> rawtrack;
 		vector<node> modifiedtrack; //Switch to normal nodes
-		Simulation::Vehicle vehicle;
-		Simulation::SimulationEnvironment environment;
+		Simulation::Vehicle* vehicle;
+		Simulation::SimulationEnvironment* environment;
 		AccelerationCalculator* accelerationcalc;
 		node TrackPoint;
 		node NextPoint;

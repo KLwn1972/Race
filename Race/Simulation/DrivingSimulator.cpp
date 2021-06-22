@@ -8,8 +8,8 @@ using namespace std;
 
 Simulation::DrivingSimulator::DrivingSimulator(vector<node> input, IImportSimulationConfig& config)
 {
-	this->vehicle = Vehicle(); //TODO
-	this->environment = SimulationEnvironment(); //TODO
+	this->vehicle = config.getVehicle(); //TODO
+	this->environment = config.getEnvironment(); //TODO
 	this->rawtrack = input;
 	this->accelerationcalc = new AccelerationCalculator(this->vehicle, this->environment);
 }

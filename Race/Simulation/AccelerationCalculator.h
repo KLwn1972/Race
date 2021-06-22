@@ -8,7 +8,7 @@ namespace Simulation
 	class AccelerationCalculator
 	{
 	public:
-		AccelerationCalculator(Vehicle& vehicle, SimulationEnvironment& environment);
+		AccelerationCalculator(Vehicle* vehicle, SimulationEnvironment* environment);
 		//Calculate acceleration
 		double calcAcceleration(double velocity, node TrackPoint, node NextPoint);
 		double calcDecceleration(double velocity, node TrackPoint, node NextPoint);
@@ -19,8 +19,8 @@ namespace Simulation
 		double calcEffectiveWheelForceLong(double gradient, double velocity);
 		double calcAdhesionLimit(double gradient, double velocity);
 
-		Vehicle& vehicle;
-		SimulationEnvironment& environment;
+		Vehicle* vehicle;
+		SimulationEnvironment* environment;
 		node TrackPoint;
 		node NextPoint;
 	};
