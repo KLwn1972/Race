@@ -24,6 +24,7 @@ namespace Simulation {
 		double getDoubleFromcJSON(cJSON*, const char* const string);
 		string getStringFromcJSON(cJSON*, const char* const string);
 		std::vector<double> getVectorFromcJSON(cJSON* data, const char* const string);
+		std::vector<double> getVelocityVectorFromcJSON(cJSON* data, const char* const string);
 		~ImportSimulationConfig();
 
 	private:
