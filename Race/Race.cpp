@@ -72,7 +72,9 @@ int main()
 	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
 	SollFahrt->setEnvironment(environment);
 	SollFahrt->setVehicle(electricvehicle);
-	SollFahrt->V_max();
+	//SollFahrt->V_max();
+	vector<node> Strecke = ExampleStraightTrack(0);
+	SollFahrt->SpeedLimit_route(Strecke);
 	return 0;
 }
 
@@ -83,7 +85,7 @@ vector<node> ExampleTrack()
 	vector<double> latitude = { 50.33409, 50.34831, 50.360358, 50.376866, 50.373581, 50.371774, 50.374539, 50.372267, 50.375361, 50.380836, 50.378399, 50.376561, 50.37771, 50.374562, 50.371769, 50.367115, 50.362049, 50.358109, 50.350138, 50.34581, 50.341153, 50.337241, 50.33409 };
 	vector<double> elevation = { 500, 333.3333333, 222.2222222, 148.1481481, 98.7654321, 65.8436214, 98.7654321, 148.1481481, 222.2222222, 333.3333333, 500, 750, 500, 333.3333333, 222.2222222, 148.1481481, 98.7654321, 65.8436214, 98.7654321, 148.1481481, 222.2222222, 333.3333333, 500 };
 
-	//TODO: Create vector from this
+	//TODO: Create track from data
 	return vector<node>();
 }
 
@@ -100,20 +102,20 @@ vector<node> ExampleStraightTrack(double length)
 	double distance = 3245.0;
 
 	auto result = vector<node>();
-	double numberOfSteps = 1000;
+	double numberOfSteps = 5;
 	double stepWidth = distance / numberOfSteps;
-	for (int i = 0; i <= 1000; i++)
+	for (int i = 0; i <= numberOfSteps; i++)
 	{
 		auto newnode = node();
-		newnode.distanceToNext = distance / 1000;
+		newnode.distanceToNext = distance / numberOfSteps;
 		newnode.elevation = Simulation::interpolateValues(0, startelevation, distance, endelevation, i * stepWidth);
 		newnode.latitude = Simulation::interpolateValues(0, startlat, distance, endlat, i * stepWidth);
 		newnode.longitude = Simulation::interpolateValues(0, startlong, distance, endlong, i * stepWidth);
 		newnode.gradient = ((endelevation - startelevation) / distance) * 100;
 		newnode.speedLimit = 200 * Simulation::KMH2MS;
-		newnode.horizontalCurveRadius = 0;
-		newnode.verticalCurveRadius = 0;
-		newnode.id = i;
+		newnode.horizontalCurveRadius = 1000000;
+		newnode.verticalCurveRadius = 1000000;
+		newnode.id = std::to_string(i);
 		result.push_back(newnode);
 	}
 	return result;
