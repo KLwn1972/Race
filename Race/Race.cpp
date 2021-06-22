@@ -18,20 +18,20 @@ using namespace std;
 
 int main()
 {
-	std::cout << "Hello World!\n";
+	//std::cout << "Hello World!\n";
 
-	string route = "38566";
-	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
-	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
-	int retval = OSM_Nord->GetNodesFromOSM();
+	//string route = "38566";
+	//OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
+	//OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
+	//int retval = OSM_Nord->GetNodesFromOSM();
 
-	// Hier macht Datenaufbereitung weiter
-	if (retval == 0) {
-		vector<node> nodes = OSM_Nord->nodes;
-		ausgabe_visualisierung(nodes);
-	}
-	// Wenn nicht mehr benötigt wird
-	delete OSM_Nord;
+	//// Hier macht Datenaufbereitung weiter
+	//if (retval == 0) {
+	//	vector<node> nodes = OSM_Nord->nodes;
+	//	ausgabe_visualisierung(nodes);
+	//}
+	//// Wenn nicht mehr benötigt wird
+	//delete OSM_Nord;
 
 	///* Da noch Sued. Eigentlich eine beliebige Route
 	//route = "38567";
@@ -42,20 +42,21 @@ int main()
 	//*/
 
 	//NASA
-	double long_stuttgart = 9.206802;
-	double lat_stuttgart = 48.742211;
-	ElevationCalculator calc;
-	cout.setf(ios::fixed, ios::floatfield);
-	cout.precision(6);
-	cout << calc.getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
-	cout << GeoCoordConversion::getGrad_From_WGS84Decimal(long_stuttgart) << endl;
-	cout << setw(20) << GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
-	cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
-	cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
+	//double long_stuttgart = 9.206802;
+	//double lat_stuttgart = 48.742211;
+	//ElevationCalculator calc;
+	//cout.setf(ios::fixed, ios::floatfield);
+	//cout.precision(6);
+	//cout << calc.getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
+	//cout << GeoCoordConversion::getGrad_From_WGS84Decimal(long_stuttgart) << endl;
+	//cout << setw(20) << GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
+	//cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
+	//cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
 
 	//Fahrphysik
 	auto track = ExampleStraightTrack(0);
 	string SimulationConfigFile = "SimulationConfig.json";
+	track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
 	auto SimulationConfig = Simulation::MockSimulationConfig();
 	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
 	vector<node> result = Drivingsim.RunSimulation();
@@ -83,7 +84,7 @@ vector<node> ExampleTrack()
 	vector<double> latitude = { 50.33409, 50.34831, 50.360358, 50.376866, 50.373581, 50.371774, 50.374539, 50.372267, 50.375361, 50.380836, 50.378399, 50.376561, 50.37771, 50.374562, 50.371769, 50.367115, 50.362049, 50.358109, 50.350138, 50.34581, 50.341153, 50.337241, 50.33409 };
 	vector<double> elevation = { 500, 333.3333333, 222.2222222, 148.1481481, 98.7654321, 65.8436214, 98.7654321, 148.1481481, 222.2222222, 333.3333333, 500, 750, 500, 333.3333333, 222.2222222, 148.1481481, 98.7654321, 65.8436214, 98.7654321, 148.1481481, 222.2222222, 333.3333333, 500 };
 
-	//TODO: Create vector from this
+	//TODO: Create track from data
 	return vector<node>();
 }
 
@@ -111,9 +112,9 @@ vector<node> ExampleStraightTrack(double length)
 		newnode.longitude = Simulation::interpolateValues(0, startlong, distance, endlong, i * stepWidth);
 		newnode.gradient = ((endelevation - startelevation) / distance) * 100;
 		newnode.speedLimit = 200 * Simulation::KMH2MS;
-		newnode.horizontalCurveRadius = 0;
-		newnode.verticalCurveRadius = 0;
-		newnode.id = i;
+		newnode.horizontalCurveRadius = INFINITY;
+		newnode.verticalCurveRadius = INFINITY;
+		newnode.id = std::to_string(i);
 		result.push_back(newnode);
 	}
 	return result;

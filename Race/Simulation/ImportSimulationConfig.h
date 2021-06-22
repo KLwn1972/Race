@@ -7,9 +7,11 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <vector>
 #include "SimulationEnvironment.h"
 #include "Vehicle.h"
 #include "IImportSimulationConfig.h"
+#include "DataMap2D.h"
 
 namespace Simulation {
 	class ImportSimulationConfig : public IImportSimulationConfig
@@ -21,6 +23,7 @@ namespace Simulation {
 		void saveSimulationConfig(std::string ConfigFileAsString);
 		double getDoubleFromcJSON(cJSON*, const char* const string);
 		string getStringFromcJSON(cJSON*, const char* const string);
+		std::vector<double> getVectorFromcJSON(cJSON* data, const char* const string);
 		~ImportSimulationConfig();
 
 	private:

@@ -1,17 +1,17 @@
 #pragma once
 #include "Vehicle.h"
-#include "SimulationNode.h"
 #include "SimulationEnvironment.h"
+#include "../Race.h"
 
 namespace Simulation
 {
 	class AccelerationCalculator
 	{
 	public:
-		AccelerationCalculator(Vehicle& vehicle, SimulationEnvironment& environment);
+		AccelerationCalculator(Vehicle* vehicle, SimulationEnvironment* environment);
 		//Calculate acceleration
-		double calcAcceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint);
-		double calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint);
+		double calcAcceleration(double velocity, node TrackPoint, node NextPoint);
+		double calcDecceleration(double velocity, node TrackPoint, node NextPoint);
 	private:
 		double calcAirResistance(double velocity);
 		double calcRollingResistance(double velocity);
@@ -19,9 +19,9 @@ namespace Simulation
 		double calcEffectiveWheelForceLong(double gradient, double velocity);
 		double calcAdhesionLimit(double gradient, double velocity);
 
-		Vehicle& vehicle;
-		SimulationEnvironment& environment;
-		simulationNode TrackPoint;
-		simulationNode NextPoint;
+		Vehicle* vehicle;
+		SimulationEnvironment* environment;
+		node TrackPoint;
+		node NextPoint;
 	};
 }

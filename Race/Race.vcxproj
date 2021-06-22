@@ -152,7 +152,6 @@
     <ClCompile Include="Simulation\IImportSimulationConfig.cpp" />
     <ClCompile Include="Simulation\ImportSimulationConfig.cpp" />
     <ClCompile Include="Simulation\MockSimulationConfig.cpp" />
-    <ClCompile Include="Simulation\Position.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
     <ClCompile Include="Simulation\Vehicle.cpp" />
     <ClCompile Include="Soll_Fahrtbestimmung.cpp" />
@@ -170,9 +169,7 @@
     <ClInclude Include="Simulation\IImportSimulationConfig.h" />
     <ClInclude Include="Simulation\ImportSimulationConfig.h" />
     <ClInclude Include="Simulation\MockSimulationConfig.h" />
-    <ClInclude Include="Simulation\Position.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
-    <ClInclude Include="Simulation\SimulationNode.h" />
     <ClInclude Include="Simulation\Vehicle.h" />
     <ClInclude Include="Soll_Fahrtbestimmung.h" />
     <ClInclude Include="tinyxml2.h" />
