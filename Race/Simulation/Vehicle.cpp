@@ -24,7 +24,7 @@ void Simulation::Vehicle::setSelectedGear(int GearToSet)
 
 Simulation::Vehicle::Vehicle()
 {
-	this->EngineTorqueCurve = new DataMap2D();
+	this->EnginespeedTorqueCurve = new DataMap2D();
 	this->VehiclespeedTorqueCurve = new DataMap2D();
 }
 
@@ -32,8 +32,8 @@ Simulation::Vehicle::~Vehicle()
 {
 	if (this->VehiclespeedTorqueCurve != nullptr)
 		delete this->VehiclespeedTorqueCurve;
-	if (this->EngineTorqueCurve != nullptr)
-		delete this->EngineTorqueCurve;
+	if (this->EnginespeedTorqueCurve != nullptr)
+		delete this->EnginespeedTorqueCurve;
 }
 
 double Simulation::Vehicle::calcDynamicWheelRadius()
@@ -54,9 +54,9 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	result->AxleInertia = 0.07;
 	vector<double> EngineSpeeds = vector<double>{ 1000 * RPM2HZ,2000 * RPM2HZ,3000 * RPM2HZ,4000 * RPM2HZ,5000 * RPM2HZ,6000 * RPM2HZ,7000 * RPM2HZ };
 	vector<double> EngineTorque = vector<double>{ 100,200,300,400,500,600,700 };
-	result->EngineTorqueCurve = new DataMap2D(EngineSpeeds, EngineTorque);
+	result->EnginespeedTorqueCurve = new DataMap2D(EngineSpeeds, EngineTorque);
 
-	result->PowerTrainType = PowerTrainTypes::Electric;
+	result->PowertrainType = PowerTrainTypes::Electric;
 
 	vector<double> VehicleSpeeds = vector<double>{ 10 * KMH2MS,50 * KMH2MS,150 * KMH2MS };
 	vector<double> VehicleTorque = vector<double>{ 100,300,500 };
@@ -67,8 +67,7 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	result->WheelSize = 16 * INCH2M;
 	result->WheelInertia = 0.35;
 
-	result->RollingResistanceCoefficient = 0.02;
-	result->VMaxElectric = 250 * KMH2MS;
+	result->VMaxLimited = 250 * KMH2MS;
 
 	result->DeccelerationMax = 10.5;
 

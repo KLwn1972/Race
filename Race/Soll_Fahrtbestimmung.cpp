@@ -50,16 +50,16 @@ double Soll_Fahrtbestimmung::F_quer(double V) {
 
 //Widerstandskräfte
 double Soll_Fahrtbestimmung::F_luft(double V) {
-	cout << "F_luft" << 0.5 * Airdensity_test * vehicle->DragCoefficient * vehicle->FrontalArea * V * V << "\n";
-	return 0.5 * Airdensity_test * vehicle->DragCoefficient * vehicle->FrontalArea * V * V;
+	cout << "F_luft" << 0.5 * environment->calcAirDensity(500) * vehicle->DragCoefficient * vehicle->FrontalArea * V * V << "\n";
+	return 0.5 * environment->calcAirDensity(500) * vehicle->DragCoefficient * vehicle->FrontalArea * V * V;
 }
 double Soll_Fahrtbestimmung::F_gewicht() {
 	cout << "F_gewicht" << vehicle->Mass * GRAVITATIONALCONSTANT * sin(atan(gradient / 100)) << "\n";
 	return vehicle->Mass * GRAVITATIONALCONSTANT * sin(atan(gradient / 100));
 }
 double Soll_Fahrtbestimmung::F_roll(double V) {
-	cout << "F_roll" << vehicle->RollingResistanceCoefficient * F_normal(V) << "\n";
-	return vehicle->RollingResistanceCoefficient * F_normal(V);
+	cout << "F_roll" << environment->getRollingResistanceCoefficient() * F_normal(V) << "\n";
+	return environment->getRollingResistanceCoefficient() * F_normal(V);
 }
 double Soll_Fahrtbestimmung::F_fahrwiderstand(double V) {
 	cout << "F_fahrwiderstand" << F_luft(V) + F_gewicht() + F_roll(V) << "\n";
@@ -67,21 +67,21 @@ double Soll_Fahrtbestimmung::F_fahrwiderstand(double V) {
 }
 
 double Soll_Fahrtbestimmung::F_haft_laengs(double V) {
-	cout << "F_haft_laengs" << sqrt((FrictionCoefficient_test * F_normal(V)) * (FrictionCoefficient_test * F_normal(V)) - F_quer(V) * F_quer(V)) << "\n";
-	return sqrt((FrictionCoefficient_test * F_normal(V)) * (FrictionCoefficient_test * F_normal(V)) - F_quer(V) * F_quer(V));
+	cout << "F_haft_laengs" << sqrt((environment->calcFrictionCoefficient(V) * F_normal(V)) * (environment->calcFrictionCoefficient(V) * F_normal(V)) - F_quer(V) * F_quer(V)) << "\n";
+	return sqrt((environment->calcFrictionCoefficient(V) * F_normal(V)) * (environment->calcFrictionCoefficient(V) * F_normal(V)) - F_quer(V) * F_quer(V));
 	//return sqrt(pow(FrictionCoefficient*F_normal, 2) - pow(F_quer, 2));
 }
 
 double Soll_Fahrtbestimmung::V_haft_quer_max() { //Getestet OK
-	cout << "V_haft_quer_max" << sqrt(FrictionCoefficient_test * GRAVITATIONALCONSTANT * cos(atan(gradient / 100)) / ((FrictionCoefficient_test / verticalCurveRadius) + (1 / horizontalCurveRadius))) << "\n";
-	return sqrt(FrictionCoefficient_test * GRAVITATIONALCONSTANT * cos(atan(gradient / 100)) / ((FrictionCoefficient_test / verticalCurveRadius) + (1 / horizontalCurveRadius)));
+	cout << "V_haft_quer_max" << sqrt(environment->calcFrictionCoefficient(60 * KMH2MS) * GRAVITATIONALCONSTANT * cos(atan(gradient / 100)) / ((environment->calcFrictionCoefficient(60 * KMH2MS) / verticalCurveRadius) + (1 / horizontalCurveRadius))) << "\n";
+	return sqrt(environment->calcFrictionCoefficient(60 * KMH2MS) * GRAVITATIONALCONSTANT * cos(atan(gradient / 100)) / ((environment->calcFrictionCoefficient(60 * KMH2MS) / verticalCurveRadius) + (1 / horizontalCurveRadius)));
 }
 
 double Soll_Fahrtbestimmung::F_antrieb_max(double V) {
 	cout << "F_antrieb_max" << vehicle->interpolateEngineTorqueFromVelocity(V) / (vehicle->WheelSize * INCH2M) / vehicle->FinalDriveRatio << "\n";
 	cout << "Torque at wheel" << vehicle->interpolateEngineTorqueFromVelocity(V);
 	cout << (vehicle->WheelSize * INCH2M);
-	return vehicle->interpolateEngineTorqueFromVelocity(V)/ (vehicle->WheelSize * INCH2M) / vehicle->FinalDriveRatio;
+	return vehicle->interpolateEngineTorqueFromVelocity(V) / (vehicle->WheelSize * INCH2M) / vehicle->FinalDriveRatio;
 
 	///* NOTE: EngineTorque_v_CUR MUST be sorted */
 	//double n = V / R_wheel / t_ratio * 60 / (2 * PI);
@@ -126,7 +126,7 @@ double Soll_Fahrtbestimmung::F_antrieb_max(double V) {
 double Soll_Fahrtbestimmung::V_max() {
 	//double mass = this->vehicle->Mass;
 	//this->vehicle->TorqueSpeedCurve->getY(10);
-	for (int Vel = 0; Vel <= int(vehicle->VMaxElectric); Vel++) {
+	for (int Vel = 0; Vel <= int(vehicle->VMaxLimited); Vel++) {
 		cout << "*******************Vel" << Vel << "\n";
 		//17.06.21 //funktioniert erst wenn kein Null Radius zugelassen is !!!
 		cout << "Diff_" << min(F_haft_laengs(Vel), F_antrieb_max(Vel)) - F_fahrwiderstand(Vel) << "\n";
@@ -139,8 +139,8 @@ double Soll_Fahrtbestimmung::V_max() {
 			return (Vel - 1 < 0) ? 0 : (--Vel);
 		}
 	}
-	cout << "Soll_Fahrtbestimmung speedLimit" << vehicle->VMaxElectric << "\n";
-	return vehicle->VMaxElectric;
+	cout << "Soll_Fahrtbestimmung speedLimit" << vehicle->VMaxLimited << "\n";
+	return vehicle->VMaxLimited;
 }
 
 void Soll_Fahrtbestimmung::SpeedLimit_route(vector<node>& Strecke) {  //Methode getestet OK bis auf V_max.

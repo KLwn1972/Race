@@ -49,11 +49,11 @@ double Simulation::AccelerationCalculator::calcGradientResistance(double gradien
 double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gradient, double velocity)
 {
 	double maximumTorque = 0;
-	if (this->vehicle->PowerTrainType == PowerTrainTypes::Electric)
+	if (this->vehicle->PowertrainType == PowerTrainTypes::Electric)
 	{
 		maximumTorque = this->vehicle->VehiclespeedTorqueCurve->getY(velocity);
 	}
-	else if (this->vehicle->PowerTrainType == PowerTrainTypes::ICE)
+	else if (this->vehicle->PowertrainType == PowerTrainTypes::ICE)
 	{
 		maximumTorque = 0.0; //TODO: Manual Gearbox Torque Calculation
 	}

@@ -11,6 +11,7 @@
 #include "Simulation/DrivingSimulator.h"
 #include "Simulation/MockSimulationConfig.h"
 #include "Simulation/SimulationEnvironment.h"
+#include "Simulation/MiscFunctions.h"
 
 #include "Soll_Fahrtbestimmung.h"
 
@@ -55,11 +56,12 @@ int main()
 
 	//Fahrphysik
 	auto track = ExampleStraightTrack(0);
-	string SimulationConfigFile = "SimulationConfig.json";
+	string SimulationConfigFile = "Testconfiguration/SimulationConfig.json";
 	track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
-	auto SimulationConfig = Simulation::MockSimulationConfig();
+	auto SimulationConfig = Simulation::ImportSimulationConfig(SimulationConfigFile);
 	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
 	vector<node> result = Drivingsim.RunSimulation();
+	Simulation::plotNodeVector(result, "simulationresult.csv");
 
 	vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
 	vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };

@@ -9,6 +9,7 @@
 #include "AccelerationCalculator.h"
 #include "ImportSimulationConfig.h"
 #include "IImportSimulationConfig.h"
+#include "SimulationNode.h"
 
 namespace Simulation {
 	class DrivingSimulator
@@ -34,7 +35,7 @@ namespace Simulation {
 		double calcDistanceBetweenTwoPoints(node Trackpoint, node NextPoint);
 
 		vector<node> rawtrack;
-		vector<node> modifiedtrack; //Switch to normal nodes
+		vector<SimulationNode> modifiedtrack; //Switch to normal nodes
 		Simulation::Vehicle* vehicle;
 		Simulation::SimulationEnvironment* environment;
 		AccelerationCalculator* accelerationcalc;
