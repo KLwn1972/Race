@@ -5,7 +5,7 @@ using namespace Simulation;
 
 double Simulation::Vehicle::calcStaticWheelDiameter()
 {
-	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize * INCH2M));
+	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize ));
 }
 
 int Simulation::Vehicle::getSelectedGear()
@@ -58,12 +58,13 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	result->PowerTrainType = PowerTrainTypes::Electric;
 
 	vector<double> VehicleSpeeds = vector<double>{ 10 * KMH2MS,50 * KMH2MS,150 * KMH2MS };
-	vector<double> VehicleTorque = vector<double>{ 100,200,300,400,500,600,700 };
+	vector<double> VehicleTorque = vector<double>{ 100,300,500 };
 	result->TorqueSpeedCurve = new DataMap2D(VehicleSpeeds, VehicleTorque);
 
-	result->WheelWidth = 205;
+	result->WheelWidth = 0.205;
 	result->WheelRatioPercent = 75;
-	result->WheelSize = 16;
+	result->WheelSize = 16 * INCH2M;
+	result->WheelInertia = 0.35;
 
 	result->RollingResistanceCoefficient = 0.02;
 	result->VMaxElectric = 250 * KMH2MS;
@@ -80,8 +81,4 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	newEntry.ShiftUpLimitMax = result->EngineUpperRevLimit;
 
 	return result;
-}
-
-Simulation::GearEntry::GearEntry()
-{
 }

@@ -15,7 +15,6 @@ namespace Simulation
 		DataMap2D LowerShiftLimit; //DataMap with engine speed [1/s], low shift pedal point
 		DataMap2D UpperShiftLimit; //DataMap with engine speed [1/s], upshift pedal point
 		double GearRatio = nan("");
-		GearEntry();
 	};
 
 	enum class PowerTrainTypes
@@ -29,7 +28,7 @@ namespace Simulation
 	public:
 		string Manufacturer = "";
 		string Model = "";
-		
+
 		double Mass = nan(""); //kg
 
 		double FrontalArea = nan(""); //m^2
@@ -47,7 +46,7 @@ namespace Simulation
 
 		double WheelWidth = nan(""); //m /0.205
 		double WheelRatioPercent = nan(""); //% width to height in Percent /75
-		double WheelSize = nan(""); //inch R16 => 16
+		double WheelSize = nan(""); //m     Hint: Convert inch to m on import (*INCH2M)
 		double calcDynamicWheelRadius();
 		double calcStaticWheelDiameter();
 		double RollingResistanceCoefficient = nan("");

@@ -3,7 +3,7 @@
 #include "NASA_ElevationCalculator.h"
 
 double ElevationCalculator::getElevationFromSRTM_SIRCdata(const double &longitude, const double &latitude) {
-	cout << "Long: " << longitude << "\t Lat: " << latitude << endl;
+	//cout << "Long: " << longitude << "\t Lat: " << latitude << endl;
 	return 1.23456;
 }
 

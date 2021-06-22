@@ -141,9 +141,9 @@
   <ItemGroup>
     <ClCompile Include="cJSON.c" />
     <ClCompile Include="Ausgabe-Visualisierung.cpp" />
-    <ClCompile Include="NASA_ElevationCalculator.cpp" />
-    <ClCompile Include="NASA_ElevationDataDownloader.cpp" />
-    <ClCompile Include="NASA_GeoCoordConversion.cpp" />
+    <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp" />
+    <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp" />
+    <ClCompile Include="NASA_src\NASA_GeoCoordConversion.cpp" />
     <ClCompile Include="OpenStreetMap.cpp" />
     <ClCompile Include="Race.cpp" />
     <ClCompile Include="Simulation\AccelerationCalculator.cpp" />
@@ -152,16 +152,15 @@
     <ClCompile Include="Simulation\IImportSimulationConfig.cpp" />
     <ClCompile Include="Simulation\ImportSimulationConfig.cpp" />
     <ClCompile Include="Simulation\MockSimulationConfig.cpp" />
-    <ClCompile Include="Simulation\Position.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
     <ClCompile Include="Simulation\Vehicle.cpp" />
+    <ClCompile Include="Soll_Fahrtbestimmung.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cJSON.h" />
-    <ClInclude Include="NASA_ElevationCalculator.h" />
-    <ClInclude Include="NASA_ElevationDataDownloader.h" />
-    <ClInclude Include="NASA_GeoCoordConversion.h" />
+    <ClInclude Include="NASA_src\NASA_DataFileHandler.h" />
+    <ClInclude Include="NASA_src\NASA_ElevationCalculator.h" />
+    <ClInclude Include="NASA_src\NASA_GeoCoordConversion.h" />
     <ClInclude Include="OpenStreetMap.h" />
     <ClInclude Include="Race.h" />
     <ClInclude Include="Simulation\AccelerationCalculator.h" />
@@ -170,10 +169,9 @@
     <ClInclude Include="Simulation\IImportSimulationConfig.h" />
     <ClInclude Include="Simulation\ImportSimulationConfig.h" />
     <ClInclude Include="Simulation\MockSimulationConfig.h" />
-    <ClInclude Include="Simulation\Position.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
-    <ClInclude Include="Simulation\SimulationNode.h" />
     <ClInclude Include="Simulation\Vehicle.h" />
+    <ClInclude Include="Soll_Fahrtbestimmung.h" />
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>

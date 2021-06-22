@@ -5,56 +5,58 @@
 #include "Race.h"
 #include "OpenStreetMap.h"
 
-#include "NASA_ElevationDataDownloader.h"
-#include "NASA_ElevationCalculator.h"
-#include "NASA_GeoCoordConversion.h"
-
 #include "Simulation/Vehicle.h"
 #include "Simulation/DataMap2D.h"
 #include "Simulation/ImportSimulationConfig.h"
 #include "Simulation/DrivingSimulator.h"
 #include "Simulation/MockSimulationConfig.h"
+#include "Simulation/SimulationEnvironment.h"
+
+#include "Soll_Fahrtbestimmung.h"
 
 using namespace std;
 
 int main()
 {
-	std::cout << "Hello World!\n";
+	//std::cout << "Hello World!\n";
 
-	string route = "38566";
-	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
-	int retval = OSM_Nord->GetNodesFromOSM();
+	//string route = "38566";
+	//OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
+	//OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
+	//int retval = OSM_Nord->GetNodesFromOSM();
 
-	// Hier macht Datenaufbereitung weiter
-	if (retval == 0) {
-		vector<node> nodes = OSM_Nord->nodes;
-		//output_gpx(nodes, "output.gpx"); //funktioniert noch nicht, da raceTime fehlt
-		output_kml(nodes, "output.kml");
-	}
-	// Wenn nicht mehr benötigt wird
-	delete OSM_Nord;
+	//// Hier macht Datenaufbereitung weiter
+	//if (retval == 0) {
+	//	vector<node> nodes = OSM_Nord->nodes;
+	//	ausgabe_visualisierung(nodes);
+	//}
+	//// Wenn nicht mehr benötigt wird
+	//delete OSM_Nord;
 
-	/* Da noch Sued. Eigentlich eine beliebige Route
-	route = "38567";
-	OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
-	if (OSM_Sued->GetNodesFromOSM() == 0){
-	}
-	delete OSM_Sued;
-	*/
+	///* Da noch Sued. Eigentlich eine beliebige Route
+	//route = "38567";
+	//OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
+	//if (OSM_Sued->GetNodesFromOSM() == 0){
+	//}
+	//delete OSM_Sued;
+	//*/
 
 	//NASA
-	FileDownloader testlader;
-	testlader.downloadFile("Ha", "Hi");
+	//double long_stuttgart = 9.206802;
+	//double lat_stuttgart = 48.742211;
+	//ElevationCalculator calc;
+	//cout.setf(ios::fixed, ios::floatfield);
+	//cout.precision(6);
+	//cout << calc.getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
+	//cout << GeoCoordConversion::getGrad_From_WGS84Decimal(long_stuttgart) << endl;
+	//cout << setw(20) << GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
+	//cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
+	//cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
 
 	//Fahrphysik
-	//Simulation::ExampleElectricVehicle();
-	//TODO: Build Testtrack;
-	auto track = vector<node>();
-	////Fahrphysik
-	////Simulation::ExampleElectricVehicle();
-	////TODO: Build Testtrack;
 	auto track = ExampleStraightTrack(0);
 	string SimulationConfigFile = "SimulationConfig.json";
+	track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
 	auto SimulationConfig = Simulation::MockSimulationConfig();
 	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
 	vector<node> result = Drivingsim.RunSimulation();
@@ -66,6 +68,12 @@ int main()
 	cout << Datamap->getY(1.9) << "\n";
 	cout << Datamap->getY(800) << "\n";
 
+	Simulation::Vehicle* electricvehicle = Simulation::ExampleElectricVehicle();
+	Simulation::SimulationEnvironment* environment = Simulation::ExampleSimulationEnvironment();
+	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
+	SollFahrt->setEnvironment(environment);
+	SollFahrt->setVehicle(electricvehicle);
+	SollFahrt->V_max();
 	return 0;
 }
 
@@ -106,7 +114,7 @@ vector<node> ExampleStraightTrack(double length)
 		newnode.speedLimit = 200 * Simulation::KMH2MS;
 		newnode.horizontalCurveRadius = 0;
 		newnode.verticalCurveRadius = 0;
-		newnode.id = i;
+		newnode.id = std::to_string(i);
 		result.push_back(newnode);
 	}
 	return result;
