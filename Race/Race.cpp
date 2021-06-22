@@ -21,7 +21,7 @@ using namespace std;
 int main()
 {
 	//std::cout << "Hello World!\n";
-
+	vector<node> nodes;
 	string route = "38566";
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
 	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
@@ -30,7 +30,7 @@ int main()
 	//// Hier macht Datenaufbereitung weiter
 	if (retval == 0) {
 		vector<node> nodes = OSM_Nord->nodes;
-		ausgabe_visualisierung(nodes,"Nordschleife");
+		
 	}
 	// Wenn nicht mehr benötigt wird
 	delete OSM_Nord;
@@ -77,5 +77,15 @@ int main()
 	//SollFahrt->V_max();
 	vector<node> Strecke = ExampleStraightTrack(0);
 	SollFahrt->SpeedLimit_route(Strecke);
+
+	
+	//////////////////////////////////////////////////////////////////////////
+	//Ausgabe-Visualisierung
+	ausgabe_visualisierung(nodes, "Nordschleife");
+
+
+	//////////////////////////////////////////////////////////////////////////
+
+
 	return 0;
 }
