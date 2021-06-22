@@ -6,6 +6,7 @@
 #include <cmath>
 #include <vector>
 #include "DataMap2D.h"
+#include <string>
 
 namespace Simulation
 {

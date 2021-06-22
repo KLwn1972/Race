@@ -1,6 +1,5 @@
 #include "ImportSimulationConfig.h"
 
-
 //using namespace std;
 Simulation::ImportSimulationConfig::ImportSimulationConfig(std::string SimulationConfigFile) {
 	std::fstream ConfigFileStream;
@@ -70,7 +69,7 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	VehicleObject->WheelSize = getDoubleFromcJSON(VehicleData, "WheelSize");
 	VehicleObject->WheelInertia = getDoubleFromcJSON(VehicleData, "WheelInertia [kgm2]");
 	VehicleObject->TorqueSpeedCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "EngineTorque_v_CUR [km/h]"), getVectorFromcJSON(VehicleData, "EngineTorque_trq_CUR [Nm]"));
-	
+
 	//cJSON* EngineTorque_v_CUR = cJSON_GetObjectItemCaseSensitive(VehicleData, "EngineTorque_v_CUR [km/h]");
 	//for (int i = 0; i < cJSON_GetArraySize(EngineTorque_v_CUR); i++) {
 	//	cJSON* CUR_Element = cJSON_GetArrayItem(EngineTorque_v_CUR, i);
@@ -82,24 +81,23 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	//	cJSON* CUR_Element = cJSON_GetArrayItem(EngineTorque_trq_CUR, i);
 	//	cout << CUR_Element->valuedouble << endl;
 	//}
-	
-	
+
 	//cJSON* EngineTorque_v_CUR = cJSON_GetObjectItemCaseSensitive(VehicleData, "EngineTorque_v_CUR [km/h]");
 	//cJSON* EngineTorque_trq_CUR = cJSON_GetObjectItemCaseSensitive(VehicleData, "EngineTorque_trq_CUR [N]");
 	//for (int i = 0; i < min(cJSON_GetArraySize(EngineTorque_v_CUR), cJSON_GetArraySize(EngineTorque_trq_CUR)); i++) {
 	//	cJSON* CUR_Element_x = cJSON_GetArrayItem(EngineTorque_v_CUR, i);
-	//	cJSON* CUR_Element_y = cJSON_GetArrayItem(EngineTorque_trq_CUR, i);	
+	//	cJSON* CUR_Element_y = cJSON_GetArrayItem(EngineTorque_trq_CUR, i);
 	//}
-
 }
 
-std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string){
+std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string) {
 	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
 	std::vector<double> AxisValues;
 	for (int i = 0; i < cJSON_GetArraySize(input); i++) {
 		cJSON* CUR_Element = cJSON_GetArrayItem(input, i);
 		AxisValues[i] = CUR_Element->valuedouble;
 	}
+	return AxisValues;
 }
 
 double Simulation::ImportSimulationConfig::getDoubleFromcJSON(cJSON* data, const char* const string) {
