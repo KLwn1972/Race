@@ -4,7 +4,7 @@
 #include<stdio.h>
 #include "Race.h"
 #include "OpenStreetMap.h"
-
+#include "Ausgabe-Visualisierung.h"
 #include "Simulation/Vehicle.h"
 #include "Simulation/DataMap2D.h"
 #include "Simulation/ImportSimulationConfig.h"
@@ -30,7 +30,7 @@ int main()
 	//// Hier macht Datenaufbereitung weiter
 	if (retval == 0) {
 		vector<node> nodes = OSM_Nord->nodes;
-		ausgabe_visualisierung(nodes);
+		ausgabe_visualisierung(nodes,"Nordschleife");
 	}
 	// Wenn nicht mehr benötigt wird
 	delete OSM_Nord;

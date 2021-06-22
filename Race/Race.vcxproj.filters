@@ -164,6 +164,9 @@
     <ClInclude Include="ExampleTracks.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Ausgabe-Visualisierung.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Testconfiguration\SimulationConfig.json">

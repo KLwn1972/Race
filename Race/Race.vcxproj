@@ -161,6 +161,7 @@
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ausgabe-Visualisierung.h" />
     <ClInclude Include="ExampleTracks.h" />
     <ClInclude Include="NASA_src\NASA_DataFileHandler.h" />
     <ClInclude Include="NASA_src\NASA_ElevationCalculator.h" />
