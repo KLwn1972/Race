@@ -24,6 +24,7 @@ namespace Simulation
 		void setRollingResistanceCoefficient(double RoadResistanceCoefficient);
 
 		void setAirpressure(double Airpressure);
+		void setAirpressureHeight(double PressureHeight);
 		void setWindspeed(double Windspeed);
 		void setWinddirection(double Winddirection);
 		void setFrictionTable(std::vector<double>, std::vector<double>);
@@ -31,6 +32,7 @@ namespace Simulation
 	private:
 		double Airtemperature = nan("");
 		double Airpressure = nan("");
+		double PressureHeight = 0.0;
 		double Windspeed = nan("");
 		double Winddirection = nan(""); //[°];
 		double RollingResistanceCoefficient = nan("");
@@ -59,7 +61,8 @@ namespace Simulation
 
 	static const double PI = atan(1) * 4;
 	const std::string INTERPOLATEDIDENT = std::string("INTERPOLATEDIDENT");
-	//
+
+	const double TEMPERATUREGRADIENT = 0.0065;
 
 	SimulationEnvironment* ExampleSimulationEnvironment();
 }

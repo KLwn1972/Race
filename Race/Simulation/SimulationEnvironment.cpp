@@ -5,7 +5,8 @@ using namespace Simulation;
 
 double Simulation::SimulationEnvironment::calcAirPressure(double height)
 {
-	return this->Airpressure; //TODO: calculate Height influence
+	double heightinfluence = pow((1 - TEMPERATUREGRADIENT * (height - this->PressureHeight) / calcAirTemperatureInKelvin()), 5.255);
+	return this->Airpressure * heightinfluence; //TODO: calculate Height influence
 }
 
 double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
@@ -46,6 +47,11 @@ void Simulation::SimulationEnvironment::setAirtemperatureCelsius(double Airtempe
 void Simulation::SimulationEnvironment::setAirpressure(double Airpressure)
 {
 	this->Airpressure = Airpressure;
+}
+
+void Simulation::SimulationEnvironment::setAirpressureHeight(double PressureHeight)
+{
+	this->PressureHeight = PressureHeight;
 }
 
 void Simulation::SimulationEnvironment::setWindspeed(double Windspeed)
