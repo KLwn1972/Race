@@ -16,7 +16,10 @@ namespace Simulation
 		std::string getXAxisName();
 		std::string getYAxisName();
 		DataMap2D();
-	public:
+
+		std::vector<double> getXData();
+		std::vector<double> getYData();
+	private:
 		std::vector<double> xData;
 		std::vector<double> yData;
 		std::string xAxisName = "";

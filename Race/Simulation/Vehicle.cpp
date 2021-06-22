@@ -6,7 +6,7 @@ using namespace Simulation;
 
 double Simulation::Vehicle::calcStaticWheelDiameter()
 {
-	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize ));
+	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize));
 }
 
 int Simulation::Vehicle::getSelectedGear()
@@ -25,7 +25,7 @@ void Simulation::Vehicle::setSelectedGear(int GearToSet)
 Simulation::Vehicle::Vehicle()
 {
 	this->EngineTorqueCurve = new DataMap2D();
-	this->TorqueSpeedCurve = new DataMap2D();
+	this->VehiclespeedTorqueCurve = new DataMap2D();
 }
 
 Simulation::Vehicle::~Vehicle()
@@ -60,7 +60,7 @@ Vehicle* Simulation::ExampleElectricVehicle()
 
 	vector<double> VehicleSpeeds = vector<double>{ 10 * KMH2MS,50 * KMH2MS,150 * KMH2MS };
 	vector<double> VehicleTorque = vector<double>{ 100,300,500 };
-	result->TorqueSpeedCurve = new DataMap2D(VehicleSpeeds, VehicleTorque);
+	result->VehiclespeedTorqueCurve = new DataMap2D(VehicleSpeeds, VehicleTorque);
 
 	result->WheelWidth = 0.205;
 	result->WheelRatioPercent = 75;
@@ -86,34 +86,37 @@ Vehicle* Simulation::ExampleElectricVehicle()
 
 double Simulation::Vehicle::interpolateEngineTorqueFromVelocity(double V) {
 	/* number of elements in the array */
-	static const int count = sizeof(VehiclespeedTorqueCurve->yData) / sizeof(VehiclespeedTorqueCurve->yData[0]);
+	vector<double> xData = this->VehiclespeedTorqueCurve->getXData();
+	vector<double> yData = this->VehiclespeedTorqueCurve->getYData();
+
+	static const int count = yData.size();
 
 	int i;
 	double dx, dy;
 
-	if (V <= VehiclespeedTorqueCurve->xData[0]) {
+	if (V <= xData[0]) {
 		/* x is less than the minimum element
 		 * handle error here if you want */
 
-		cout << "Drehmoment" << VehiclespeedTorqueCurve->yData[0] << "\n";
-		return VehiclespeedTorqueCurve->yData[0]; /* return minimum element */
+		cout << "Drehmoment" << yData[0] << "\n";
+		return yData[0]; /* return minimum element */
 	}
 
-	if (V >= VehiclespeedTorqueCurve->xData[count - 1]) {
-		cout << "Drehmoment" << VehiclespeedTorqueCurve->yData[count - 1] << "\n";
-		return VehiclespeedTorqueCurve->yData[count - 1]; /* return maximum */
+	if (V >= xData[count - 1]) {
+		cout << "Drehmoment" << yData[count - 1] << "\n";
+		return yData[count - 1]; /* return maximum */
 	}
 
 	/* find i, such that EngineTorque_v_CUR[i] <= x < EngineTorque_v_CUR[i+1] */
 	for (i = 0; i < count - 1; i++) {
-		if (VehiclespeedTorqueCurve->xData[i + 1] > V) {
+		if (xData[i + 1] > V) {
 			break;
 		}
 	}
 
 	/* interpolate */
-	dx = VehiclespeedTorqueCurve->xData[i + 1] - VehiclespeedTorqueCurve->xData[i];
-	dy = VehiclespeedTorqueCurve->yData[i + 1] - VehiclespeedTorqueCurve->yData[i];
-	cout << "Drehmoment" << (VehiclespeedTorqueCurve->yData[i] + (V - VehiclespeedTorqueCurve->xData[i]) * dy / dx) << "\n";
-	return (VehiclespeedTorqueCurve->yData[i] + (V - VehiclespeedTorqueCurve->xData[i]) * dy / dx);
+	dx = xData[i + 1] - xData[i];
+	dy = yData[i + 1] - yData[i];
+	cout << "Drehmoment" << (yData[i] + (V - xData[i]) * dy / dx) << "\n";
+	return (yData[i] + (V - xData[i]) * dy / dx);
 }
