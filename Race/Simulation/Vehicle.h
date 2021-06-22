@@ -26,10 +26,10 @@ namespace Simulation
 	class Vehicle
 	{
 	public:
-		double Mass = nan(""); //kg
+		double Mass = 2000;//nan(""); //kg
 
-		double FrontalArea = nan(""); //m^2
-		double DragCoefficient = nan("");
+		double FrontalArea = 2;//nan(""); //m^2
+		double DragCoefficient = 0.26;//nan("");
 
 		double EngineUpperRevLimit = nan(""); //rpm
 		DataMap2D* EngineTorqueCurve; //Curve with enginespeed, torque [1/s, Nm]
@@ -38,7 +38,7 @@ namespace Simulation
 		double WheelInertia = nan("");
 		double PowertrainEfficiency = nan("");
 
-		DataMap2D* TorqueSpeedCurve; //Curve with speed, torque [m/s, Nm]
+		DataMap2D* VehiclespeedTorqueCurve; //Curve with speed, torque [m/s, Nm]
 		PowerTrainTypes PowerTrainType = PowerTrainTypes::ICE;
 
 		double WheelWidth = nan(""); //m /0.205
@@ -50,7 +50,7 @@ namespace Simulation
 
 		double VMaxElectric = nan("");
 
-		double calcTorqueAtWheel(double Velocity);
+		double interpolateEngineTorqueFromVelocity(double Velocity);
 		double calcWheelspeed(double EngineSpeed);
 		int NumberOfGears = 0;
 		map<int, GearEntry> GearData;
