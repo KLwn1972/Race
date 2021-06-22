@@ -14,8 +14,12 @@ namespace DatAuf {
 	class CalcDatAuf {
 	public:
 		vector<node> nodes;
+		SplineCatmullRom SplineSegment;
 		void DataProcessing();
 		void InsertAdditionalNodes();
+		void CopyNodesToSplineKnots(int NodeItem);
+		node GetInterpolKnot();
+		void InsertOneAdditionalNode(int NodeItem, int NumberAdditionalNodes, node NewNode);
 		void CalcRadiusGradientData();
 		double GetDistanceMeters2D(node node1, node node2);
 		void GetTestData();

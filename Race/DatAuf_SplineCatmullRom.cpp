@@ -19,31 +19,20 @@ void SplineCatmullRom::CalcCoeffValue() {
 }
 
 void SplineCatmullRom::CalcInterpolKnot(double t) {
-	//vector<node> NewKnot;
 	this->t = t;
 	this->InterpolKnotReset();
 
 	this->CalcCoeffValue();
 
-	// Begin: Temp values for Test
-	//this->InterpolKnot[0] = 1;
-	//this->InterpolKnot[1] = 2;
-	//this->InterpolKnot[2] = 3;
-	// End: Temp Values for Test
-
 	for (int i = 0; i < 4; i++) {
 		this->InterpolKnot[0] += this->SplineKnots[i][0] * this->CoeffValue[i];
 		this->InterpolKnot[1] += this->SplineKnots[i][1] * this->CoeffValue[i];
 		this->InterpolKnot[2] += this->SplineKnots[i][2] * this->CoeffValue[i];
-		//this->InterpolKnot[0] += this->SplineKnots[i].latitude * this->CoeffValue[i];
-		//this->InterpolKnot[1] += this->SplineKnots[i].longitude * this->CoeffValue[i];
-		//this->InterpolKnot[2] += this->SplineKnots[i].elevation * this->CoeffValue[i];
 	}
 
 	this->InterpolKnot[0] *= 0.5;
 	this->InterpolKnot[1] *= 0.5;
 	this->InterpolKnot[2] *= 0.5;
-
 
 	return;
 }
@@ -58,17 +47,9 @@ void SplineCatmullRom::InterpolKnotReset() {
 
 void SplineCatmullRom::SplineKnotsReset() {
 	for (int i = 0; i < 4; i++) {
-		// Zu löschen, wenn wir mit "Node"-Struktur weiterarbeiten.
 		for (int j = 0; j < 3; j++) {
 			this->SplineKnots[i][j] = 0.0;
 		}
-		
-		// Zu löschen, wenn wir mit "4Punkte"-Struktur weiterarbeiten.
-		/*
-		this->SplineKnots[i].latitude = 0.0;
-		this->SplineKnots[i].longitude = 0.0;
-		this->SplineKnots[i].elevation = 0.0;
-		*/
 	}
 
 	return;
