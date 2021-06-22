@@ -42,7 +42,7 @@ namespace Simulation
 		double PowertrainEfficiency = nan("");
 
 		DataMap2D* TorqueSpeedCurve; //Curve with speed, torque [m/s, Nm]
-		PowerTrainTypes PowerTrainType = PowerTrainTypes::ICE;
+		PowerTrainTypes PowerTrainType = PowerTrainTypes::Electric;
 
 		double WheelWidth = nan(""); //m /0.205
 		double WheelRatioPercent = nan(""); //% width to height in Percent /75
