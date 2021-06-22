@@ -52,7 +52,7 @@ namespace Simulation
 
 		double VMaxLimited = nan("");
 
-		double calcTorqueAtWheel(double Velocity);
+		double interpolateEngineTorqueFromVelocity(double Velocity);
 		double calcWheelspeed(double EngineSpeed);
 		int NumberOfGears = 0;
 		map<int, GearEntry> GearData;

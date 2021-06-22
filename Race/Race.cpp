@@ -75,7 +75,9 @@ int main()
 	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
 	SollFahrt->setEnvironment(environment);
 	SollFahrt->setVehicle(electricvehicle);
-	SollFahrt->V_max();
+	//SollFahrt->V_max();
+	vector<node> Strecke = ExampleStraightTrack(0);
+	SollFahrt->SpeedLimit_route(Strecke);
 	return 0;
 }
 
@@ -105,7 +107,7 @@ vector<node> ExampleStraightTrack(double length)
 	auto result = vector<node>();
 	double numberOfSteps = 1000;
 	double stepWidth = distance / numberOfSteps;
-	for (int i = 0; i <= 1000; i++)
+	for (int i = 0; i <= numberOfSteps; i++)
 	{
 		auto newnode = node();
 		newnode.distanceToNext = distance / numberOfSteps;

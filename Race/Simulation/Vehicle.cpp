@@ -1,11 +1,12 @@
 #include "vehicle.h"
 #include "SimulationEnvironment.h"
+#include <iostream>
 
 using namespace Simulation;
 
 double Simulation::Vehicle::calcStaticWheelDiameter()
 {
-	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize ));
+	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize));
 }
 
 int Simulation::Vehicle::getSelectedGear()
@@ -44,9 +45,9 @@ Vehicle* Simulation::ExampleElectricVehicle()
 {
 	Vehicle* result = new Vehicle();
 
-	result->Mass = 1200;
+	result->Mass = 2000;//nan("");
 	result->FrontalArea = 2;
-	result->DragCoefficient = 0.3;
+	result->DragCoefficient = 0.26;
 
 	result->EngineUpperRevLimit = 6500 * RPM2HZ;
 	result->EngineInertia = 0.35;
@@ -80,4 +81,41 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	newEntry.ShiftUpLimitMax = result->EngineUpperRevLimit;
 
 	return result;
+}
+
+double Simulation::Vehicle::interpolateEngineTorqueFromVelocity(double V) {
+	/* number of elements in the array */
+	vector<double> xData = this->VehiclespeedTorqueCurve->getXData();
+	vector<double> yData = this->VehiclespeedTorqueCurve->getYData();
+
+	static const int count = yData.size();
+
+	int i;
+	double dx, dy;
+
+	if (V <= xData[0]) {
+		/* x is less than the minimum element
+		 * handle error here if you want */
+
+		cout << "Drehmoment" << yData[0] << "\n";
+		return yData[0]; /* return minimum element */
+	}
+
+	if (V >= xData[count - 1]) {
+		cout << "Drehmoment" << yData[count - 1] << "\n";
+		return yData[count - 1]; /* return maximum */
+	}
+
+	/* find i, such that EngineTorque_v_CUR[i] <= x < EngineTorque_v_CUR[i+1] */
+	for (i = 0; i < count - 1; i++) {
+		if (xData[i + 1] > V) {
+			break;
+		}
+	}
+
+	/* interpolate */
+	dx = xData[i + 1] - xData[i];
+	dy = yData[i + 1] - yData[i];
+	cout << "Drehmoment" << (yData[i] + (V - xData[i]) * dy / dx) << "\n";
+	return (yData[i] + (V - xData[i]) * dy / dx);
 }
