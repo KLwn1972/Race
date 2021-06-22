@@ -120,7 +120,7 @@ double Soll_Fahrtbestimmung::F_antrieb_max(double V) {
 
 double Soll_Fahrtbestimmung::V_max() {
 	double mass = this->vehicle->Mass;
-	this->vehicle->TorqueSpeedCurve->getY(10);
+	this->vehicle->VehiclespeedTorqueCurve->getY(10);
 	for (int Vel = 0; Vel <= int(V_max_Fzg / 3.6); Vel++) {
 		//17.06.21 //funktioniert erst wenn kein Null Radius zugelassen is !!!
 		cout << "Diff_" << min(F_haft_laengs(Vel), F_antrieb_max(Vel)) - F_fahrwiderstand(Vel) << "\n";
