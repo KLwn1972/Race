@@ -138,7 +138,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		//case 2: hold speed
 		else if (nextPos.speedLimit == currentPos.speedIs) {
 			nextPos.speedIs = nextPos.speedLimit;
-			nextPos.raceTime = localDistance / nextPos.speedIs;
+			nextPos.raceTime = currentPos.raceTime + (localDistance / nextPos.speedIs);
 		}
 		//case 3: decceleration
 		else {
