@@ -2,6 +2,9 @@
 
 #define DEBUG
 
+#ifndef NODEDEF
+#define NODEDEF
+
 #include <iostream>
 #include <iomanip>
 #include <tchar.h>
@@ -45,6 +48,4 @@ XMLError output_kml(vector<node>, string);
 void add_node_gpx(tinyxml2::XMLDocument*, node*, XMLElement*, time_t);
 XMLError output_gpx(vector<node>, string);
 
-//Übergaben als vector<node>()
-vector<node> ExampleTrack();
-vector<node> ExampleStraightTrack(double length);
+#endif

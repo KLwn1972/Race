@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="cJSON.c" />
     <ClCompile Include="Ausgabe-Visualisierung.cpp" />
+    <ClCompile Include="ExampleTracks.cpp" />
     <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp" />
     <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp" />
     <ClCompile Include="NASA_src\NASA_GeoCoordConversion.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ExampleTracks.h" />
     <ClInclude Include="NASA_src\NASA_DataFileHandler.h" />
     <ClInclude Include="NASA_src\NASA_ElevationCalculator.h" />
     <ClInclude Include="NASA_src\NASA_GeoCoordConversion.h" />
