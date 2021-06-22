@@ -81,9 +81,10 @@ void Simulation::DrivingSimulator::mapModifiedToRaw()
 			{
 				if (this->rawtrack.at(nodeIt).id == simNode.id)
 				{
-					node resultNode = node();
+					node resultNode = this->rawtrack.at(nodeIt);
 					resultNode.raceTime = simNode.raceTime;
 					resultNode.speedIs = simNode.speedIs;
+					result.push_back(resultNode);
 					break;
 				}
 			}
