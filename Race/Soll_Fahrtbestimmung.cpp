@@ -79,7 +79,7 @@ double Soll_Fahrtbestimmung::V_haft_quer_max() { //Getestet OK
 
 double Soll_Fahrtbestimmung::F_antrieb_max(double V) {
 	cout << "F_antrieb_max" << vehicle->interpolateEngineTorqueFromVelocity(V) / (vehicle->WheelSize * INCH2M) / vehicle->FinalDriveRatio << "\n";
-	cout << "Torque at wheel" << vehicle->interpolateEngineTorqueFromVelocity(V);
+	//cout << "Torque at wheel" << vehicle->interpolateEngineTorqueFromVelocity(V);
 	cout << (vehicle->WheelSize * INCH2M);
 	return vehicle->interpolateEngineTorqueFromVelocity(V) / (vehicle->WheelSize * INCH2M) / vehicle->FinalDriveRatio;
 
