@@ -41,7 +41,7 @@ namespace Simulation
 		double WheelInertia = nan("");
 		double PowertrainEfficiency = nan("");
 
-		DataMap2D* TorqueSpeedCurve; //Curve with speed, torque [m/s, Nm]
+		DataMap2D* VehiclespeedTorqueCurve; //Curve with speed, torque [m/s, Nm]
 		PowerTrainTypes PowerTrainType = PowerTrainTypes::ICE;
 
 		double WheelWidth = nan(""); //m /0.205
@@ -53,7 +53,7 @@ namespace Simulation
 
 		double VMaxElectric = nan("");
 
-		double calcTorqueAtWheel(double Velocity);
+		double interpolateEngineTorqueFromVelocity(double Velocity);
 		double calcWheelspeed(double EngineSpeed);
 		int NumberOfGears = 0;
 		map<int, GearEntry> GearData;

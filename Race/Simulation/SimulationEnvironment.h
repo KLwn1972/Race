@@ -28,6 +28,7 @@ namespace Simulation
 		void setWinddirection(double Winddirection);
 		void setFrictionTable(std::vector<double>, std::vector<double>);
 
+
 	private:
 		double Airtemperature = nan("");
 		double Airpressure = nan("");
@@ -38,6 +39,9 @@ namespace Simulation
 	};
 
 	//Conversions
+	const double FrictionCoefficient_test = 0.8; //zu diskutieren !
+	const double Airdensity_test = 1.121; //zu diskutieren !
+
 	const double GRAVITATIONALCONSTANT = 9.81;
 	const double GASCONSTANT = 287.0529;
 	const double ABSOLUTEZEROTEMP = 273.15;
@@ -60,7 +64,7 @@ namespace Simulation
 	static const double PI = atan(1) * 4;
 	const std::string INTERPOLATEDIDENT = std::string("INTERPOLATEDIDENT");
 	//
-
+	
 	SimulationEnvironment* ExampleSimulationEnvironment();
 }
 

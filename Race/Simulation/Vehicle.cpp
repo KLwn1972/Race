@@ -1,5 +1,6 @@
 #include "vehicle.h"
 #include "SimulationEnvironment.h"
+#include <iostream>
 
 using namespace Simulation;
 
@@ -29,8 +30,8 @@ Simulation::Vehicle::Vehicle()
 
 Simulation::Vehicle::~Vehicle()
 {
-	if (this->TorqueSpeedCurve != nullptr)
-		delete this->TorqueSpeedCurve;
+	if (this->VehiclespeedTorqueCurve != nullptr)
+		delete this->VehiclespeedTorqueCurve;
 	if (this->EngineTorqueCurve != nullptr)
 		delete this->EngineTorqueCurve;
 }
@@ -44,9 +45,9 @@ Vehicle* Simulation::ExampleElectricVehicle()
 {
 	Vehicle* result = new Vehicle();
 
-	result->Mass = 1200;
+	result->Mass = 2000;//nan("");
 	result->FrontalArea = 2;
-	result->DragCoefficient = 0.3;
+	result->DragCoefficient = 0.26;
 
 	result->EngineUpperRevLimit = 6500 * RPM2HZ;
 	result->EngineInertia = 0.35;
@@ -81,4 +82,38 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	newEntry.ShiftUpLimitMax = result->EngineUpperRevLimit;
 
 	return result;
+}
+
+double Simulation::Vehicle::interpolateEngineTorqueFromVelocity(double V) {
+	/* number of elements in the array */
+	static const int count = sizeof(VehiclespeedTorqueCurve->yData) / sizeof(VehiclespeedTorqueCurve->yData[0]);
+
+	int i;
+	double dx, dy;
+
+	if (V <= VehiclespeedTorqueCurve->xData[0]) {
+		/* x is less than the minimum element
+		 * handle error here if you want */
+
+		cout << "Drehmoment" << VehiclespeedTorqueCurve->yData[0] << "\n";
+		return VehiclespeedTorqueCurve->yData[0]; /* return minimum element */
+	}
+
+	if (V >= VehiclespeedTorqueCurve->xData[count - 1]) {
+		cout << "Drehmoment" << VehiclespeedTorqueCurve->yData[count - 1] << "\n";
+		return VehiclespeedTorqueCurve->yData[count - 1]; /* return maximum */
+	}
+
+	/* find i, such that EngineTorque_v_CUR[i] <= x < EngineTorque_v_CUR[i+1] */
+	for (i = 0; i < count - 1; i++) {
+		if (VehiclespeedTorqueCurve->xData[i + 1] > V) {
+			break;
+		}
+	}
+
+	/* interpolate */
+	dx = VehiclespeedTorqueCurve->xData[i + 1] - VehiclespeedTorqueCurve->xData[i];
+	dy = VehiclespeedTorqueCurve->yData[i + 1] - VehiclespeedTorqueCurve->yData[i];
+	cout << "Drehmoment" << (VehiclespeedTorqueCurve->yData[i] + (V - VehiclespeedTorqueCurve->xData[i]) * dy / dx) << "\n";
+	return (VehiclespeedTorqueCurve->yData[i] + (V - VehiclespeedTorqueCurve->xData[i]) * dy / dx);
 }
