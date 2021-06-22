@@ -19,6 +19,7 @@ namespace Simulation {
 		~DrivingSimulator();
 
 		vector<node> RunSimulation();
+		vector<SimulationNode> ReturnModifiedTrack();
 	private:
 		//Create a modified track which contains the simulationNodes
 		void createModifiedTrack();
