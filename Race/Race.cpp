@@ -1,22 +1,20 @@
 // Race.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
 //
 
-
-
 #include<stdio.h>
 #include "Race.h"
 #include "OpenStreetMap.h"
 
-
-
 #include "Simulation/Vehicle.h"
 #include "Simulation/DataMap2D.h"
+#include "Simulation/SimulationEnvironment.h"
+
+#include "Soll_Fahrtbestimmung.h"
 
 using namespace std;
 
 int main()
 {
-
 	std::cout << "Hello World!\n";
 
 	string route = "38566";
@@ -32,13 +30,13 @@ int main()
 	// Wenn nicht mehr benötigt wird
 	delete OSM_Nord;
 
-	/* Da noch Sued. Eigentlich eine beliebige Route
-	route = "38567";
-	OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
-	if (OSM_Sued->GetNodesFromOSM() == 0){
-	}
-	delete OSM_Sued;
-	*/
+	///* Da noch Sued. Eigentlich eine beliebige Route
+	//route = "38567";
+	//OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
+	//if (OSM_Sued->GetNodesFromOSM() == 0){
+	//}
+	//delete OSM_Sued;
+	//*/
 
 	//NASA
 	double long_stuttgart = 9.206802;
@@ -52,16 +50,20 @@ int main()
 	cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
 	cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
 
+	////Fahrphysik
+	////Simulation::ExampleElectricVehicle();
+	//vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
+	//vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };
+	//Simulation::DataMap2D* Datamap = new Simulation::DataMap2D(xdata, ydata);
+	//cout << Datamap->getY(-1) << "\n";
+	//cout << Datamap->getY(1.9) << "\n";
+	//cout << Datamap->getY(800) << "\n";
 
-	//Fahrphysik
-	//Simulation::ExampleElectricVehicle();
-	vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
-	vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };
-	Simulation::DataMap2D* Datamap = new Simulation::DataMap2D(xdata, ydata);
-	cout << Datamap->getY(-1) << "\n";
-	cout << Datamap->getY(1.9) << "\n";
-	cout << Datamap->getY(800) << "\n";
-
+	Simulation::Vehicle* electricvehicle = Simulation::ExampleElectricVehicle();
+	Simulation::SimulationEnvironment* environment = Simulation::ExampleSimulationEnvironment();
+	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
+	SollFahrt->setEnvironment(environment);
+	SollFahrt->setVehicle(electricvehicle);
+	SollFahrt->V_max();
 	return 0;
-
 }

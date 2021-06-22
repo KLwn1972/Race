@@ -56,7 +56,7 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	result->PowerTrainType = PowerTrainTypes::Electric;
 
 	vector<double> VehicleSpeeds = vector<double>{ 10 * KMH2MS,50 * KMH2MS,150 * KMH2MS };
-	vector<double> VehicleTorque = vector<double>{ 100,200,300,400,500,600,700 };
+	vector<double> VehicleTorque = vector<double>{ 100,300,500};
 	result->TorqueSpeedCurve = new DataMap2D(VehicleSpeeds, VehicleTorque);
 
 	result->WheelWidth = 205;
