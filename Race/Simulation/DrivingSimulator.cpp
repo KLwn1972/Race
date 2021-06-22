@@ -35,14 +35,12 @@ vector<node> Simulation::DrivingSimulator::RunSimulation()
 void Simulation::DrivingSimulator::createModifiedTrack()
 {
 	const size_t NumberOfInterpolationPoints = 1; //TODO
-	size_t TotalNumberOfPoints = (this->rawtrack.size() - 1) * NumberOfInterpolationPoints;
-	vector<node> newTrack = vector<node>(TotalNumberOfPoints, node());
+	vector<node> newTrack = vector<node>();
 
 	node oldStepSimNode = node();
 	for (size_t i = 0; i < this->rawtrack.size(); i++)
 	{
 		node currentNode = rawtrack[i];
-		newTrack.push_back(currentNode);
 		//insert values between stepsimnode and oldstepsimnode through interpolation
 		if (i > 0)
 		{
@@ -58,9 +56,11 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 				interpolatedNode.gradient = interpolateValues(0, oldStepSimNode.gradient, DistanceOldNew, currentNode.gradient, DistanceToCheck);
 				interpolatedNode.horizontalCurveRadius = interpolateValues(0, oldStepSimNode.horizontalCurveRadius, DistanceOldNew, currentNode.horizontalCurveRadius, DistanceToCheck);
 				interpolatedNode.verticalCurveRadius = interpolateValues(0, oldStepSimNode.verticalCurveRadius, DistanceOldNew, currentNode.verticalCurveRadius, DistanceToCheck);
+				interpolatedNode.id = INTERPOLATEDIDENT;
 				newTrack.push_back(interpolatedNode);
 			}
 		}
+		newTrack.push_back(currentNode);
 		oldStepSimNode = currentNode;
 	}
 	this->modifiedtrack = newTrack;
@@ -72,7 +72,7 @@ void Simulation::DrivingSimulator::mapModifiedToRaw()
 	int nodeIt = 0;
 	for (auto const& simNode : this->modifiedtrack)
 	{
-		if (simNode.id != "")
+		if (simNode.id != INTERPOLATEDIDENT)
 		{
 			for (nodeIt; nodeIt < this->modifiedtrack.size(); nodeIt++)
 			{
@@ -102,7 +102,7 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 		else {                                                                                                                                                   //calculate the brake velocity wenn decceleration
 			double BrakeDecceleration = this->accelerationcalc->calcDecceleration(currentPos.speedLimit, previousPos, currentPos);   //get max decceleration at current point
 			//double localDistance = currentPos.Coordinates.Distance(previousPos.Coordinates);
-			double localDistance = calcDistanceBetweenTwoPoints(this->rawtrack.at(i - 1), this->rawtrack.at(i));                        //get Distance between local point and previous point
+			double localDistance = previousPos.distanceToNext;                        //get Distance between local point and previous point
 			double BrakeSpeed = sqrt((currentPos.speedLimit) * (currentPos.speedLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
 			previousPos.speedLimit = min(BrakeSpeed, previousPos.speedLimit);                                                         //get new limit
 		}
@@ -117,8 +117,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 	for (size_t i = 0; i < modifiedtrack.size() - 1; i++) {
 		node& currentPos = this->modifiedtrack.at(i);
 		node& nextPos = this->modifiedtrack.at(i + 1);
-		double localDistance = calcDistanceBetweenTwoPoints(this->rawtrack.at(i), this->rawtrack.at(i + 1));
-		//double localDistance = currentPos.Coordinates.Distance(nextPos.Coordinates);                                                         //get distance between the local point and next point
+		double localDistance = currentPos.distanceToNext;
 		//case 1: acceleration
 		if (nextPos.speedLimit > currentPos.speedIs) {
 			double MaxLocalAcceleration = this->accelerationcalc->calcAcceleration(currentPos.speedIs, currentPos, nextPos);                //get amax

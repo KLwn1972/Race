@@ -21,7 +21,7 @@ namespace Simulation
 
 		void setAirtemperatureCelsius(double Airtemperature);
 		void setRoadResistanceCoefficient(double RoadResistanceCoefficient);
-		
+
 		void setAirpressure(double Airpressure);
 		void setWindspeed(double Windspeed);
 		void setWinddirection(double Winddirection);
@@ -49,13 +49,14 @@ namespace Simulation
 	const double MBAR2PASCAL = 100;
 	const double PASCAL2MBAR = 1 / 100.0;
 
-	static const double RAD2DEG = 180.0 / atan(1) * 4;
-	static const double DEG2RAD = atan(1) * 4 / 180.0;
+	const double RAD2DEG = 180.0 / atan(1) * 4;
+	const double DEG2RAD = atan(1) * 4 / 180.0;
 
 	const double INCH2M = 0.0254;
 	const double M2INCH = 1 / INCH2M;
 
 	static const double PI = atan(1) * 4;
+	const std::string INTERPOLATEDIDENT = std::string("INTERPOLATEDIDENT");
 	//
 
 	SimulationEnvironment* ExampleSimulationEnvironment();
