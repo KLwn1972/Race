@@ -6,7 +6,7 @@ using namespace Simulation;
 double Simulation::SimulationEnvironment::calcAirPressure(double height)
 {
 	double heightinfluence = pow((1 - TEMPERATUREGRADIENT * (height - this->PressureHeight) / calcAirTemperatureInKelvin()), 5.255);
-	return this->Airpressure * heightinfluence; //TODO: calculate Height influence
+	return this->Airpressure * heightinfluence;
 }
 
 double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
