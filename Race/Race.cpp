@@ -70,11 +70,9 @@ int main()
 	cout << Datamap->getY(1.9) << "\n";
 	cout << Datamap->getY(800) << "\n";
 
-	Simulation::Vehicle* electricvehicle = Simulation::ExampleElectricVehicle();
-	Simulation::SimulationEnvironment* environment = Simulation::ExampleSimulationEnvironment();
 	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
-	SollFahrt->setEnvironment(environment);
-	SollFahrt->setVehicle(electricvehicle);
+	SollFahrt->setVehicle(SimulationConfig.getVehicle());
+	SollFahrt->setEnvironment(SimulationConfig.getEnvironment());
 	//SollFahrt->V_max();
 	vector<node> Strecke = ExampleStraightTrack(0);
 	SollFahrt->SpeedLimit_route(Strecke);
