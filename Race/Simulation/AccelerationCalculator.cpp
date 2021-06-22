@@ -1,4 +1,5 @@
 #include "AccelerationCalculator.h"
+#include "MiscFunctions.h"
 
 Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle* vehicle, SimulationEnvironment* environment) :vehicle(vehicle), environment(environment)
 {
@@ -38,12 +39,14 @@ double Simulation::AccelerationCalculator::calcAirResistance(double velocity)
 
 double Simulation::AccelerationCalculator::calcRollingResistance(double gradient)
 {
-	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->getRollingResistanceCoefficient() * cos(gradient);
+	double gradientAngle = angleRadFromGradientVector(gradient);
+	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->getRollingResistanceCoefficient() * cos(gradientAngle);
 }
 
 double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)
 {
-	return this->vehicle->Mass * GRAVITATIONALCONSTANT * sin(gradient);
+	double gradientAngle = angleRadFromGradientVector(gradient);
+	return this->vehicle->Mass * GRAVITATIONALCONSTANT * sin(gradientAngle);
 }
 
 double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gradient, double velocity)
@@ -67,5 +70,6 @@ double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gr
 
 double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, double velocity)
 {
-	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->calcFrictionCoefficient(velocity) * cos(gradient);
+	double gradientAngle = angleRadFromGradientVector(gradient);
+	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->calcFrictionCoefficient(velocity) * cos(gradientAngle);
 }

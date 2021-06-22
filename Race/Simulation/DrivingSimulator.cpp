@@ -127,12 +127,12 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		SimulationNode& nextPos = this->modifiedtrack.at(i + 1);
 		double localDistance = currentPos.distanceToNext;
 		//case 1: acceleration
-		if (nextPos.speedLimit > currentPos.speedIs) {
+		if (nextPos.speedLimit >= currentPos.speedIs) {
 			double MaxLocalAcceleration = this->accelerationcalc->calcAcceleration(currentPos.speedIs, currentPos, nextPos);                //get amax
 			currentPos.MaxAcceleration = MaxLocalAcceleration;
 			double speed_temp = sqrt((currentPos.speedIs) * (currentPos.speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
 			 // determine the Is-speed and raceTime according to different situation
-			if (speed_temp > nextPos.speedLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
+			if (speed_temp >= nextPos.speedLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
 				nextPos.speedIs = this->modifiedtrack.at(i + 1).speedLimit;
 				nextPos.raceTime = currentPos.raceTime + calcRaceTimeBetweenTwoPointsWithDifferentAccleration(MaxLocalAcceleration, currentPos.speedIs, nextPos.speedIs, localDistance);
 			}
@@ -142,10 +142,10 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 			}
 		}
 		//case 2: hold speed
-		else if (nextPos.speedLimit == currentPos.speedIs) {
-			nextPos.speedIs = nextPos.speedLimit;
-			nextPos.raceTime = currentPos.raceTime + (localDistance / nextPos.speedIs);
-		}
+		//else if (nextPos.speedLimit == currentPos.speedIs) {
+		//	nextPos.speedIs = nextPos.speedLimit;
+		//	nextPos.raceTime = currentPos.raceTime + (localDistance / nextPos.speedIs);
+		//}
 		//case 3: decceleration
 		else {
 			double MaxLocalDecceleration = this->accelerationcalc->calcDecceleration(currentPos.speedIs, currentPos, nextPos);
