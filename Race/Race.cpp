@@ -20,6 +20,7 @@ int main()
 {
 	//std::cout << "Hello World!\n";
 
+
 	//string route = "38566";
 	//OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
 	//OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
