@@ -5,7 +5,7 @@ using namespace Simulation;
 
 double Simulation::Vehicle::calcStaticWheelDiameter()
 {
-	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize * INCH2M));
+	return (2 * (this->WheelWidth) * (this->WheelRatioPercent) / 100.0 + (this->WheelSize ));
 }
 
 int Simulation::Vehicle::getSelectedGear()
@@ -61,9 +61,9 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	vector<double> VehicleTorque = vector<double>{ 100,300,500 };
 	result->TorqueSpeedCurve = new DataMap2D(VehicleSpeeds, VehicleTorque);
 
-	result->WheelWidth = 205;
+	result->WheelWidth = 0.205;
 	result->WheelRatioPercent = 75;
-	result->WheelSize = 16;
+	result->WheelSize = 16 * INCH2M;
 	result->WheelInertia = 0.35;
 
 	result->RollingResistanceCoefficient = 0.02;

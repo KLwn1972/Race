@@ -28,9 +28,9 @@ double Simulation::SimulationEnvironment::getRollingResistanceCoefficient()
 	return this->RollingResistanceCoefficient;
 }
 
-double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity, double Gradient)
+double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity)
 {
-	return 0.0; //TODO: FrictionCoefficient
+	return this->FrictionTable.getY(Velocity);
 }
 
 double Simulation::SimulationEnvironment::calcAirDensity(double height)

@@ -15,7 +15,7 @@ namespace Simulation
 		double calcAirPressure(double height);
 		double calcAirTemperatureInKelvin();
 		double calcRelevantWindSpeed(double VehicleDirection); //Vehicledirection in [°]
-		double calcFrictionCoefficient(double Velocity, double Gradient);
+		double calcFrictionCoefficient(double Velocity);
 		double calcAirDensity(double height);
 		double getRollingResistanceCoefficient();
 

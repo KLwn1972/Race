@@ -46,7 +46,7 @@ namespace Simulation
 
 		double WheelWidth = nan(""); //m /0.205
 		double WheelRatioPercent = nan(""); //% width to height in Percent /75
-		double WheelSize = nan(""); //inch R16 => 16
+		double WheelSize = nan(""); //m     Hint: Convert inch to m on import (*INCH2M)
 		double calcDynamicWheelRadius();
 		double calcStaticWheelDiameter();
 		double RollingResistanceCoefficient = nan("");

@@ -67,5 +67,5 @@ double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gr
 
 double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, double velocity)
 {
-	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->calcFrictionCoefficient(gradient, velocity) * cos(gradient);
+	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->calcFrictionCoefficient(velocity) * cos(gradient);
 }
