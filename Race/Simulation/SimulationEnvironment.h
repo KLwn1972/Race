@@ -25,6 +25,7 @@ namespace Simulation
 		void setAirpressure(double Airpressure);
 		void setWindspeed(double Windspeed);
 		void setWinddirection(double Winddirection);
+		void setFrictionTable(std::vector<double>, std::vector<double>);
 
 	private:
 		double Airtemperature = nan("");
