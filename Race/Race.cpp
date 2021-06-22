@@ -61,7 +61,7 @@ int main()
 	auto SimulationConfig = Simulation::ImportSimulationConfig(SimulationConfigFile);
 	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
 	vector<node> result = Drivingsim.RunSimulation();
-	Simulation::plotNodeVector(result, "simulationresult.csv");
+	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
 
 	vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
 	vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };

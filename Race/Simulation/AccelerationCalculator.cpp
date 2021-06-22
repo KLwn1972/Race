@@ -6,7 +6,7 @@ Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle* vehicle, Sim
 
 double Simulation::AccelerationCalculator::calcAcceleration(double velocity, node TrackPoint, node NextPoint)
 {
-	this->TrackPoint = TrackPoint; //TODO: check CalcAcc
+	this->TrackPoint = TrackPoint;
 	this->NextPoint = NextPoint;
 	double TotalInertia = this->vehicle->EngineInertia + this->vehicle->AxleInertia + this->vehicle->WheelInertia;
 	return calcEffectiveWheelForceLong(TrackPoint.gradient, velocity) / (this->vehicle->Mass + TotalInertia / this->vehicle->calcDynamicWheelRadius());
@@ -14,7 +14,7 @@ double Simulation::AccelerationCalculator::calcAcceleration(double velocity, nod
 
 double Simulation::AccelerationCalculator::calcDecceleration(double velocity, node TrackPoint, node NextPoint)
 {
-	this->TrackPoint = TrackPoint; //TODO: Check Calculation
+	this->TrackPoint = TrackPoint;
 	this->NextPoint = NextPoint;
 	double SumResistance = calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient);
 	double AirResis = calcAirResistance(velocity);
@@ -38,7 +38,7 @@ double Simulation::AccelerationCalculator::calcAirResistance(double velocity)
 
 double Simulation::AccelerationCalculator::calcRollingResistance(double gradient)
 {
-	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->getRollingResistanceCoefficient() * cos(gradient); //TODO: check gradient format
+	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->getRollingResistanceCoefficient() * cos(gradient);
 }
 
 double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)

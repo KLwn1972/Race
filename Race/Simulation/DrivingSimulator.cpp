@@ -32,6 +32,11 @@ vector<node> Simulation::DrivingSimulator::RunSimulation()
 	return this->rawtrack;
 }
 
+vector<Simulation::SimulationNode> Simulation::DrivingSimulator::ReturnModifiedTrack()
+{
+	return this->modifiedtrack;
+}
+
 void Simulation::DrivingSimulator::createModifiedTrack()
 {
 	const size_t NumberOfInterpolationPoints = 1;
@@ -47,7 +52,7 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 			double DistanceOldNew = oldStepSimNode.distanceToNext;
 			double DistanceBetweenPoints = DistanceOldNew / (NumberOfInterpolationPoints + 1);
 			newTrack.at(i - 1).distanceToNext = DistanceBetweenPoints;
-			for (int j = 1; j <= NumberOfInterpolationPoints; j++) //TODO: Check boundaries
+			for (int j = 1; j <= NumberOfInterpolationPoints; j++)
 			{
 				double DistanceToCheck = j * DistanceBetweenPoints;
 				SimulationNode interpolatedNode = SimulationNode();
@@ -118,12 +123,13 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 	this->modifiedtrack.at(0).raceTime = 0;
 
 	for (size_t i = 0; i < modifiedtrack.size() - 1; i++) {
-		node& currentPos = this->modifiedtrack.at(i);
-		node& nextPos = this->modifiedtrack.at(i + 1);
+		SimulationNode& currentPos = this->modifiedtrack.at(i);
+		SimulationNode& nextPos = this->modifiedtrack.at(i + 1);
 		double localDistance = currentPos.distanceToNext;
 		//case 1: acceleration
 		if (nextPos.speedLimit > currentPos.speedIs) {
 			double MaxLocalAcceleration = this->accelerationcalc->calcAcceleration(currentPos.speedIs, currentPos, nextPos);                //get amax
+			currentPos.MaxAcceleration = MaxLocalAcceleration;
 			double speed_temp = sqrt((currentPos.speedIs) * (currentPos.speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
 			 // determine the Is-speed and raceTime according to different situation
 			if (speed_temp > nextPos.speedLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
@@ -143,6 +149,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		//case 3: decceleration
 		else {
 			double MaxLocalDecceleration = this->accelerationcalc->calcDecceleration(currentPos.speedIs, currentPos, nextPos);
+			currentPos.MaxAcceleration = MaxLocalDecceleration;
 			nextPos.speedIs = nextPos.speedLimit;                                       // IsSpeed always equal the new limt because the effect of maximal bremsen is already considered
 			//determine the raceTime according to different situation
 			if (currentPos.speedIs < currentPos.speedLimit) {                                         // IsSpeed at current point smaller than speed limit, hold speed till the speed limit reached  then brake with max decceleration

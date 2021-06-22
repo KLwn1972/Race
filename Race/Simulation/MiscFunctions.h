@@ -1,7 +1,8 @@
 #pragma once
 #include "../Race.h"
 #include <vector>
+#include "SimulationNode.h"
 namespace Simulation
 {
-	void plotNodeVector(vector<node> input, string filename);
+	void plotNodeVector(vector<SimulationNode> input, string filename);
 };
