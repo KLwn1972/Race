@@ -28,6 +28,8 @@ namespace Simulation {
 		~ImportSimulationConfig();
 
 	private:
+		Vehicle* vehicle;
+		SimulationEnvironment* environment;
 	};
 }
 
