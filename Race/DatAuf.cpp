@@ -11,20 +11,11 @@ using namespace std;
 
 
 void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
-
-		cout << "DatAuf: DataProcessing aufgerufen" << endl;
-
 		GetTestData();
-		GetDistanceMeters2D(nodes[0], nodes[1]);
-		GetDistanceMeters3D(nodes[0], nodes[1]);
-
 		// Check and insert additional knots if necessary
 		this->InsertAdditionalNodes();
-
 		// Calculate Data for SOLL-Fahrtbestimmmung 
 		this->CalcRadiusGradientData();
-
-
 	}
 
 
@@ -157,6 +148,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	}
 
+
 	void DatAuf::CalcDatAuf::CopyNodesToSplineKnots(int NodeItem) {
 
 		int MaxNumberNodes = this->nodes.size();
@@ -222,6 +214,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		return;
 	}
 
+
 	node DatAuf::CalcDatAuf::GetInterpolKnot() {
 		node Node;
 		Node.longitude = SplineSegment.InterpolKnot[0];
@@ -230,6 +223,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		return Node;
 	}
+
 
 	void DatAuf::CalcDatAuf::InsertOneAdditionalNode(int NodeItem, int NumberAdditionalNodes, node NewNode) {
 		std::vector<node>::iterator NewNodeItemInsert = this->nodes.begin() + NodeItem + NumberAdditionalNodes;
@@ -240,6 +234,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		return;
 	}
+
 
 	void DatAuf::CalcDatAuf::CalcRadiusGradientData() {
 
@@ -258,7 +253,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		return;
 	}
 
-	double DatAuf::CalcDatAuf::Get1Coordinate(int index) {
+	
+	double DatAuf::CalcDatAuf::Get1Coordinate(int index) {		//entfernen?
 		// Dummy-Funktion
 		vector<double> oneNode;
 		oneNode.push_back(nodes[index].longitude);
@@ -293,10 +289,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 			distance2D = (D * (1 + earth_flattening * H1 * sin(F) * sin(F) * cos(G) * cos(G) - earth_flattening * H2 * cos(F) * cos(F) * sin(G) * sin(G)))*1000;
 		}
-		//cout << "DatAuf: GetDistanceMeters2D-Funktion wurde aufgerufen. Die Distanz betraegt: " << distance2D<< " Meter." <<endl;	
 		return distance2D;
 	}
-
 
 
 	double DatAuf::GetDistanceMeters3D(node node1, node node2) {
@@ -310,33 +304,11 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		double DiffElevation = (node2.elevation - node1.elevation);
 		distance3D = sqrt(distance2D * distance2D + DiffElevation * DiffElevation);
 		}
-		//cout << "DatAuf: GetDistanceMeters3D-Funktion wurde aufgerufen. Die Distanz betraegt: " << distance3D << " Meter." <<endl;
 		return distance3D;
 	}
 
 
-
-
 	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(int index) {
-
-		//--------------
-																// bool wird jedes mal aufgerufen?!
-		/*
-		if (loop) {																			// Bedingung: Letzter Knoten ist gleich erster Knoten -> ueberpruefen im OSM_Nord!
-			if (index == 0) { preIndex = MaxIndexNodes - 1; }
-			if (index == MaxIndexNodes) { postIndex = 1; }
-		}
-
-		if (!loop && (index == 0 || index == MaxIndexNodes)) { // no loop & starting condition
-			double radiusIndex = 10E6;
-		}
-		else if ((nodes[preIndex].elevation == nodes[index].elevation && nodes[preIndex].elevation == nodes[postIndex].elevation) || (nodes[preIndex].distanceToNext == 0 && nodes[index].distanceToNext == 0)) {  // straight line
-			double radiusIndex = 10E6;
-		}
-		else {*/
-		//-----------
-
-
 		// define Index for 3 points																	// Prüfen was an Rändern passiert
 		int MaxIndexNodes = this->nodes.size() - 1;
 		int preIndex = index - 1;
@@ -405,6 +377,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		}
 	}
 
+
 	void DatAuf::CalcDatAuf::CalcVerticalCurveRad(int index) {
 		double radiusIndex = 0;
 		// define Index for 3 points														// Prüfen was an Rändern passiert
@@ -467,6 +440,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		
 	}
 
+
 	void DatAuf::CalcDatAuf::CalcGradientPercentage(int index) {
 		//cout << "DatAuf: CalcGradientPercentage2-Funktion wurde aufgerufen." << endl;
 
@@ -474,6 +448,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		return;
 	}
+
 
 	void DatAuf::CalcDatAuf::InsertOneNodeRecursiv(node Node1, node Node2, SplineCatmullRom SplineSegment){
 		cout << "DatAuf: InsertOneNodeRecursiv-Funktion wurde aufgerufen." << endl;
@@ -485,10 +460,12 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	}
 
+
 	double DatAuf::deg2rad(double grad) {
 		double rad = grad * 3.14159265358979 / 180;
 		return rad;
 	}
+
 
 	bool DatAuf::CalcDatAuf::isLoop()
 	{
@@ -546,5 +523,3 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		nodes[8].distanceToNext = nodes[0].distanceToNext;
 
 	}
-
-
