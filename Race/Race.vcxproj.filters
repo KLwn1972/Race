@@ -63,13 +63,19 @@
     <ClCompile Include="Ausgabe-Visualisierung.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="NASA_GeoCoordConversion.cpp">
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Quelldateien\External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>Quelldateien\External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp">
       <Filter>Quelldateien\NASA</Filter>
     </ClCompile>
-    <ClCompile Include="NASA_ElevationCalculator.cpp">
+    <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp">
       <Filter>Quelldateien\NASA</Filter>
     </ClCompile>
-    <ClCompile Include="NASA_ElevationDataDownloader.cpp">
+    <ClCompile Include="NASA_src\NASA_GeoCoordConversion.cpp">
       <Filter>Quelldateien\NASA</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
@@ -116,13 +122,16 @@
     <ClInclude Include="Simulation\SimulationNode.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="NASA_GeoCoordConversion.h">
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NASA_src\NASA_GeoCoordConversion.h">
       <Filter>Headerdateien\NASA</Filter>
     </ClInclude>
-    <ClInclude Include="NASA_ElevationCalculator.h">
+    <ClInclude Include="NASA_src\NASA_DataFileHandler.h">
       <Filter>Headerdateien\NASA</Filter>
     </ClInclude>
-    <ClInclude Include="NASA_ElevationDataDownloader.h">
+    <ClInclude Include="NASA_src\NASA_ElevationCalculator.h">
       <Filter>Headerdateien\NASA</Filter>
     </ClInclude>
     <ClInclude Include="cJSON.h">

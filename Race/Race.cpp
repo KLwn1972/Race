@@ -5,10 +5,6 @@
 #include "Race.h"
 #include "OpenStreetMap.h"
 
-#include "NASA_ElevationDataDownloader.h"
-#include "NASA_ElevationCalculator.h"
-#include "NASA_GeoCoordConversion.h"
-
 #include "Simulation/Vehicle.h"
 #include "Simulation/DataMap2D.h"
 #include "Simulation/ImportSimulationConfig.h"
@@ -23,13 +19,13 @@ int main()
 
 	string route = "38566";
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
+	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
 	int retval = OSM_Nord->GetNodesFromOSM();
 
 	// Hier macht Datenaufbereitung weiter
 	if (retval == 0) {
 		vector<node> nodes = OSM_Nord->nodes;
-		//output_gpx(nodes, "output.gpx"); //funktioniert noch nicht, da raceTime fehlt
-		output_kml(nodes, "output.kml");
+		ausgabe_visualisierung(nodes);
 	}
 	// Wenn nicht mehr benötigt wird
 	delete OSM_Nord;
@@ -43,8 +39,16 @@ int main()
 	*/
 
 	//NASA
-	FileDownloader testlader;
-	testlader.downloadFile("Ha", "Hi");
+	double long_stuttgart = 9.206802;
+	double lat_stuttgart = 48.742211;
+	ElevationCalculator calc;
+	cout.setf(ios::fixed, ios::floatfield);
+	cout.precision(6);
+	cout << calc.getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
+	cout << GeoCoordConversion::getGrad_From_WGS84Decimal(long_stuttgart) << endl;
+	cout << setw(20) <<  GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
+	cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
+	cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
 
 	//Fahrphysik
 	//Simulation::ExampleElectricVehicle();
