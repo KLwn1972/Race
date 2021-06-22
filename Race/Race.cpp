@@ -112,8 +112,8 @@ vector<node> ExampleStraightTrack(double length)
 		newnode.longitude = Simulation::interpolateValues(0, startlong, distance, endlong, i * stepWidth);
 		newnode.gradient = ((endelevation - startelevation) / distance) * 100;
 		newnode.speedLimit = 200 * Simulation::KMH2MS;
-		newnode.horizontalCurveRadius = 0;
-		newnode.verticalCurveRadius = 0;
+		newnode.horizontalCurveRadius = INFINITY;
+		newnode.verticalCurveRadius = INFINITY;
 		newnode.id = std::to_string(i);
 		result.push_back(newnode);
 	}
