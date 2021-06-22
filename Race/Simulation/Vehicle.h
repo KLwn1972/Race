@@ -15,7 +15,6 @@ namespace Simulation
 		DataMap2D LowerShiftLimit; //DataMap with engine speed [1/s], low shift pedal point
 		DataMap2D UpperShiftLimit; //DataMap with engine speed [1/s], upshift pedal point
 		double GearRatio = nan("");
-		GearEntry();
 	};
 
 	enum class PowerTrainTypes
@@ -29,7 +28,7 @@ namespace Simulation
 	public:
 		string Manufacturer = "";
 		string Model = "";
-		
+
 		double Mass = nan(""); //kg
 
 		double FrontalArea = nan(""); //m^2

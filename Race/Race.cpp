@@ -10,6 +10,9 @@
 #include "Simulation/ImportSimulationConfig.h"
 #include "Simulation/DrivingSimulator.h"
 #include "Simulation/MockSimulationConfig.h"
+#include "Simulation/SimulationEnvironment.h"
+
+#include "Soll_Fahrtbestimmung.h"
 
 using namespace std;
 
@@ -30,13 +33,13 @@ int main()
 	// Wenn nicht mehr benötigt wird
 	delete OSM_Nord;
 
-	/* Da noch Sued. Eigentlich eine beliebige Route
-	route = "38567";
-	OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
-	if (OSM_Sued->GetNodesFromOSM() == 0){
-	}
-	delete OSM_Sued;
-	*/
+	///* Da noch Sued. Eigentlich eine beliebige Route
+	//route = "38567";
+	//OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
+	//if (OSM_Sued->GetNodesFromOSM() == 0){
+	//}
+	//delete OSM_Sued;
+	//*/
 
 	//NASA
 	double long_stuttgart = 9.206802;
@@ -46,17 +49,11 @@ int main()
 	cout.precision(6);
 	cout << calc.getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
 	cout << GeoCoordConversion::getGrad_From_WGS84Decimal(long_stuttgart) << endl;
-	cout << setw(20) <<  GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
+	cout << setw(20) << GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
 	cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
 	cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
 
 	//Fahrphysik
-	//Simulation::ExampleElectricVehicle();
-	//TODO: Build Testtrack;
-	auto track = vector<node>();
-	////Fahrphysik
-	////Simulation::ExampleElectricVehicle();
-	////TODO: Build Testtrack;
 	auto track = ExampleStraightTrack(0);
 	string SimulationConfigFile = "SimulationConfig.json";
 	auto SimulationConfig = Simulation::MockSimulationConfig();
@@ -70,6 +67,12 @@ int main()
 	cout << Datamap->getY(1.9) << "\n";
 	cout << Datamap->getY(800) << "\n";
 
+	Simulation::Vehicle* electricvehicle = Simulation::ExampleElectricVehicle();
+	Simulation::SimulationEnvironment* environment = Simulation::ExampleSimulationEnvironment();
+	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
+	SollFahrt->setEnvironment(environment);
+	SollFahrt->setVehicle(electricvehicle);
+	SollFahrt->V_max();
 	return 0;
 }
 
