@@ -17,7 +17,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		GetDistanceMeters2D(nodes[0], nodes[1]);
 		GetDistanceMeters3D(nodes[0], nodes[1]);
 
-		// Check and insert if necessary additional knots
+		// Check and insert additional knots if necessary
 		this->InsertAdditionalNodes();
 
 		// Calculate Data for SOLL-Fahrtbestimmmung 
@@ -34,8 +34,6 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		int NodeItem = 0;
 		int NodeItemInsert;
-		int NodeItemCurrent = 0;
-		int NodeItemNext = 0;
 		int MaxNumberNodes = this->nodes.size();
 		int NumberAdditionalNodes;
 		int InsertMode = 0;
@@ -55,11 +53,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		//Schleife fuer geschlossenen Kurs
 		//while (NodeItem < MaxNumberNodes - 2) {
-			NodeItemCurrent = NodeItem;
-			NodeItemNext = NodeItem + 1;
 
 			//Nodes-Info auf lokalen SplineSegment kopieren
-			//for (int i = NodeItem - 1;i < NodeItem + 3;i++) {
 			for (int i = 0;i < 4;i++) {
 				SplineSegment.SplineKnots[i][0] = this->nodes[NodeItem-1+i].longitude;
 				SplineSegment.SplineKnots[i][1] = this->nodes[NodeItem-1+i].latitude;
@@ -112,7 +107,6 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 					while (t_current < 1.0) {
 						iterator += 1;
 
-						SplineSegment.InterpolKnotReset();
 						SplineSegment.CalcInterpolKnot(t_current);
 						NewNode.longitude = SplineSegment.InterpolKnot[0];
 						NewNode.latitude = SplineSegment.InterpolKnot[1];
@@ -128,11 +122,12 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 							t_current = t_previous + Delta_t;
 						}
 						else {
+							//Insert Additional Node
 							NumberAdditionalNodes += 1;
 							NewNodeItemInsert = nodes.begin() + NodeItem + NumberAdditionalNodes;
 							this->nodes.insert(NewNodeItemInsert, NewNode);
+							//Preparation next iteration step
 							PrevNode = NewNode;
-							//NumberAdditionalNodes += 1;
 							t_previous = t_current;
 							t_current = t_current + Delta_t;
 						}
@@ -146,9 +141,9 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 				}
 
 			}
-			//NodeItem hochzaehlen
+			//Increment NodeItem
 			NodeItem += 1;
-			// MaxNumberNodes updaten nach Einf�gen weiterer "nodes"
+			// Update MaxNumberNodes after insertion
 			MaxNumberNodes = this->nodes.size();
 		}
 
@@ -161,8 +156,6 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(Node1, Node2);
 		}
-
-		SplineSegment.CalcInterpolKnot(0.65);
 
 	}
 
