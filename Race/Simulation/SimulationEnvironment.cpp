@@ -5,7 +5,7 @@ using namespace Simulation;
 
 double Simulation::SimulationEnvironment::calcAirPressure(double height)
 {
-	return this->Airpressure; //Todo: Height
+	return this->Airpressure; //TODO: calculate Height influence
 }
 
 double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
@@ -15,17 +15,22 @@ double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
 
 double Simulation::SimulationEnvironment::calcRelevantWindSpeed(double VehicleDirection)
 {
-	return this->Windspeed; //TODO: Winddir
+	return this->Windspeed; //TODO: Windir
 }
 
-double Simulation::SimulationEnvironment::calcRoadResistanceCoefficient()
+void Simulation::SimulationEnvironment::setRoadResistanceCoefficient(double RoadResistanceCoefficient)
 {
-	return 0.0;
+	this->RoadResistanceCoefficient = RoadResistanceCoefficient;
+}
+
+double Simulation::SimulationEnvironment::getRoadResistanceCoefficient()
+{
+	return this->RoadResistanceCoefficient;
 }
 
 double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity, double Gradient)
 {
-	return 0.0;
+	return 0.0; //TODO: FrictionCoefficient
 }
 
 double Simulation::SimulationEnvironment::calcAirDensity(double height)

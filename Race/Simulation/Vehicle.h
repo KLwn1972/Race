@@ -26,6 +26,9 @@ namespace Simulation
 	class Vehicle
 	{
 	public:
+		string Manufacturer = "";
+		string Model = "";
+
 		double Mass = nan(""); //kg
 
 		double FrontalArea = nan(""); //m^2

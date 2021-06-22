@@ -149,7 +149,9 @@
     <ClCompile Include="Simulation\AccelerationCalculator.cpp" />
     <ClCompile Include="Simulation\DataMap2D.cpp" />
     <ClCompile Include="Simulation\DrivingSimulator.cpp" />
+    <ClCompile Include="Simulation\IImportSimulationConfig.cpp" />
     <ClCompile Include="Simulation\ImportSimulationConfig.cpp" />
+    <ClCompile Include="Simulation\MockSimulationConfig.cpp" />
     <ClCompile Include="Simulation\Position.cpp" />
     <ClCompile Include="Simulation\SimulationEnvironment.cpp" />
     <ClCompile Include="Simulation\Vehicle.cpp" />
@@ -165,7 +167,9 @@
     <ClInclude Include="Simulation\AccelerationCalculator.h" />
     <ClInclude Include="Simulation\DataMap2D.h" />
     <ClInclude Include="Simulation\DrivingSimulator.h" />
+    <ClInclude Include="Simulation\IImportSimulationConfig.h" />
     <ClInclude Include="Simulation\ImportSimulationConfig.h" />
+    <ClInclude Include="Simulation\MockSimulationConfig.h" />
     <ClInclude Include="Simulation\Position.h" />
     <ClInclude Include="Simulation\SimulationEnvironment.h" />
     <ClInclude Include="Simulation\SimulationNode.h" />

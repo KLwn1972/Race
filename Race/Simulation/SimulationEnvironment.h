@@ -1,32 +1,27 @@
 #pragma once
+#ifndef SIMENVIRONMENT
+#define SIMENVIRONMENT
+
 #include <tuple>
 #include <cmath>
 #include <vector>
+#include "DataMap2D.h"
 
 namespace Simulation
 {
-	class FrictionEntry {
-	public:
-		double VehicleSpeed = nan("");
-		double FrictionCoefficient = nan("");
-		FrictionEntry(double VehicleSpeed, double FrictionCoefficient)
-		{
-			this->VehicleSpeed = VehicleSpeed;
-			this->FrictionCoefficient = FrictionCoefficient;
-		}
-	};
-
 	class SimulationEnvironment
 	{
 	public:
 		double calcAirPressure(double height);
 		double calcAirTemperatureInKelvin();
 		double calcRelevantWindSpeed(double VehicleDirection); //Vehicledirection in [°]
-		double calcRoadResistanceCoefficient();
 		double calcFrictionCoefficient(double Velocity, double Gradient);
 		double calcAirDensity(double height);
+		double getRoadResistanceCoefficient();
 
 		void setAirtemperatureCelsius(double Airtemperature);
+		void setRoadResistanceCoefficient(double RoadResistanceCoefficient);
+		
 		void setAirpressure(double Airpressure);
 		void setWindspeed(double Windspeed);
 		void setWinddirection(double Winddirection);
@@ -36,7 +31,8 @@ namespace Simulation
 		double Airpressure = nan("");
 		double Windspeed = nan("");
 		double Winddirection = nan(""); //[°];
-		std::vector<FrictionEntry> FrictionTable;
+		double RoadResistanceCoefficient = nan("");
+		DataMap2D FrictionTable; //VehicleSpeed[m/s], µ [-]
 	};
 
 	//Conversions
@@ -64,3 +60,5 @@ namespace Simulation
 
 	SimulationEnvironment* ExampleSimulationEnvironment();
 }
+
+#endif

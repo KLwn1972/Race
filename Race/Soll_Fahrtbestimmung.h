@@ -52,8 +52,8 @@ private:
 	double FrictionCoefficient = 0.1; //Klären mit Gruppe 6 wie die Kurve abzufragen !
 
 	vector<node> n;
-	Vehicle* vehicle;
-	SimulationEnvironment* environment;
+	Vehicle* vehicle = new Vehicle();
+	SimulationEnvironment* environment = new SimulationEnvironment();
 
 	double const Airdensity = 1.121;
 };

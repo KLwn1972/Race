@@ -6,23 +6,25 @@ Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle& vehicle, Sim
 
 double Simulation::AccelerationCalculator::calcAcceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
-	this->TrackPoint = TrackPoint;
+	this->TrackPoint = TrackPoint; //TODO: check CalcAcc
 	this->NextPoint = NextPoint;
-
-	return 10;
+	double TotalInertia = this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia;
+	return calcEffectiveWheelForceLong(TrackPoint.gradient, velocity) / (this->vehicle.Mass + TotalInertia / this->vehicle.calcDynamicWheelRadius());
 }
 
 double Simulation::AccelerationCalculator::calcDecceleration(double velocity, simulationNode TrackPoint, simulationNode NextPoint)
 {
-	this->TrackPoint = TrackPoint;
+	this->TrackPoint = TrackPoint; //TODO: Check Calculation
 	this->NextPoint = NextPoint;
-	double effectDeccelerationForce = -(calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient)) - this->vehicle.DeccelerationMax * this->vehicle.Mass;
-	return effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcDynamicWheelRadius());
+	double SumResistance = calcAirResistance(velocity) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient);
+	double effectDeccelerationForce = -SumResistance - this->vehicle.DeccelerationMax * this->vehicle.Mass;
+	double decceleration = effectDeccelerationForce / (this->vehicle.Mass + (this->vehicle.EngineInertia + this->vehicle.AxleInertia + this->vehicle.WheelInertia) / this->vehicle.calcDynamicWheelRadius());
+	return decceleration;
 }
 
 double Simulation::AccelerationCalculator::calcAirResistance(double velocity)
 {
-	double deltaY = (this->NextPoint.Coordinates.PositionY - this->TrackPoint.Coordinates.PositionY);
+	double deltaY = (this->NextPoint.Coordinates.PositionY - this->TrackPoint.Coordinates.PositionY); //TODO: Check with Excel
 	double deltaX = (this->NextPoint.Coordinates.PositionX - this->TrackPoint.Coordinates.PositionX);
 	double vehicledirection = asin(deltaY / deltaX);
 
@@ -33,7 +35,7 @@ double Simulation::AccelerationCalculator::calcAirResistance(double velocity)
 
 double Simulation::AccelerationCalculator::calcRollingResistance(double gradient)
 {
-	return vehicle.Mass * GRAVITATIONALCONSTANT * environment.calcRoadResistanceCoefficient() * cos(gradient); //TODO: check gradient format
+	return vehicle.Mass * GRAVITATIONALCONSTANT * this->environment.getRoadResistanceCoefficient() * cos(gradient); //TODO: check gradient format
 }
 
 double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)
@@ -50,12 +52,14 @@ double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gr
 	}
 	else if (this->vehicle.PowerTrainType == PowerTrainTypes::ICE)
 	{
-		maximumTorque = 0.0; //TODO!
+		maximumTorque = 0.0; //TODO: Manual Gearbox Torque Calculation
 	}
-	double longitudalPowertrainForce = maximumTorque * this->vehicle.FinalDriveRatio * this->vehicle.PowertrainEfficiency / this->vehicle.calcDynamicWheelRadius();
+	//Calculation of resulting forces
+	double longitudalPowertrainForceMax = maximumTorque * this->vehicle.FinalDriveRatio * this->vehicle.PowertrainEfficiency / this->vehicle.calcDynamicWheelRadius();
+	double ResistanceForce = (calcAirResistance(velocity) + calcGradientResistance(TrackPoint.gradient) + calcRollingResistance(TrackPoint.gradient));
+	double ResultingForceLong = longitudalPowertrainForceMax - ResistanceForce;
 	double Adhesionlimit = this->calcAdhesionLimit(gradient, velocity);
-	double ResultingForce = min(longitudalPowertrainForce, Adhesionlimit);
-	return 0.0;
+	return min(ResultingForceLong, Adhesionlimit);
 }
 
 double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, double velocity)

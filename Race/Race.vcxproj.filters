@@ -78,6 +78,18 @@
     <ClCompile Include="NASA_src\NASA_GeoCoordConversion.cpp">
       <Filter>Quelldateien\NASA</Filter>
     </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Quelldateien\External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>Quelldateien\External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\IImportSimulationConfig.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\MockSimulationConfig.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -121,6 +133,18 @@
     </ClInclude>
     <ClInclude Include="NASA_src\NASA_ElevationCalculator.h">
       <Filter>Headerdateien\NASA</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON.h">
+      <Filter>Headerdateien\External Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Headerdateien\External Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\IImportSimulationConfig.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\MockSimulationConfig.h">
+      <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
