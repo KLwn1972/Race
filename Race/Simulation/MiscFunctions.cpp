@@ -1,5 +1,6 @@
 #include "MiscFunctions.h"
 #include <fstream>
+#include <locale>
 
 void Simulation::plotNodeVector(vector<node> input, string filename)
 {
@@ -10,6 +11,7 @@ void Simulation::plotNodeVector(vector<node> input, string filename)
 		return;
 	}
 	else {
+		exportFile.imbue(std::locale("de")); //Set the locale to get commas in the exportfile
 		exportFile << "lat;" << "long;" << "elevation;" << "gradient;" << "racetime;" << "speedIs;" << "speedLimit;" << "\n";
 		for (auto& currentnode : input) {
 			exportFile << currentnode.latitude << ";";
