@@ -85,3 +85,13 @@ double Simulation::interpolateValues(double startX, double startValue, double en
 {
 	return startValue + ((endValue - startValue) / (endX - startX)) * (whereToInterPolate - startX);
 }
+
+std::vector<double> Simulation::DataMap2D::getXData()
+{
+	return this->xData;
+}
+
+std::vector<double> Simulation::DataMap2D::getYData()
+{
+	return this->yData;
+}

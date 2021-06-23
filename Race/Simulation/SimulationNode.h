@@ -1,18 +1,17 @@
 #pragma once
-#include "Position.h"
+#ifndef SIMNODE
+#define SIMNODE
+
+#include "../Race.h"
+
 namespace Simulation
 {
-	class simulationNode
-	{
+	class SimulationNode :public node {
 	public:
-		Position Coordinates = Position();
-		double raceDistance = nan("");
-		double gradient = nan("");
-		double speedLimit = nan("");
-		double newLimit = nan("");
-		double raceTime = nan("");
-		double speedIs = nan("");
-		size_t baseID = INT16_MAX; //the position of the entry in the base array
-		simulationNode();
+		double MaxAcceleration = nan("");
+		SimulationNode();
+		SimulationNode(node input);
 	};
 }
+
+#endif

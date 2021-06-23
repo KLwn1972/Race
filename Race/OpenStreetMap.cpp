@@ -1,4 +1,3 @@
-#include <sal.h>
 #include <fstream>
 #include <string>
 
@@ -8,16 +7,13 @@
 
 using namespace std;
 
-OpenStreetMap::OpenStreetMap(string route) {
+OpenStreetMap::OpenStreetMap(string route){
 	this->route = route;
-	// Get TEMP path
-	_Post_ _Notnull_ char* var;
+	// Get Temp folder
+	char* var;
 	size_t len;
-	errno_t err = _dupenv_s(&var, &len, "TEMP");
-	if (err) {
-		this->LocalPath = "C:\\Temp";
-	}
-	else {
+	int err = _dupenv_s(&var, &len, "TEMP");
+	if (!err && var != nullptr) {
 		this->LocalPath = var;
 	}
 }
@@ -26,44 +22,49 @@ OpenStreetMap::~OpenStreetMap() {
 	this->nodes.clear();
 }
 
-int OpenStreetMap::GetNodesFromOSM() {
-	string URL = "";
-	string FileName = "";
+int OpenStreetMap::GetNodesFromOSM(){
+	string URL = "", FileName = "";
+	string lastNode = "";
 	// Dounload Route
-	URL = this->BuidLink("relation", this->route);
-	FileName = this->BuidFileName(this->route);
+	URL = this->BuildLink("relation", this->route);
+	FileName = this->BuildFileName(this->route);
 	if (this->DownloadFile(URL, FileName) != S_OK) {
 		return -1;
 	}
 	// Get Ways
 	vector<string> ways = this->GetWays(FileName);
-	for (std::vector<string>::iterator way_item = ways.begin(); way_item != ways.end(); ++way_item) {
-		// Dounload Way
+	for (vector<string>::iterator way_item = ways.begin() + waysOffset; way_item != ways.end(); ++way_item) {
+		// Download Way
 		string way_id = *way_item;
-		URL = this->BuidLink("way", way_id);
-		FileName = this->BuidFileName(way_id);
+		URL = this->BuildLink("way", way_id);
+		FileName = this->BuildFileName(way_id);
 		if (this->DownloadFile(URL, FileName) != S_OK) {
 			return -1;
 		}
 		// Get Nodes
 		vector<string> nodes = this->GetNodes(FileName);
-		for (std::vector<string>::iterator node_item = nodes.begin(); node_item != nodes.end(); ++node_item) {
-			// Dounload Nodes
+		for (vector<string>::iterator node_item = nodes.begin(); node_item != nodes.end(); ++node_item) {
 			string node_id = *node_item;
-			URL = this->BuidLink("node", node_id);
-			FileName = this->BuidFileName(node_id);
-			if (this->DownloadFile(URL, FileName) != S_OK) {
-				return -1;
+			// Erster Knoten = Letzter Knoten (Vorheriger Weg)
+			if (node_id != lastNode) {
+				// Download Nodes
+				URL = this->BuildLink("node", node_id);
+				FileName = this->BuildFileName(node_id);
+				if (this->DownloadFile(URL, FileName) != S_OK) {
+					return -1;
+				}
+				// Get Coordinates
+				vector<double> coordinates = this->GetCoordinates(FileName);
+				// Add Node
+				node node2add;
+				node2add.id = node_id;
+				node2add.latitude = coordinates[0];
+				node2add.longitude = coordinates[1];
+				ElevationCalculator EvalCalc;
+				node2add.elevation = EvalCalc.getElevationFromSRTM_SIRCdata(coordinates[0], coordinates[1]);
+				this->nodes.push_back(node2add);
+				lastNode = node_id;
 			}
-			// Get Coordinates
-			vector<double> coordinates = this->GetCoordinates(FileName);
-			// Add Node
-			node node2add;
-			node2add.latitude = coordinates[0];
-			node2add.longitude = coordinates[1];
-			ElevationCalculator EvalCalc;
-			node2add.elevation = EvalCalc.getElevationFromSRTM_SIRCdata(coordinates[0], coordinates[1]);
-			this->nodes.push_back(node2add);
 		}
 	}
 	return 0;
@@ -127,26 +128,36 @@ cJSON* OpenStreetMap::JSON_ReadFileToStructur(string FileName) {
 		FileContent.assign((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
 		t.close();
 		return cJSON_Parse(FileContent.c_str());
-	}
-	else {
+	} else {
 		return NULL;
 	}
 }
 
 HRESULT OpenStreetMap::DownloadFile(string URL, string OutFile) {
-	HRESULT result = URLDownloadToFile(NULL, this->StrToTchar(URL), this->StrToTchar(OutFile), NULL, NULL);
-#ifdef DEBUG
-	cout << endl << URL << endl << OutFile << endl;
-	switch (result) {
-	case S_OK: cout << "Download was successful." << endl; break;
-	case E_OUTOFMEMORY: cout << "#####ERROR: The buffer length is invalid, or there is insufficient memory to complete the operation." << endl; break;
-	case INET_E_DOWNLOAD_FAILURE: cout << "#####ERROR: The specified resource or callback interface was invalid." << endl; break;
+	// Datei existiert bereits
+	if (GetFileAttributes(StrToTchar(OutFile)) != INVALID_FILE_ATTRIBUTES) {
+		#ifdef DEBUG
+			cout << endl << URL << endl << OutFile << endl << "File exists already" << endl;
+		#else
+			cout << "=";
+		#endif
+		return S_OK;
 	}
-#endif
+	HRESULT result = URLDownloadToFile(NULL, this->StrToTchar(URL), this->StrToTchar(OutFile), NULL, NULL);
+	#ifdef DEBUG
+		cout << endl << URL << endl << OutFile << endl;
+		switch (result) {
+			case S_OK: cout << "Download was successful." << endl; break;
+			case E_OUTOFMEMORY: cout << "#####ERROR: The buffer length is invalid, or there is insufficient memory to complete the operation." << endl; break;
+			case INET_E_DOWNLOAD_FAILURE: cout << "#####ERROR: The specified resource or callback interface was invalid." << endl; break;
+		}
+	#else
+		cout << "=";
+	#endif
 	return result;
 }
 
-string OpenStreetMap::BuidLink(string type, string name) {
+string OpenStreetMap::BuildLink(string type, string name) {
 	string url = this->LinkPart;
 	url += "/";
 	url += type;
@@ -156,7 +167,7 @@ string OpenStreetMap::BuidLink(string type, string name) {
 	return url;
 }
 
-string OpenStreetMap::BuidFileName(string name) {
+string OpenStreetMap::BuildFileName(string name) {
 	string file_name = this->LocalPath;
 	file_name += "\\";
 	file_name += name;
@@ -164,9 +175,12 @@ string OpenStreetMap::BuidFileName(string name) {
 	return file_name;
 }
 
-wchar_t* OpenStreetMap::StrToTchar(string in) {
-	TCHAR* retval = new TCHAR[in.size() + 1];
-	retval[in.size()] = 0;
-	std::copy(in.begin(), in.end(), retval);
+wchar_t* OpenStreetMap::StrToTchar(string str2convert) {
+	TCHAR* retval = new TCHAR[str2convert.size() + 1];
+	retval[str2convert.size()] = 0;
+	copy(str2convert.begin(), str2convert.end(), retval);
 	return retval;
 }
+
+
+

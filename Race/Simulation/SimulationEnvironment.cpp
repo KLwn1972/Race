@@ -5,7 +5,8 @@ using namespace Simulation;
 
 double Simulation::SimulationEnvironment::calcAirPressure(double height)
 {
-	return this->Airpressure; //Todo: Height
+	double heightinfluence = pow((1 - TEMPERATUREGRADIENT * (height - this->PressureHeight) / calcAirTemperatureInKelvin()), 5.255);
+	return this->Airpressure * heightinfluence;
 }
 
 double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
@@ -15,17 +16,22 @@ double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
 
 double Simulation::SimulationEnvironment::calcRelevantWindSpeed(double VehicleDirection)
 {
-	return this->Windspeed; //TODO: Winddir
+	return this->Windspeed * cos(VehicleDirection);
 }
 
-double Simulation::SimulationEnvironment::calcRoadResistanceCoefficient()
+void Simulation::SimulationEnvironment::setRollingResistanceCoefficient(double Coefficient)
 {
-	return 0.0;
+	this->RollingResistanceCoefficient = Coefficient;
 }
 
-double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity, double Gradient)
+double Simulation::SimulationEnvironment::getRollingResistanceCoefficient()
 {
-	return 0.0;
+	return this->RollingResistanceCoefficient;
+}
+
+double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity)
+{
+	return this->FrictionTable.getY(Velocity);
 }
 
 double Simulation::SimulationEnvironment::calcAirDensity(double height)
@@ -43,6 +49,11 @@ void Simulation::SimulationEnvironment::setAirpressure(double Airpressure)
 	this->Airpressure = Airpressure;
 }
 
+void Simulation::SimulationEnvironment::setAirpressureHeight(double PressureHeight)
+{
+	this->PressureHeight = PressureHeight;
+}
+
 void Simulation::SimulationEnvironment::setWindspeed(double Windspeed)
 {
 	this->Windspeed = Windspeed;
@@ -53,6 +64,10 @@ void Simulation::SimulationEnvironment::setWinddirection(double Winddirection)
 	this->Winddirection = Winddirection;
 }
 
+void Simulation::SimulationEnvironment::setFrictionTable(std::vector<double> velocityValues, std::vector<double> CoefficientValues) {
+	this->FrictionTable = DataMap2D(velocityValues, CoefficientValues);
+}
+
 SimulationEnvironment* Simulation::ExampleSimulationEnvironment()
 {
 	SimulationEnvironment* result = new SimulationEnvironment();
@@ -60,6 +75,10 @@ SimulationEnvironment* Simulation::ExampleSimulationEnvironment()
 	result->setAirtemperatureCelsius(22);
 	result->setWinddirection(0);
 	result->setWindspeed(10);
+	result->setRollingResistanceCoefficient(0.014);
+	std::vector<double> frictiondataSpeed = { 10 * KMH2MS,50 * KMH2MS,100 * KMH2MS };
+	std::vector<double> frictiondataCoeff = { 1.15, 1.0, 0.8 };
+	result->setFrictionTable(frictiondataSpeed, frictiondataCoeff);
 
 	return result;
 }
