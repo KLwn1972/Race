@@ -13,9 +13,13 @@ using namespace std;
 void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		GetTestData();
 		// Check and insert additional knots if necessary
+		cout << "DatAuf: Insert nodes..." << endl;
 		this->InsertAdditionalNodes();
+		cout << "DatAuf: Done.." << endl;
+		cout << "DatAuf: Calculation of vertical and horizontal radius and gradient..." << endl;
 		// Calculate Data for SOLL-Fahrtbestimmmung 
 		this->CalcRadiusGradientData();
+		cout << "DatAuf: Done." << endl;
 	}
 
 
@@ -309,6 +313,10 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 
 	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(int index) {
+		double radiusIndex = 0;
+		double maxRadius = 10E9;
+		double minRadius = 10E-6;
+		
 		// define Index for 3 points																	// Prüfen was an Rändern passiert
 		int MaxIndexNodes = this->nodes.size() - 1;
 		int preIndex = index - 1;
@@ -322,7 +330,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		}																					// else nach if?
 
 		if (!loop && (index == 0 || index == MaxIndexNodes)) { // no loop & starting condition
-			double radiusIndex = 10E6;
+			radiusIndex = maxRadius;
 		}
 		else {
 			// get distances and temporary help values
@@ -351,15 +359,15 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 			double denominator = (dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost);
 			if (denominator > 0 || denominator < 0) {
 				// radius at Index
-				double radiusIndex = 0.5 * sqrt(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / (dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost));
+				radiusIndex = 0.5 * sqrt(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / (dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost));
 
 				// limitations
 				if (radiusIndex < 10E-6) {
 					this->nodes[index].horizontalCurveRadius = 10E-6;
 					cout << "Warning: horizontal radius is smaller than 10E-6. Node: " << index << endl;										// Error Handling: offen
 				}
-				else if (radiusIndex > 10E6) {
-					this->nodes[index].horizontalCurveRadius = 10E6;
+				else if (radiusIndex > maxRadius) {
+					this->nodes[index].horizontalCurveRadius = maxRadius;
 					cout << "Warning: horizontal radius is larger than 10E6. Node: " << index << endl;
 				}
 				else {
@@ -380,6 +388,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	void DatAuf::CalcDatAuf::CalcVerticalCurveRad(int index) {
 		double radiusIndex = 0;
+		double maxRadius = 10E9;
+		double minRadius = 10E-6;
 		// define Index for 3 points														// Prüfen was an Rändern passiert
 		int MaxIndexNodes = this->nodes.size() - 1;
 		int preIndex = index - 1;//-1
@@ -393,7 +403,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		}
 
 		if (!loop && (index == 0 || index == MaxIndexNodes)) { // no loop & starting condition
-			radiusIndex = 10E6;
+			radiusIndex = maxRadius;
 		}
 		else {
 			// get distances and temporary help values
@@ -414,20 +424,21 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 				radiusIndex = 0.5 * sqrt(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / denominator);
 			
 				// limitations	-> tertiärer Operator?			
-				if (radiusIndex < 10E-6) {
-					radiusIndex = 10E-6;
-					cout << "Warning: horizontal radius is smaller than 10E-6. Node: " << index << endl;										// Error Handling: offen
+				if (radiusIndex < minRadius) {
+					cout << "Warning: horizontal radius is smaller than 10E-6. Node: " << index << endl;
+					radiusIndex = minRadius;
+					// Error Handling: offen
 				}
-				else if (radiusIndex > 10E6) {
-					radiusIndex = 10E6;
+				else if (radiusIndex > maxRadius) {
 					cout << "Warning: horizontal radius is larger than 10E6. Node: " << index << endl;
+					radiusIndex = maxRadius;
 				}
 				// calculate sign 
 				int sign_cross_ab = (diff_PrePointX * diff_PostPointY - diff_PostPointX - diff_PrePointY)>=0 ? 1 : -1;
 				radiusIndex = sign_cross_ab * radiusIndex;
 			}
 			else {
-				radiusIndex = 10E6;
+				radiusIndex = maxRadius;
 			}
 		}
 	
@@ -486,7 +497,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		nodes[1].longitude = 6.971891;
 		nodes[1].latitude = 50.34831;
 		nodes[1].distanceToNext = 50;
-		nodes[1].elevation = 750;
+		nodes[1].elevation = 333;
 
 		nodes[2].longitude = 6.994314;
 		nodes[2].latitude = 50.360358;
