@@ -167,6 +167,9 @@
     <ClInclude Include="Ausgabe-Visualisierung.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="NASA_src\NASA_constants.h">
+      <Filter>Headerdateien\NASA</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Testconfiguration\SimulationConfig.json">
