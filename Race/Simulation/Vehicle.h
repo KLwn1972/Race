@@ -35,13 +35,13 @@ namespace Simulation
 		double DragCoefficient = nan("");
 
 		double EngineUpperRevLimit = nan(""); //rpm
-		DataMap2D* EnginespeedTorqueCurve; //Curve with enginespeed, torque [1/s, Nm]
+		DataMap2D* EngineSpeedTorqueCurve; //Curve with enginespeed, torque [1/s, Nm]
 		double EngineInertia = nan("");
 		double AxleInertia = nan("");
 		double WheelInertia = nan("");
 		double PowertrainEfficiency = nan("");
 
-		DataMap2D* VehiclespeedTorqueCurve; //Curve with speed, torque [m/s, Nm]
+		DataMap2D* VehicleSpeedTorqueCurve; //Curve with speed, torque [m/s, Nm]
 		PowerTrainTypes PowertrainType = PowerTrainTypes::Electric;
 
 		double WheelWidth = nan(""); //m /0.205
@@ -51,6 +51,7 @@ namespace Simulation
 		double calcStaticWheelDiameter();
 
 		double VMaxLimited = nan("");
+		double EngineSpeedMax = nan("");
 
 		double interpolateEngineTorqueFromVelocity(double Velocity);
 		double calcWheelspeed(double EngineSpeed);
