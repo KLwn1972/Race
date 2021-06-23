@@ -6,10 +6,10 @@
 
 using namespace std;
 
-Simulation::DrivingSimulator::DrivingSimulator(vector<node> input, IImportSimulationConfig& config)
+Simulation::DrivingSimulator::DrivingSimulator(vector<node> input, IImportSimulationConfig* config)
 {
-	this->vehicle = config.getVehicle();
-	this->environment = config.getEnvironment();
+	this->vehicle = config->getVehicle();
+	this->environment = config->getEnvironment();
 	this->rawtrack = input;
 	this->accelerationcalc = new AccelerationCalculator(this->vehicle, this->environment);
 }
@@ -94,7 +94,7 @@ void Simulation::DrivingSimulator::mapModifiedToRaw()
 			node resultNode = this->rawtrack.at(simNode.PositionInStartVector);
 			resultNode.raceTime = simNode.raceTime;
 			resultNode.speedIs = simNode.speedIs;
-			result.push_back(resultNode);	
+			result.push_back(resultNode);
 		}
 	}
 	this->rawtrack = result;
