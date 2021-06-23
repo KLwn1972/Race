@@ -102,7 +102,7 @@ int main()
 
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
-	//ausgabe_visualisierung(nodes, "Nordschleife");
+	ausgabe_visualisierung(nodes, "Nordschleife");
 
 #endif
 
