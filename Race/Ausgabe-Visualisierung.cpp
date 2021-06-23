@@ -11,7 +11,7 @@ using namespace std;
 using namespace tinyxml2;
 
 // Mainfunction of ausgabe_visualisierung
-void ausgabe_visualisierung(vector <node>& track, string trackName) {
+void ausgabe_visualisierung(vector<node>& track, string trackName) {
     XMLError fault_flag_gpx, fault_flag_kml;
     if (track.size() > 1) {
         fault_flag_gpx = output_gpx(track, trackName);
@@ -25,7 +25,7 @@ void ausgabe_visualisierung(vector <node>& track, string trackName) {
 }
 
 //Creates the gpx Document of the Racetrack
-XMLError output_gpx(vector <node>& track, string trackName) {
+XMLError output_gpx(vector<node>& track, string trackName) {
     time_t startTime;
     time(&startTime);
     string timestr;
@@ -94,7 +94,7 @@ string timeConversion(double raceTime, time_t startTime) {
 }
 
 //Erstellung KML Ausgabe
-XMLError output_kml(vector <node>& track, string trackName) {
+XMLError output_kml(vector<node>& track, string trackName) {
     time_t startTime;
     time(&startTime);
     string timestr;
@@ -129,7 +129,7 @@ XMLError output_kml(vector <node>& track, string trackName) {
 
     it = track.begin();
     //for (vector<node>::iterator it = track.begin(); it < track.end() - 1; ) {
-    for (unsigned int i = 0; i < track.size() - 1; i++) {
+    for (size_t i = 0; i < track.size() - 1; i++) {
         XMLElement* Element_Placemark = xmlDoc.NewElement("Placemark");
         Element_Document->InsertEndChild(Element_Placemark);
 
@@ -197,7 +197,7 @@ void insertColorDefinitionKML(tinyxml2::XMLDocument& xmlDoc, XMLElement* Element
 //    const int number_categories = 9;
 //    int  act_category;
 //    string color_code = "color0";
-//    act_category = (act_value - min_value) / ((max_value - min_value) / (number_categories - 1));
+//    act_category = (int)((act_value - min_value) / (max_value - min_value) * (number_categories - 1.));
 //    switch (act_category) {
 //    case 0: color_code = "color0";
 //        break;
@@ -226,7 +226,7 @@ string generate_color_code2(double act_value, double min_value, double max_value
     long long int relative_value, color_number;
     stringstream stream;
 
-    relative_value = act_value / (max_value - min_value) * 510;
+    relative_value = (long long int)(act_value / (max_value - min_value) * 510);
 
     if (relative_value < 256) color_number = 4278255615 - (255 - relative_value) * 256;
     else                      color_number = 4278255615 - (relative_value - 255);
@@ -254,7 +254,7 @@ string createNotesKML(vector<node>::iterator it) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// get min selector
-double get_min_value(vector <node>& in_vector,int selector) {
+double get_min_value(vector<node>& in_vector,int selector) {
     double min_value;
     switch (selector) {
     case 0: min_value = get_min_elevation(in_vector);
@@ -273,7 +273,7 @@ double get_min_value(vector <node>& in_vector,int selector) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// get max selector
-double get_max_value(vector <node>& in_vector, int selector) {
+double get_max_value(vector<node>& in_vector, int selector) {
     double max_value;
     switch (selector) {
     case 0: max_value = get_max_elevation(in_vector);
@@ -310,7 +310,7 @@ double get_act_value(node& in_node, int selector) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// get max/min functions 
 //get max SpeedIs
-double get_max_speedIs(vector <node>& in_vector) {
+double get_max_speedIs(vector<node>& in_vector) {
     double max = in_vector.begin()->speedIs;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->speedIs >= max) max = it->speedIs;
@@ -318,7 +318,7 @@ double get_max_speedIs(vector <node>& in_vector) {
     return max;
 }
 //get min SpeedIs
-double get_min_speedIs(vector <node>& in_vector) {
+double get_min_speedIs(vector<node>& in_vector) {
     double min = in_vector.begin()->speedIs;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->speedIs <= min) min = it->speedIs;
@@ -326,7 +326,7 @@ double get_min_speedIs(vector <node>& in_vector) {
     return min;
 }
 //get max speedLimit
-double get_max_speedLimit(vector <node>& in_vector) {
+double get_max_speedLimit(vector<node>& in_vector) {
     double max = in_vector.begin()->speedLimit;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->speedLimit >= max) max = it->speedLimit;
@@ -334,7 +334,7 @@ double get_max_speedLimit(vector <node>& in_vector) {
     return max;
 }
 //get min speedLimit
-double get_min_speedLimit(vector <node>& in_vector) {
+double get_min_speedLimit(vector<node>& in_vector) {
     double min = in_vector.begin()->speedLimit;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->speedLimit <= min) min = it->speedLimit;
@@ -342,7 +342,7 @@ double get_min_speedLimit(vector <node>& in_vector) {
     return min;
 }
 //get max elevation
-double get_max_elevation(vector <node>& in_vector) {
+double get_max_elevation(vector<node>& in_vector) {
     double max = in_vector.begin()->elevation;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->elevation >= max) max = it->elevation;
@@ -350,7 +350,7 @@ double get_max_elevation(vector <node>& in_vector) {
     return max;
 }
 //get min elevation
-double get_min_elevation(vector <node>& in_vector) {
+double get_min_elevation(vector<node>& in_vector) {
     double min = in_vector.begin()->elevation;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->elevation <= min) min = it->elevation;
@@ -359,7 +359,7 @@ double get_min_elevation(vector <node>& in_vector) {
     return min;
 }
 //get max raceTime
-double get_max_raceTime(vector <node>& in_vector) {
+double get_max_raceTime(vector<node>& in_vector) {
     double max = in_vector.begin()->raceTime;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->raceTime >= max) max = it->raceTime;
@@ -367,7 +367,7 @@ double get_max_raceTime(vector <node>& in_vector) {
     return max;
 }
 //get min raceTime
-double get_min_raceTime(vector <node>& in_vector) {
+double get_min_raceTime(vector<node>& in_vector) {
     double min = in_vector.begin()->raceTime;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->raceTime <= min) min = it->raceTime;
@@ -376,7 +376,7 @@ double get_min_raceTime(vector <node>& in_vector) {
     return min;
 }
 //get max distanceToNext
-double get_max_distanceToNext(vector <node>& in_vector) {
+double get_max_distanceToNext(vector<node>& in_vector) {
     double max = in_vector.begin()->distanceToNext;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->distanceToNext >= max) max = it->distanceToNext;
@@ -384,7 +384,7 @@ double get_max_distanceToNext(vector <node>& in_vector) {
     return max;
 }
 //get min distanceToNext
-double get_min_distanceToNext(vector <node>& in_vector) {
+double get_min_distanceToNext(vector<node>& in_vector) {
     double min = in_vector.begin()->distanceToNext;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->distanceToNext <= min) min = it->distanceToNext;
@@ -393,7 +393,7 @@ double get_min_distanceToNext(vector <node>& in_vector) {
     return min;
 }
 //get max horizontalCurveRadius
-double get_max_horizontalCurveRadius(vector <node>& in_vector) {
+double get_max_horizontalCurveRadius(vector<node>& in_vector) {
     double max = in_vector.begin()->horizontalCurveRadius;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->horizontalCurveRadius >= max) max = it->horizontalCurveRadius;
@@ -401,7 +401,7 @@ double get_max_horizontalCurveRadius(vector <node>& in_vector) {
     return max;
 }
 //get min horizontalCurveRadius
-double get_min_horizontalCurveRadius(vector <node>& in_vector) {
+double get_min_horizontalCurveRadius(vector<node>& in_vector) {
     double min = in_vector.begin()->horizontalCurveRadius;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->horizontalCurveRadius <= min) min = it->horizontalCurveRadius;
@@ -410,7 +410,7 @@ double get_min_horizontalCurveRadius(vector <node>& in_vector) {
     return min;
 }
 //get max verticalCurveRadius
-double get_max_verticalCurveRadius(vector <node>& in_vector) {
+double get_max_verticalCurveRadius(vector<node>& in_vector) {
     double max = in_vector.begin()->verticalCurveRadius;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->verticalCurveRadius >= max) max = it->verticalCurveRadius;
@@ -418,7 +418,7 @@ double get_max_verticalCurveRadius(vector <node>& in_vector) {
     return max;
 }
 //get min verticalCurveRadius
-double get_min_verticalCurveRadius(vector <node>& in_vector) {
+double get_min_verticalCurveRadius(vector<node>& in_vector) {
     double min = in_vector.begin()->verticalCurveRadius;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->verticalCurveRadius <= min) min = it->verticalCurveRadius;
@@ -427,7 +427,7 @@ double get_min_verticalCurveRadius(vector <node>& in_vector) {
     return min;
 }
 //get max gradient
-double get_max_gradient(vector <node>& in_vector) {
+double get_max_gradient(vector<node>& in_vector) {
     double max = in_vector.begin()->gradient;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->gradient >= max) max = it->gradient;
@@ -435,7 +435,7 @@ double get_max_gradient(vector <node>& in_vector) {
     return max;
 }
 //get min gradient
-double get_min_gradient(vector <node>& in_vector) {
+double get_min_gradient(vector<node>& in_vector) {
     double min = in_vector.begin()->gradient;
     for (std::vector<node>::iterator it = in_vector.begin(); it != in_vector.end(); ++it) {
         if (it->gradient <= min) min = it->gradient;
