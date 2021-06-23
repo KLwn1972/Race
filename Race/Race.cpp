@@ -6,7 +6,7 @@
 #include "OpenStreetMap.h"
 #include "Ausgabe-Visualisierung.h"
 #include "Simulation/Vehicle.h"
-#include "Simulation/DataMap2D.h"
+#include "Simulation/DataMap1D.h"
 #include "Simulation/ImportSimulationConfig.h"
 #include "Simulation/DrivingSimulator.h"
 #include "Simulation/MockSimulationConfig.h"
@@ -19,6 +19,10 @@
 #include "DatAuf.h"
 
 using namespace std;
+
+//#define USEDEBUGMAIN
+
+#ifndef USEDEBUGMAIN
 
 int main()
 {
@@ -75,7 +79,7 @@ int main()
 	}
 
 	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
-	auto SimulationConfig = Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig.json");
+	auto SimulationConfig = Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
 
 	//////////////////////////////////////////////////////////////////////////
 	//Sollfahrtbestimmung
@@ -99,3 +103,22 @@ int main()
 
 	return 0;
 }
+
+#endif // STANDARDMAIN
+
+#ifdef USEDEBUGMAIN
+int main()
+{
+	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
+	auto SimulationConfig = Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
+
+	auto nodes = ExampleHillTrack();
+	auto Drivingsim = Simulation::DrivingSimulator(nodes, SimulationConfig);
+	nodes.clear();
+	Drivingsim.setInterpolationLevel(0);
+	nodes = Drivingsim.RunSimulation();
+	Drivingsim.setInterpolationLevel(1);
+	nodes = Drivingsim.RunSimulation();
+	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
+}
+#endif

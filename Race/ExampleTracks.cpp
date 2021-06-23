@@ -1,6 +1,6 @@
 #include "ExampleTracks.h"
 #include "Race.h"
-#include "Simulation/DataMap2D.h"
+#include "Simulation/DataMap1D.h"
 #include "Simulation/SimulationEnvironment.h"
 
 std::vector<node> ExampleTrack()
