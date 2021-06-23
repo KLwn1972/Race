@@ -6,7 +6,11 @@ Simulation::DataMap1D::DataMap1D(std::vector<double> xData, std::vector<double> 
 {
 	//Check that data is valid
 	if (xData.size() != yData.size())
+	{
+		std::string msg = "X and Y dimensions of DataMap1D need to be equal.";
+		std::cout << msg << std::endl;
 		throw std::invalid_argument("X and Y dimnesions of DataMap1D need to be equal.");
+	}
 	if (xData.size() > 1)
 	{
 		double oldXData = xData.at(0);
@@ -15,6 +19,7 @@ Simulation::DataMap1D::DataMap1D(std::vector<double> xData, std::vector<double> 
 			if (newXdata < oldXData)
 			{
 				std::string message = std::string("X Data needs to be increasing monotonously. Error at X= ") + std::to_string(newXdata);
+				std::cout << message << std::endl;
 				throw std::invalid_argument(message);
 			}
 		}
