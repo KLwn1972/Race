@@ -27,6 +27,8 @@ namespace Simulation {
 		vector<node> RunSimulation();
 		vector<SimulationNode> ReturnModifiedTrack();
 
+		//Interpolationlevel can be set to increase the number of nodes by interpolating linearily
+		//This is not needed if distancetonext <= 1m
 		void setInterpolationLevel(unsigned int level);
 
 	private:

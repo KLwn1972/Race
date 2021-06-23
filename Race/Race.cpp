@@ -90,10 +90,10 @@ int main()
 
 	//////////////////////////////////////////////////////////////////////////
 	//Fahrphysik
-	auto Drivingsim = Simulation::DrivingSimulator(nodes, SimulationConfig);
+	Simulation::DrivingSimulator* Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
 	nodes.clear();
-	nodes = Drivingsim.RunSimulation();
-	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresult.csv");
 
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
@@ -113,12 +113,26 @@ int main()
 	auto SimulationConfig = Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
 
 	auto nodes = ExampleHillTrack();
-	auto Drivingsim = Simulation::DrivingSimulator(nodes, SimulationConfig);
-	nodes.clear();
-	Drivingsim.setInterpolationLevel(0);
-	nodes = Drivingsim.RunSimulation();
-	Drivingsim.setInterpolationLevel(1);
-	nodes = Drivingsim.RunSimulation();
-	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
+	Simulation::DrivingSimulator* Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	//nodes.clear();
+	//Drivingsim->setInterpolationLevel(0);
+	//nodes = Drivingsim->RunSimulation();
+	//Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_0_Hilltrack.csv");
+	//Drivingsim->setInterpolationLevel(1);
+	//nodes = Drivingsim->RunSimulation();
+	//Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_1_Hilltrack.csv");
+
+	nodes = ExampleStraightTrack();
+	nodes.at(nodes.size() - 1).speedLimit = 1;
+	nodes.at(nodes.size() / 2).speedLimit = 1;
+	nodes.at(nodes.size() / 3).speedLimit = 1;
+
+	Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_0_Straight_Speed.csv");
+
+	Drivingsim->setInterpolationLevel(1);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_0_Straight_Speed.csv");
 }
 #endif

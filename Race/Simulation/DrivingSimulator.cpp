@@ -54,8 +54,9 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 	for (size_t i = 0; i < this->rawtrack.size(); i++)
 	{
 		SimulationNode currentNode = SimulationNode(rawtrack[i]);
+		currentNode.PositionInStartVector = i;
 		//insert values between stepsimnode and oldstepsimnode through interpolation
-		if (i > 0)
+		if (i > 0 && this->InterpolationLevel > 0)
 		{
 			double DistanceOldNew = oldStepSimNode.distanceToNext;
 			double DistanceBetweenPoints = DistanceOldNew / (this->InterpolationLevel + 1);
@@ -90,17 +91,10 @@ void Simulation::DrivingSimulator::mapModifiedToRaw()
 	{
 		if (simNode.id != INTERPOLATEDIDENT)
 		{
-			for (nodeIt; nodeIt < this->modifiedtrack.size(); nodeIt++)
-			{
-				if (this->rawtrack.at(nodeIt).id == simNode.id)
-				{
-					node resultNode = this->rawtrack.at(nodeIt);
-					resultNode.raceTime = simNode.raceTime;
-					resultNode.speedIs = simNode.speedIs;
-					result.push_back(resultNode);
-					break;
-				}
-			}
+			node resultNode = this->rawtrack.at(simNode.PositionInStartVector);
+			resultNode.raceTime = simNode.raceTime;
+			resultNode.speedIs = simNode.speedIs;
+			result.push_back(resultNode);	
 		}
 	}
 	this->rawtrack = result;
@@ -108,10 +102,10 @@ void Simulation::DrivingSimulator::mapModifiedToRaw()
 
 void Simulation::DrivingSimulator::calcNewSpeedLimit()
 {
-	for (size_t i = this->modifiedtrack.size() - 1; i > 0; i--) {                                                                                          //calculate the new limit according to the max Brake from last point;
+	for (size_t i = this->modifiedtrack.size() - 1; i > 0; i--) {   //calculate the new limit according to the max Brake from last point;
 		node& currentPos = this->modifiedtrack.at(i);
 		node& previousPos = this->modifiedtrack.at(i - 1);
-		if (previousPos.speedLimit > currentPos.speedLimit) {                                                                                                                                                   //calculate the brake velocity wenn decceleration
+		if (previousPos.speedLimit > currentPos.speedLimit) {   //calculate the brake velocity wenn decceleration
 			double BrakeDecceleration = this->accelerationcalc->calcDecceleration(currentPos.speedLimit, previousPos, currentPos);   //get max decceleration at current point
 			double localDistance = previousPos.distanceToNext;                        //get Distance between local point and previous point
 			double BrakeSpeed = sqrt((currentPos.speedLimit) * (currentPos.speedLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
