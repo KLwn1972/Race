@@ -21,7 +21,7 @@
 
 using namespace std;
 
-int main()
+int main(int argc , char* argv[] )
 {
 
 ///////////////////////////////////////////////////////////////////////
@@ -36,8 +36,8 @@ int main()
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
 
 	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
-	double long_stuttgart = 9.20;
-	double lat_stuttgart = 48.80;
+	double long_stuttgart = 6.234; // 9.20;
+	double lat_stuttgart = 53.234;  //48.80;
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
 
 	double long_nuerburgringstart = 6.966279;

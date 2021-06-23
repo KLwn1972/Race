@@ -12,7 +12,7 @@ using namespace std;
 		void downloadAreaElevationInfo_NASA_SIRC_between(int longitude_start, int longitude_end, int latitude_start, int latitude_end);
 		void downloadElevationDataofGermany_NASA_SIRC();
 		string createFilenamefromLongLat(int longitude, int latitude);
-		bool checkLongitudeLatitudeinNEquadrant(int longitude, int latitude);
+		static bool checkLongitudeLatitudeinNEquadrant(int longitude, int latitude);
 
 	private:
 

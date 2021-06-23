@@ -21,7 +21,7 @@ using namespace std;
 	double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& longitude, const double& latitude) {
 		double elevation;
 
-		if (true) {//NASADataFileHandler::checkLongitudeLatitudeinNEquadrant(longitude, latitude)) {
+		if (NASADataFileHandler::checkLongitudeLatitudeinNEquadrant((int)longitude, (int)latitude) ) {
 
 			//Vorkomma Koordinaten --> Dateiidentifikation
 			int long_deg = GeoCoordConversion::getDeg_From_WGS84Decimal(longitude);
@@ -49,7 +49,7 @@ using namespace std;
 			if (checkIfFileExists(sourcefilename)) { //Nachgezogener Download erfolgreich?
 				elevation = readSingleElevationValueFromFile(delta_sec_long, delta_sec_lat, sourcefilename);
 			}
-			else { //File nicht verfuegbar  -- > Mehr 
+			else { //File wirklich nicht verfuegbar  -- > Gebiet im Meer 
 				elevation = 0.0;
 			}
 		}
@@ -57,7 +57,7 @@ using namespace std;
 			elevation = -32768.0;
 			cerr << "Request outside of NE quadrant: Longitude - " << longitude << " Latitude - " << latitude << endl;
 			cerr << "Limits: Longitude [" << longitude_min << "," << longitude_max << "], Latitiude[" << latitude_min << "," << latitude_max << "]" << endl; 
-			cerr << "Returned INT_MIN: " << elevation;
+			cerr << "Returned INT_MIN: " << elevation << endl;
 		}
 		return elevation;
 	}
