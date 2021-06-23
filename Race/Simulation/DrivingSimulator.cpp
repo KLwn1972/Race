@@ -129,14 +129,14 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		SimulationNode& currentPos = this->modifiedtrack.at(i);
 		SimulationNode& nextPos = this->modifiedtrack.at(i + 1);
 		double localDistance = currentPos.distanceToNext;
-		//case 1: acceleration
+		//acceleration or trying to hold speed
 		if (nextPos.speedLimit >= currentPos.speedIs) {
 			double MaxLocalAcceleration = this->accelerationcalc->calcAcceleration(currentPos.speedIs, currentPos, nextPos);                //get amax
 			currentPos.MaxAcceleration = MaxLocalAcceleration;
 			double speed_temp = sqrt((currentPos.speedIs) * (currentPos.speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
 			 // determine the Is-speed and raceTime according to different situation
 			if (speed_temp >= nextPos.speedLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
-				nextPos.speedIs = this->modifiedtrack.at(i + 1).speedLimit;
+				nextPos.speedIs = nextPos.speedLimit;
 				nextPos.raceTime = currentPos.raceTime + calcRaceTimeBetweenTwoPointsWithDifferentAccleration(MaxLocalAcceleration, currentPos.speedIs, nextPos.speedIs, localDistance);
 			}
 			else {                                                                                             //Velocity with max acceleration <= the SpeedLimit: IsSpeed = Velocity with max acceleration
@@ -144,12 +144,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 				nextPos.raceTime = currentPos.raceTime + 2 * localDistance / (currentPos.speedIs + nextPos.speedIs);
 			}
 		}
-		//case 2: hold speed
-		//else if (nextPos.speedLimit == currentPos.speedIs) {
-		//	nextPos.speedIs = nextPos.speedLimit;
-		//	nextPos.raceTime = currentPos.raceTime + (localDistance / nextPos.speedIs);
-		//}
-		//case 3: decceleration
+		//decceleration
 		else {
 			double MaxLocalDecceleration = this->accelerationcalc->calcDecceleration(currentPos.speedIs, currentPos, nextPos);
 			currentPos.MaxAcceleration = MaxLocalDecceleration;
