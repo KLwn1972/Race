@@ -375,11 +375,11 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 				// limitations
 				if (radiusIndex < 10E-6) {
 					this->nodes[index].horizontalCurveRadius = 10E-6;
-					cout << "Warning: horizontal radius is smaller than 10E-6. Node: " << index << endl;										// Error Handling: offen
+					cout << "Warning: horizontal radius is smaller than "<< minRadius <<". Node: " << index << endl;										// Error Handling: offen
 				}
 				else if (radiusIndex > maxRadius) {
 					this->nodes[index].horizontalCurveRadius = maxRadius;
-					cout << "Warning: horizontal radius is larger than 10E6. Node: " << index << endl;
+					cout << "Warning: horizontal radius is larger than " << maxRadius << ". Node: " << index << endl;
 				}
 				else {
 					this->nodes[index].horizontalCurveRadius = radiusIndex;
@@ -436,12 +436,12 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 			
 				// limitations	-> tertiärer Operator?			
 				if (radiusIndex < minRadius) {
-					cout << "Warning: vertical radius is smaller than 10E-6. Node: " << index << endl;
+					cout << "Warning: vertical radius is smaller than " << minRadius << ". Node: " << index << endl;
 					radiusIndex = minRadius;
 					// Error Handling: offen
 				}
 				else if (radiusIndex > maxRadius) {
-					cout << "Warning: vertical radius is larger than 10E6. Node: " << index << endl;
+					cout << "Warning: vertical radius is larger than " << maxRadius << ". Node: " << index << endl;
 					radiusIndex = maxRadius;
 				}
 				// calculate sign 
