@@ -74,12 +74,12 @@ std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON
 	return AxisValues;
 }
 
-std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string, const double ConversionFacto) {
+std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string, const double ConversionFactor) {
 	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
 	std::vector<double> AxisValues;
 	for (int i = 0; i < cJSON_GetArraySize(input); i++) {
 		cJSON* CUR_Element = cJSON_GetArrayItem(input, i);
-		AxisValues.push_back(CUR_Element->valuedouble * ConversionFacto);
+		AxisValues.push_back(CUR_Element->valuedouble * ConversionFactor);
 	}
 	return AxisValues;
 }
