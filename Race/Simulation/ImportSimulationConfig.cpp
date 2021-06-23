@@ -8,7 +8,9 @@ Simulation::ImportSimulationConfig::ImportSimulationConfig(std::string Simulatio
 	std::fstream ConfigFileStream;
 	ConfigFileStream.open(SimulationConfigFile, std::ios_base::in);
 	if (!ConfigFileStream) {
-		std::cerr << "Simulation Config Inputfile could not be opened.\n\n";
+		string msg = "Simulation Config Inputfile could not be opened.";
+		std::cerr << msg;
+		throw std::invalid_argument(msg);
 	}
 	else {
 		ConfigFileStream.seekg(0, std::ios::end);
