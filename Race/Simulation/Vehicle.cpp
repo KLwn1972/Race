@@ -85,6 +85,7 @@ Vehicle* Simulation::ExampleElectricVehicle()
 }
 
 double Simulation::Vehicle::interpolateEngineTorqueFromVelocity(double V) {
+	//This function is from Team Soll_Fahrtbestimmung
 	/* number of elements in the array */
 	vector<double> xData = this->VehicleSpeedTorqueCurve->getXData();
 	vector<double> yData = this->VehicleSpeedTorqueCurve->getYData();
