@@ -17,6 +17,8 @@
 #include <tchar.h>
 #include <urlmon.h>
 #include <vector>
+#include <limits>
+#include "NASA_src/NASA_constants.h"
 #include "NASA_src/NASA_DataFileHandler.h"
 #include "NASA_src/NASA_ElevationCalculator.h"
 #include "NASA_src/NASA_GeoCoordConversion.h"

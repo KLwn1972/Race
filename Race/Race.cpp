@@ -14,6 +14,11 @@
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
 
+#include "NASA_src/NASA_constants.h"
+#include "NASA_src/NASA_DataFileHandler.h"
+#include "NASA_src/NASA_ElevationCalculator.h"
+#include "NASA_src/NASA_GeoCoordConversion.h"
+
 #include "Soll_Fahrtbestimmung.h"
 
 using namespace std;
@@ -27,7 +32,7 @@ int main()
 //		string nasa_download_zielpfad 
 //		string nasa_download_zielpfad_win 
 ///////////////////////////////////////////////////////////////////////
-#if 0	
+#if 1	
 	// Herunterladen aller HGT für Deutschland
 	//NASA::NASADataFileHandler filehandle;
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
@@ -42,14 +47,15 @@ int main()
 
 	double long_nuerburgringstart = 6.966279;
 	double lat_nuerburgringstart = 50.346094;
-	cout << NASA::HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
+	//cout << NASA::HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
+	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
 #endif
 
 
 
 
 
-#if 1
+#if 0
 	//std::cout << "Hello World!\n";
 	vector<node> nodes;
 	string route = "38566";

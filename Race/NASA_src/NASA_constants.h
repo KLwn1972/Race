@@ -35,14 +35,14 @@
 
 
 using namespace std;
-namespace NASA {
+//namespace NASA {
 
 	
 	//Noch unglücklich Lösung: Generelle Variablen als Klassenkonstanten
 	//Dateimanagement wird für Zip genutzt
-	static const string nasa_download_zielpfad = "D:/MtM/M_Projekt2/ConceptNASAImport/Load/";
+	static const string nasa_download_zielpfad = "D:/MtM/M_Projekt2/Git/Race/Load/";
 #ifdef USE_WINDOWS
-	static const string nasa_download_zielpfad_win = "D:\\MtM\\M_Projekt2\\ConceptNASAImport\\Load\\";
+	static const string nasa_download_zielpfad_win = "D:\\MtM\\M_Projekt2\\Git\\Race\\Load\\";
 #endif
 	//static const string nasa_download_zielpfad = "../Load/";
 	static const string nasa_url_base = "https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL1.003/2000.02.11/";
@@ -56,4 +56,4 @@ namespace NASA {
 	static const int latitude_max = 179;
 	static const int latitude_min = 0;
 
-}
+//}
