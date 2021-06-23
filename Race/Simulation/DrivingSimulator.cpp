@@ -21,14 +21,17 @@ Simulation::DrivingSimulator::~DrivingSimulator()
 
 vector<node> Simulation::DrivingSimulator::RunSimulation()
 {
+	cout << "Running Simulation:" << endl;
+	cout << "Create the modified track with interpolation points" << endl;
 	createModifiedTrack();
-
+	cout << "Modified track has " << this->modifiedtrack.size() << " Points instead of " << this->rawtrack.size() << " (normal track)" << endl;
+	cout << "Calculate the speed limit which is determined by braking" << endl;
 	calcNewSpeedLimit();
-
+	cout << "Calculate actual speed limit and time" << endl;
 	calcIsSpeedandTime();
-
+	cout << "Map the modified track back to the original one" << endl;
 	mapModifiedToRaw();
-
+	cout << "Calculation finished, returning data" << endl;
 	return this->rawtrack;
 }
 
