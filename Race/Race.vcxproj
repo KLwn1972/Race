@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="cJSON.c" />
     <ClCompile Include="Ausgabe-Visualisierung.cpp" />
+    <ClCompile Include="DatAuf.cpp" />
     <ClCompile Include="ExampleTracks.cpp" />
     <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp" />
     <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ausgabe-Visualisierung.h" />
+    <ClInclude Include="DatAuf.h" />
     <ClInclude Include="ExampleTracks.h" />
     <ClInclude Include="NASA_src\NASA_DataFileHandler.h" />
     <ClInclude Include="NASA_src\NASA_ElevationCalculator.h" />
