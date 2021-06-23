@@ -11,40 +11,60 @@
 using namespace std;
 //namespace NASA {
 
-
+///////////////////////////////////////////////////////////////////////////////////
+// Rückgabe:
+//	- Höhe in Metern	wenn hgt file vorhanden
+//	- 0,				wenn innerhalb möglicher SRTM Daten, aber File nicht vorhanden --> Meer
+//	- -32768			falls Anfrage außerhalb NordOst-Quadrant
+///////////////////////////////////////////////////////////////////////////////////
 
 	double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& longitude, const double& latitude) {
-		double elevation = -32768.32768;
-		//Vorkomma Koordinaten --> Dateiidentifikation
-		int long_deg = GeoCoordConversion::getDeg_From_WGS84Decimal(longitude);
-		int lat_deg = GeoCoordConversion::getDeg_From_WGS84Decimal(latitude);
+		double elevation;
 
-		//gerundeter Nachkommateil in Sec für Position in Datei
-		double delta_sec_long = GeoCoordConversion::getSeconds_From_WGS84Decimal(longitude - (double)long_deg);
-		double delta_sec_lat = GeoCoordConversion::getSeconds_From_WGS84Decimal(latitude - (double)lat_deg);
+		if (true) {//NASADataFileHandler::checkLongitudeLatitudeinNEquadrant(longitude, latitude)) {
 
-		NASADataFileHandler filehandler;
-		string sourcefilename = filehandler.createFilenamefromLongLat(long_deg, lat_deg) + ".hgt";
+			//Vorkomma Koordinaten --> Dateiidentifikation
+			int long_deg = GeoCoordConversion::getDeg_From_WGS84Decimal(longitude);
+			int lat_deg = GeoCoordConversion::getDeg_From_WGS84Decimal(latitude);
+
+			//gerundeter Nachkommateil in Sec für Position in Datei
+			double delta_sec_long = GeoCoordConversion::getSeconds_From_WGS84Decimal(longitude - (double)long_deg);
+			double delta_sec_lat = GeoCoordConversion::getSeconds_From_WGS84Decimal(latitude - (double)lat_deg);
+
+			NASADataFileHandler filehandler;
+			string sourcefilename = filehandler.createFilenamefromLongLat(long_deg, lat_deg) + ".hgt";
 
 #ifdef DEBUG
-		cout << "Lese Hoeheninfo [" << longitude << ", " << latitude << "] aus " << nasa_download_zielpfad + sourcefilename << endl;
+			cout << "Lese Hoeheninfo [" << longitude << ", " << latitude << "] aus " << nasa_download_zielpfad + sourcefilename << endl;
 #endif
-		if (!checkIfFileExists(sourcefilename)) {
-			cout << sourcefilename << " not available. Download starting ..." << endl;
+			if (!checkIfFileExists(sourcefilename)) {
+				cout << sourcefilename << " not available. Download starting ..." << endl;
 #ifdef CURL_ON
-			filehandler.downloadAreaElevationInfo_NASA_SIRC_between(long_deg, long_deg + 1, lat_deg, lat_deg + 1);
+				filehandler.downloadAreaElevationInfo_NASA_SIRC_between(long_deg, long_deg + 1, lat_deg, lat_deg + 1);
 #endif
 #ifndef CURL_ON
-			cerr << "CURL_OFF: Missing " << sourcefilename << " cannot be downloaded. \nError in HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata() --> Activate CURL in Race.h" << endl << endl;
+				cerr << "CURL_OFF: Missing " << sourcefilename << " cannot be downloaded. \nError in HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata() --> Activate CURL in Race.h" << endl << endl;
 #endif // !CURL_ON
+			}
+			if (checkIfFileExists(sourcefilename)) { //Nachgezogener Download erfolgreich?
+				elevation = readSingleElevationValueFromFile(delta_sec_long, delta_sec_lat, sourcefilename);
+			}
+			else { //File nicht verfuegbar  -- > Mehr 
+				elevation = 0.0;
+			}
 		}
-		elevation = readSingleElevationValueFromFile(delta_sec_long, delta_sec_lat, sourcefilename);
+		else {
+			elevation = -32768.0;
+			cerr << "Request outside of NE quadrant: Longitude - " << longitude << " Latitude - " << latitude << endl;
+			cerr << "Limits: Longitude [" << longitude_min << "," << longitude_max << "], Latitiude[" << latitude_min << "," << latitude_max << "]" << endl; 
+			cerr << "Returned INT_MIN: " << elevation;
+		}
 		return elevation;
 	}
 
 
 	double HGT_ElevationCalculator::readSingleElevationValueFromFile(double& longitude_deltasec, double& latitude_deltasec, string filename) {
-		double elevationvalue = -32768.32768;
+		double elevationvalue = -32768.0;
 		// Position Zielwert in eingelesenem File bestimmen (Untere linke Ecke bestimmt Dateinamen, Werte in Matrix in Lattitude gedreht
 		int pos_longitude = (int)(longitude_deltasec + 0.5);
 		int pos_latitude = (int)((srtm_size - 1 - latitude_deltasec) + 0.5);
@@ -63,7 +83,7 @@ using namespace std;
 
 		if (!hgtfile.good()) {
 			cerr << "Error reading " << zieldatei << " in HGT_ElevationCalculator::readElevationFromFile(): " << endl;
-			cerr << "Returning Default Value: " << elevationvalue << endl;
+			cerr << "Returning INT_MIN: " << elevationvalue << endl;
 		}
 		else {
 			unsigned char buffer[2] = { 0 };

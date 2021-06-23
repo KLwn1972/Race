@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <filesystem>
 /*
 * Wichtige Info für Eindung NASA Funktionalität:
 * Alle Funktionen in namespace NASA
@@ -29,16 +30,21 @@
 * Beispiel für einen Startpunkt auf Nürburg-Ring
 * 	double long_nuerburgringstart = 6.966279;
 *	double lat_nuerburgringstart = 50.346094;
-*	cout << NASA::HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
+*	cout << NASA::HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;#
+* 
+* Rückgabe: 
+*	- Höhe in Metern wenn hgt file vorhanden
+*	- 0, wenn innerhalb möglicher Daten, aber File nicht vorhanden (Meer), 
+*	- -32768 falls Anfrage außerhalb NR Quadrant
 */
 
 
 
 using namespace std;
 //namespace NASA {
-
 	
-	//Noch unglücklich Lösung: Generelle Variablen als Klassenkonstanten
+string test = std::filesystem::current_path;
+//Noch unglücklich Lösung: Generelle Variablen als Klassenkonstanten
 	//Dateimanagement wird für Zip genutzt
 	static const string nasa_download_zielpfad = "D:/MtM/M_Projekt2/Git/Race/Load/";
 #ifdef USE_WINDOWS
@@ -55,5 +61,4 @@ using namespace std;
 	static const int longitude_min = 0;
 	static const int latitude_max = 179;
 	static const int latitude_min = 0;
-
 //}
