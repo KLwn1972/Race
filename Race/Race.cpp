@@ -38,14 +38,19 @@ int main()
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
 
 	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
-	double long_stuttgart = 9.206802;
-	double lat_stuttgart = 48.742211;
+	double long_stuttgart = 9.20;
+	double lat_stuttgart = 48.80;
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
 
 	double long_nuerburgringstart = 6.966279;
 	double lat_nuerburgringstart = 50.346094;
-	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
+	//cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
 #endif
+
+
+
+
+
 
 #if 1
 	//////////////////////////////////////////////////////////////////////////
