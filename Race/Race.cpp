@@ -63,29 +63,27 @@ int main()
 	//cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
 
 	//Fahrphysik
-	auto track = ExampleHillTrack();
-	string SimulationConfigFile = "Testconfiguration/SimulationConfig.json";
-	track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
-	auto SimulationConfig = Simulation::ImportSimulationConfig(SimulationConfigFile);
-	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
-	vector<node> result = Drivingsim.RunSimulation();
-	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
+	//auto track = ExampleHillTrack();
+	//string SimulationConfigFile = "Testconfiguration/SimulationConfig.json";
+	//track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
+	//auto SimulationConfig = Simulation::ImportSimulationConfig(SimulationConfigFile);
+	//auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
+	//vector<node> result = Drivingsim.RunSimulation();
+	//Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
 
-	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
-	SollFahrt->setVehicle(SimulationConfig.getVehicle());
-	SollFahrt->setEnvironment(SimulationConfig.getEnvironment());
+	//Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
+	//SollFahrt->setVehicle(SimulationConfig.getVehicle());
+	//SollFahrt->setEnvironment(SimulationConfig.getEnvironment());
 	//SollFahrt->V_max();
-	vector<node> Strecke = ExampleStraightTrack(0);
-	SollFahrt->SpeedLimit_route(Strecke);
+	//vector<node> Strecke = ExampleStraightTrack(0);
+	//SollFahrt->SpeedLimit_route(Strecke);
 
 	
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
 	ausgabe_visualisierung(nodes, "Nordschleife");
 
-
 	//////////////////////////////////////////////////////////////////////////
-
 
 	return 0;
 }

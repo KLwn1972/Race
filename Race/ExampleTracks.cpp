@@ -50,49 +50,65 @@ std::vector<node> ExampleHillTrack() //TODO: can be split into functions for gen
 {
 	auto result = std::vector<node>();
 
-	double startlong = 6.945215;
-	double startlat = 50.33409;
-	double startelevation = 500;
+	node startPoint = node();
+	startPoint.latitude = 50;
+	startPoint.longitude = 7;
+	startPoint.elevation = 500;
+	startPoint.distanceToNext = 1000; //DISTANCE IS NOT CALCULATED! NEED TO CALL CALC DISTANCE FROM DATENAUFBEREITUNG!!!
+	startPoint.horizontalCurveRadius = INFINITE;
+	startPoint.verticalCurveRadius = INFINITE;
+	startPoint.id = "START1";
+	startPoint.speedLimit = 200 * Simulation::KMH2MS;
 
-	double endlong = 6.971891;
-	double endlat = 50.34831;
-	double endelevation = 4000;
+	node endPoint = startPoint;
+	endPoint.id = "END1";
+	endPoint.longitude = 7.1;
+	endPoint.elevation = 600;
 
-	double distance = 3000;
-	double numberOfSteps = 100;
-	double stepWidth = distance / numberOfSteps;
-	for (int i = 0; i <= numberOfSteps; i++)
+	vector<node> segment = ExamplePointToPoint(startPoint, endPoint, 1000);
+	result.insert(result.end(), segment.begin(), segment.end());
+
+	startPoint.elevation = 600;
+	startPoint.id = "START2";
+	endPoint.elevation = 500;
+	endPoint.id = "END2";
+	segment = ExamplePointToPoint(startPoint, endPoint, 1000);
+	result.insert(result.end(), segment.begin(), segment.end());
+
+	startPoint.elevation = 500;
+	startPoint.id = "START3";
+	endPoint.elevation = 1000;
+	endPoint.id = "END3";
+	segment = ExamplePointToPoint(startPoint, endPoint, 1000);
+	result.insert(result.end(), segment.begin(), segment.end());
+
+	startPoint.elevation = 1000;
+	startPoint.id = "START4";
+	endPoint.elevation = 500;
+	endPoint.id = "END4";
+	segment = ExamplePointToPoint(startPoint, endPoint, 1000);
+	result.insert(result.end(), segment.begin(), segment.end());
+
+	return result;
+}
+
+std::vector<node> ExamplePointToPoint(node startPoint, node endPoint, size_t NumberOfSteps)
+{
+	vector<node> result = vector<node>();
+	double distance = startPoint.distanceToNext;
+	double stepWidth = distance / NumberOfSteps;
+	for (int i = 0; i <= NumberOfSteps; i++)
 	{
 		auto newnode = node();
-		newnode.distanceToNext = distance / numberOfSteps;
-		newnode.elevation = Simulation::interpolateValues(0, startelevation, distance, endelevation, i * stepWidth);
-		newnode.latitude = Simulation::interpolateValues(0, startlat, distance, endlat, i * stepWidth);
-		newnode.longitude = Simulation::interpolateValues(0, startlong, distance, endlong, i * stepWidth);
-		newnode.gradient = ((endelevation - startelevation) / distance) * 100;
+		newnode.distanceToNext = startPoint.distanceToNext / NumberOfSteps;
+		newnode.elevation = Simulation::interpolateValues(0, startPoint.elevation, distance, endPoint.elevation, i * stepWidth);
+		newnode.latitude = Simulation::interpolateValues(0, startPoint.latitude, distance, endPoint.latitude, i * stepWidth);
+		newnode.longitude = Simulation::interpolateValues(0, startPoint.longitude, distance, endPoint.longitude, i * stepWidth);
+		newnode.gradient = ((startPoint.elevation - endPoint.elevation) / distance) * 100;
 		newnode.speedLimit = 200 * Simulation::KMH2MS;
 		newnode.horizontalCurveRadius = INFINITY;
 		newnode.verticalCurveRadius = INFINITY;
-		newnode.id = std::to_string(i);
-		result.push_back(newnode);
-	}
-
-	startelevation = 600;
-	endelevation = 500;
-	distance = 500;
-	numberOfSteps = 100;
-	stepWidth = distance / numberOfSteps;
-	for (int i = 0; i <= numberOfSteps; i++)
-	{
-		auto newnode = node();
-		newnode.distanceToNext = distance / numberOfSteps;
-		newnode.elevation = Simulation::interpolateValues(0, startelevation, distance, endelevation, i * stepWidth);
-		newnode.latitude = Simulation::interpolateValues(0, startlat, distance, endlat, i * stepWidth);
-		newnode.longitude = Simulation::interpolateValues(0, startlong, distance, endlong, i * stepWidth);
-		newnode.gradient = ((endelevation - startelevation) / distance) * 100;
-		newnode.speedLimit = 200 * Simulation::KMH2MS;
-		newnode.horizontalCurveRadius = INFINITY;
-		newnode.verticalCurveRadius = INFINITY;
-		newnode.id = std::to_string(i);
+		newnode.id = startPoint.id + "_____" + std::to_string(i);
 		result.push_back(newnode);
 	}
 	return result;

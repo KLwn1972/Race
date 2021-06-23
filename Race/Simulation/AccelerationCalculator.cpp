@@ -28,7 +28,7 @@ double Simulation::AccelerationCalculator::calcDecceleration(double velocity, no
 
 double Simulation::AccelerationCalculator::calcAirResistance(double velocity)
 {
-	double deltaLat = (this->NextPoint.latitude - this->TrackPoint.latitude); //TODO: Check calculation of vehicledirection
+	double deltaLat = (this->NextPoint.latitude - this->TrackPoint.latitude);
 	double deltaLong = (this->NextPoint.longitude - this->TrackPoint.longitude);
 	double vehicledirection = asin(deltaLat / deltaLong);
 

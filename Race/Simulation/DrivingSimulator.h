@@ -33,7 +33,6 @@ namespace Simulation {
 		void calcIsSpeedandTime();
 
 		double calcRaceTimeBetweenTwoPointsWithDifferentAccleration(double acceleration, double Speed_LocalPoint, double Speed_nextPoint, double Distance);
-		double calcDistanceBetweenTwoPoints(node Trackpoint, node NextPoint);
 
 		vector<node> rawtrack;
 		vector<SimulationNode> modifiedtrack; //Switch to normal nodes
