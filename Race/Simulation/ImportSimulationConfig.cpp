@@ -41,7 +41,7 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	VehicleObject->Model = getStringFromcJSON(VehicleData, "Model");
 	(getStringFromcJSON(VehicleData, "PowertrainType") == "Electric" ? VehicleObject->PowertrainType = PowerTrainTypes::Electric : VehicleObject->PowertrainType = PowerTrainTypes::ICE);
 	VehicleObject->VMaxLimited = getDoubleFromcJSON(VehicleData, "VMaxLimited [km/h]") * KMH2MS;
-	VehicleObject->NumberOfGears = getDoubleFromcJSON(VehicleData, "NumberOfGears");
+	VehicleObject->NumberOfGears = getIntFromcJSON(VehicleData, "NumberOfGears");
 	VehicleObject->EngineSpeedMax = getDoubleFromcJSON(VehicleData, "EngineSpeedMax [1/min]") * RPM2HZ;
 	VehicleObject->EngineInertia = getDoubleFromcJSON(VehicleData, "EngineInertia [kgm2]");
 	VehicleObject->AxleInertia = getDoubleFromcJSON(VehicleData, "AxleInertia [kgm2]");
@@ -85,6 +85,11 @@ std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON
 double Simulation::ImportSimulationConfig::getDoubleFromcJSON(cJSON* data, const char* const string) {
 	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
 	return input->valuedouble;
+}
+
+int Simulation::ImportSimulationConfig::getIntFromcJSON(cJSON* data, const char* const string) {
+	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
+	return input->valueint;
 }
 
 string Simulation::ImportSimulationConfig::getStringFromcJSON(cJSON* data, const char* const string) {
