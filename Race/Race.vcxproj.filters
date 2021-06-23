@@ -19,6 +19,24 @@
     <Filter Include="Quelldateien\Simulation">
       <UniqueIdentifier>{792e3666-6dc9-4b34-a948-8a010e86effc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\NASA">
+      <UniqueIdentifier>{9e6d8ecd-c1a3-4191-880a-d12b5652aee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\NASA">
+      <UniqueIdentifier>{c93d926d-0c55-446a-87a0-fccad8bbfc8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\External Libraries">
+      <UniqueIdentifier>{818984c3-5426-4b01-aced-a7a51ce81135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\External Libraries">
+      <UniqueIdentifier>{38dfb590-cdad-4459-8ff5-232f3bac644c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Simulation\SimulationConfig">
+      <UniqueIdentifier>{2b559a67-fca8-4c36-b44b-b9e7173bb2a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Simulation\SimulationConfig">
+      <UniqueIdentifier>{d989194c-580c-420d-9083-a858d61679e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Race.cpp">
@@ -33,22 +51,58 @@
     <ClCompile Include="Simulation\DrivingSimulator.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation\MovingObject.cpp">
+    <ClCompile Include="Simulation\AccelerationCalculator.cpp">
       <Filter>Quelldateien\Simulation</Filter>
-    </ClCompile>
-    <ClCompile Include="Simulation\Position.cpp">
-      <Filter>Quelldateien\Simulation</Filter>
-    </ClCompile>
-    <ClCompile Include="NASA_ElevationCalculator.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="NASA_ElevationDataDownloader.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="NASA_GeoCoordConversion.cpp">
-      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="OpenStreetMap.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\DataMap2D.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Ausgabe-Visualisierung.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Quelldateien\External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>Quelldateien\External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp">
+      <Filter>Quelldateien\NASA</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp">
+      <Filter>Quelldateien\NASA</Filter>
+    </ClCompile>
+    <ClCompile Include="NASA_src\NASA_GeoCoordConversion.cpp">
+      <Filter>Quelldateien\NASA</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Quelldateien\External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>Quelldateien\External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Soll_Fahrtbestimmung.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\IImportSimulationConfig.cpp">
+      <Filter>Quelldateien\Simulation\SimulationConfig</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\ImportSimulationConfig.cpp">
+      <Filter>Quelldateien\Simulation\SimulationConfig</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\MockSimulationConfig.cpp">
+      <Filter>Quelldateien\Simulation\SimulationConfig</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\MiscFunctions.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation\SimulationNode.cpp">
+      <Filter>Quelldateien\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleTracks.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="DatAuf.cpp">
@@ -71,22 +125,52 @@
     <ClInclude Include="Simulation\DrivingSimulator.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation\MovingObject.h">
-      <Filter>Headerdateien\Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="Simulation\Position.h">
-      <Filter>Headerdateien\Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="NASA_ElevationCalculator.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="NASA_ElevationDataDownloader.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="NASA_GeoCoordConversion.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="OpenStreetMap.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\AccelerationCalculator.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\DataMap2D.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NASA_src\NASA_GeoCoordConversion.h">
+      <Filter>Headerdateien\NASA</Filter>
+    </ClInclude>
+    <ClInclude Include="NASA_src\NASA_DataFileHandler.h">
+      <Filter>Headerdateien\NASA</Filter>
+    </ClInclude>
+    <ClInclude Include="NASA_src\NASA_ElevationCalculator.h">
+      <Filter>Headerdateien\NASA</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Headerdateien\External Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Soll_Fahrtbestimmung.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\MockSimulationConfig.h">
+      <Filter>Headerdateien\Simulation\SimulationConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\IImportSimulationConfig.h">
+      <Filter>Headerdateien\Simulation\SimulationConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\ImportSimulationConfig.h">
+      <Filter>Headerdateien\Simulation\SimulationConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\MiscFunctions.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\SimulationNode.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="ExampleTracks.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Ausgabe-Visualisierung.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="DatAuf.h">
@@ -95,5 +179,10 @@
     <ClInclude Include="DatAuf_SplineCatmullRom.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Testconfiguration\SimulationConfig.json">
+      <Filter>Ressourcendateien</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,31 +1,19 @@
 #pragma once
+#ifndef SIMENVIRONMENT
+#define SIMENVIRONMENT
+
 #include <tuple>
 #include <cmath>
+#include <vector>
+#include "DataMap2D.h"
+#include <string>
 
 namespace Simulation
 {
-	class SimulationEnvironment
-	{
-	public:
-		double calcAirPressure(double height);
-		double calcAirTemperature();
-		double calcWindSpeed(double VehicleDirection);
-		double calcRoadResistance();
-
-		void setAirtemperatureCelsius(double Airtemperature);
-		void setAirpressure(double Airpressure);
-		void setWindspeed(double Windspeed);
-		void setWinddirection(double Winddirection);
-
-	private:
-		double Airtemperature;
-		double Airpressure;
-		double Windspeed;
-		double Winddirection; //[°];
-	};
-
-	static double GRAVITATIONALCONSTANT = 9.81;
-	static double GASCONSTANT = 287.0529;
+	//Conversions
+	const double GRAVITATIONALCONSTANT = 9.81;
+	const double GASCONSTANT = 287.0529;
+	const double ABSOLUTEZEROTEMP = 273.15;
 
 	const double RPM2HZ = 1 / 60.0;
 	const double HZ2RPM = 60;
@@ -36,9 +24,47 @@ namespace Simulation
 	const double MBAR2PASCAL = 100;
 	const double PASCAL2MBAR = 1 / 100.0;
 
-	//Calculate coordinates, for returns see https://stackoverflow.com/questions/321068/returning-multiple-values-from-a-c-function
-	static std::tuple<double, double> GeoCoordinatesLongLat2Karthesian(double GeoLong, double GeoLat);
-	static std::tuple<double, double> GeoCoordinatesLatLong2Karthesian(double Lat, double Long);
+	const double RAD2DEG = 180.0 / atan(1) * 4;
+	const double DEG2RAD = atan(1) * 4 / 180.0;
+
+	const double INCH2M = 0.0254;
+	const double M2INCH = 1 / INCH2M;
 
 	static const double PI = atan(1) * 4;
+	const std::string INTERPOLATEDIDENT = std::string("INTERPOLATEDIDENT");
+
+	const double TEMPERATUREGRADIENT = 0.0065;
+
+	class SimulationEnvironment
+	{
+	public:
+		double calcAirPressure(double height);
+		double calcAirTemperatureInKelvin();
+		double calcRelevantWindSpeed(double VehicleDirection); //Vehicledirection in [°]
+		double calcFrictionCoefficient(double Velocity);
+		double calcAirDensity(double height);
+		double getRollingResistanceCoefficient();
+
+		void setAirtemperatureCelsius(double Airtemperature);
+		void setRollingResistanceCoefficient(double RoadResistanceCoefficient);
+
+		void setAirpressure(double Airpressure);
+		void setAirpressureHeight(double PressureHeight);
+		void setWindspeed(double Windspeed);
+		void setWinddirection(double Winddirection);
+		void setFrictionTable(std::vector<double>, std::vector<double>);
+
+	private:
+		double Airtemperature = nan("");
+		double Airpressure = 1013 * MBAR2PASCAL;
+		double PressureHeight = 0.0;
+		double Windspeed = nan("");
+		double Winddirection = nan(""); //[°];
+		double RollingResistanceCoefficient = nan("");
+		DataMap2D FrictionTable; //VehicleSpeed[m/s], µ [-]
+	};
+
+	SimulationEnvironment* ExampleSimulationEnvironment();
 }
+
+#endif

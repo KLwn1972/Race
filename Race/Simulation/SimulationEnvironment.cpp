@@ -3,15 +3,40 @@
 
 using namespace Simulation;
 
-SimulationEnvironment* ExampleSimEnvironment()
+double Simulation::SimulationEnvironment::calcAirPressure(double height)
 {
-	SimulationEnvironment* result = new SimulationEnvironment();
-	result->setAirpressure(1013 * MBAR2PASCAL);
-	result->setAirtemperatureCelsius(22);
-	result->setWinddirection(0);
-	result->setWindspeed(10);
+	double heightinfluence = pow((1 - TEMPERATUREGRADIENT * (height - this->PressureHeight) / calcAirTemperatureInKelvin()), 5.255);
+	return this->Airpressure * heightinfluence;
+}
 
-	return result;
+double Simulation::SimulationEnvironment::calcAirTemperatureInKelvin()
+{
+	return this->Airtemperature + ABSOLUTEZEROTEMP;
+}
+
+double Simulation::SimulationEnvironment::calcRelevantWindSpeed(double VehicleDirection)
+{
+	return this->Windspeed * cos(VehicleDirection);
+}
+
+void Simulation::SimulationEnvironment::setRollingResistanceCoefficient(double Coefficient)
+{
+	this->RollingResistanceCoefficient = Coefficient;
+}
+
+double Simulation::SimulationEnvironment::getRollingResistanceCoefficient()
+{
+	return this->RollingResistanceCoefficient;
+}
+
+double Simulation::SimulationEnvironment::calcFrictionCoefficient(double Velocity)
+{
+	return this->FrictionTable.getY(Velocity);
+}
+
+double Simulation::SimulationEnvironment::calcAirDensity(double height)
+{
+	return this->calcAirPressure(height) / (GASCONSTANT * (this->calcAirTemperatureInKelvin()));
 }
 
 void Simulation::SimulationEnvironment::setAirtemperatureCelsius(double Airtemperature)
@@ -24,6 +49,11 @@ void Simulation::SimulationEnvironment::setAirpressure(double Airpressure)
 	this->Airpressure = Airpressure;
 }
 
+void Simulation::SimulationEnvironment::setAirpressureHeight(double PressureHeight)
+{
+	this->PressureHeight = PressureHeight;
+}
+
 void Simulation::SimulationEnvironment::setWindspeed(double Windspeed)
 {
 	this->Windspeed = Windspeed;
@@ -34,17 +64,21 @@ void Simulation::SimulationEnvironment::setWinddirection(double Winddirection)
 	this->Winddirection = Winddirection;
 }
 
-std::tuple<double, double> Simulation::GeoCoordinatesLongLat2Karthesian(double GeoLong, double GeoLat)
-{
-	double CartX, CartY;
-	const double EarthRadius_m = 6378.137 * 1000;
-	CartX = EarthRadius_m * (GeoLong * PI) / (180.0);
-	CartY = EarthRadius_m * atanh(sin((GeoLat * PI) / 180.0));
-
-	return { CartX,CartY };
+void Simulation::SimulationEnvironment::setFrictionTable(std::vector<double> velocityValues, std::vector<double> CoefficientValues) {
+	this->FrictionTable = DataMap2D(velocityValues, CoefficientValues);
 }
 
-std::tuple<double, double> Simulation::GeoCoordinatesLatLong2Karthesian(double GeoLat, double GeoLong)
+SimulationEnvironment* Simulation::ExampleSimulationEnvironment()
 {
-	return GeoCoordinatesLongLat2Karthesian(GeoLong, GeoLat);
+	SimulationEnvironment* result = new SimulationEnvironment();
+	result->setAirpressure(1013 * MBAR2PASCAL);
+	result->setAirtemperatureCelsius(22);
+	result->setWinddirection(0);
+	result->setWindspeed(10);
+	result->setRollingResistanceCoefficient(0.014);
+	std::vector<double> frictiondataSpeed = { 10 * KMH2MS,50 * KMH2MS,100 * KMH2MS };
+	std::vector<double> frictiondataCoeff = { 1.15, 1.0, 0.8 };
+	result->setFrictionTable(frictiondataSpeed, frictiondataCoeff);
+
+	return result;
 }
