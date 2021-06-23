@@ -24,12 +24,12 @@ using namespace std;
 int main()
 {
 
-///////////////////////////////////////////////////////////////////////
-// 	   Usage Beispiele aus NASA Team
-// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
-//		string nasa_download_zielpfad 
-//		string nasa_download_zielpfad_win 
-///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	// 	   Usage Beispiele aus NASA Team
+	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
+	//		string nasa_download_zielpfad 
+	//		string nasa_download_zielpfad_win 
+	///////////////////////////////////////////////////////////////////////
 #if 0	
 	// Herunterladen aller HGT für Deutschland
 	//NASA::NASADataFileHandler filehandle;
@@ -42,7 +42,7 @@ int main()
 
 	double long_nuerburgringstart = 6.966279;
 	double lat_nuerburgringstart = 50.346094;
-	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
+	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
 #endif
 
 
@@ -50,50 +50,56 @@ int main()
 
 
 #if 1
-	//std::cout << "Hello World!\n";
+	//////////////////////////////////////////////////////////////////////////
+	// Datenbeschaffungsteam
+	// Sued: route = "38567";
 	vector<node> nodes;
-	string route = "38566";
+	string route = "38566"; // Nord
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
 	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
 	int retval = OSM_Nord->GetNodesFromOSM();
-
-	// DATENAUFBEREITUNG
-	if (retval == 0) {
-		DatAuf::CalcDatAuf DatAuf_Nord;
-		DatAuf_Nord.nodes = OSM_Nord->nodes;
-		delete OSM_Nord;
-		DatAuf_Nord.DataProcessing();
-		//return-Wert einfuegen
+	nodes = OSM_Nord->nodes;
+	delete OSM_Nord;
+	if (retval != 0) {
+		// Fehler download
+		return -1;
 	}
 
-	///* Da noch Sued. Eigentlich eine beliebige Route
-	//route = "38567";
-	//OpenStreetMap* OSM_Sued = new OpenStreetMap(route);
-	//if (OSM_Sued->GetNodesFromOSM() == 0){
-	//}
-	//delete OSM_Sued;
-	//*/
+	//////////////////////////////////////////////////////////////////////////
+	// DATENAUFBEREITUNG
+	if (nodes.size() > 4) {
+		DatAuf::CalcDatAuf DatAuf_Nord;
+		DatAuf_Nord.nodes = nodes;
+		DatAuf_Nord.DataProcessing();
+		//return-Wert einfuegen
+		//return -1;
+		nodes = DatAuf_Nord.nodes;
+	}
+	else {
+		// Fehler mindestans vier Nodes
+		return -1;
+	}
 
-	//Fahrphysik
-	auto track = ExampleHillTrack();
-	string SimulationConfigFile = "Testconfiguration/SimulationConfig.json";
-	track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
-	auto SimulationConfig = Simulation::ImportSimulationConfig(SimulationConfigFile);
-	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
-	vector<node> result = Drivingsim.RunSimulation();
-	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
+	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
+	auto SimulationConfig = Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig.json");
 
+	//////////////////////////////////////////////////////////////////////////
+	//Sollfahrtbestimmung
 	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
 	SollFahrt->setVehicle(SimulationConfig.getVehicle());
 	SollFahrt->setEnvironment(SimulationConfig.getEnvironment());
-	vector<node> Strecke = ExampleStraightTrack(0);
-	SollFahrt->SpeedLimit_route(Strecke);
+	SollFahrt->SpeedLimit_route(nodes);
+
+	//////////////////////////////////////////////////////////////////////////
+	//Fahrphysik
+	auto Drivingsim = Simulation::DrivingSimulator(nodes, SimulationConfig);
+	nodes.clear();
+	nodes = Drivingsim.RunSimulation();
+	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
 
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
 	ausgabe_visualisierung(nodes, "Nordschleife");
-
-	//////////////////////////////////////////////////////////////////////////
 
 #endif
 
