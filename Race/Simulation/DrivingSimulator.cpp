@@ -105,10 +105,10 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 	for (size_t i = this->modifiedtrack.size() - 1; i > 0; i--) {                                                                                          //calculate the new limit according to the max Brake from last point;
 		node& currentPos = this->modifiedtrack.at(i);
 		node& previousPos = this->modifiedtrack.at(i - 1);
-		if (previousPos.speedLimit <= currentPos.speedLimit) {                                                                          //no need to brake wenn acceleration
-			previousPos.speedLimit = previousPos.speedLimit;
-		}
-		else {                                                                                                                                                   //calculate the brake velocity wenn decceleration
+		//if (previousPos.speedLimit <= currentPos.speedLimit) {                                                                          //no need to brake wenn acceleration
+		//	previousPos.speedLimit = previousPos.speedLimit;
+		//}
+		if (previousPos.speedLimit > currentPos.speedLimit) {                                                                                                                                                   //calculate the brake velocity wenn decceleration
 			double BrakeDecceleration = this->accelerationcalc->calcDecceleration(currentPos.speedLimit, previousPos, currentPos);   //get max decceleration at current point
 			double localDistance = previousPos.distanceToNext;                        //get Distance between local point and previous point
 			double BrakeSpeed = sqrt((currentPos.speedLimit) * (currentPos.speedLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
@@ -132,7 +132,7 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 			currentPos.MaxAcceleration = MaxLocalAcceleration;
 			double speed_temp = sqrt((currentPos.speedIs) * (currentPos.speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
 			 // determine the Is-speed and raceTime according to different situation
-			if (speed_temp >= nextPos.speedLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
+			if (speed_temp > nextPos.speedLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
 				nextPos.speedIs = this->modifiedtrack.at(i + 1).speedLimit;
 				nextPos.raceTime = currentPos.raceTime + calcRaceTimeBetweenTwoPointsWithDifferentAccleration(MaxLocalAcceleration, currentPos.speedIs, nextPos.speedIs, localDistance);
 			}
@@ -170,9 +170,9 @@ double Simulation::DrivingSimulator::calcRaceTimeBetweenTwoPointsWithDifferentAc
 	return time;
 }
 
-double Simulation::DrivingSimulator::calcDistanceBetweenTwoPoints(node TrackPoint, node NextPoint)
-{
-	double horizontDistance = TrackPoint.distanceToNext;
-	double verticalDistance = TrackPoint.elevation - NextPoint.elevation;
-	return sqrt(horizontDistance * horizontDistance + verticalDistance * verticalDistance);
-}
+//double Simulation::DrivingSimulator::calcDistanceBetweenTwoPoints(node TrackPoint, node NextPoint)
+//{
+//	double horizontDistance = TrackPoint.distanceToNext;
+//	double verticalDistance = TrackPoint.elevation - NextPoint.elevation;
+//	return sqrt(horizontDistance * horizontDistance + verticalDistance * verticalDistance);
+//}
