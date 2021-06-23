@@ -9,6 +9,7 @@ using namespace std;
 
 namespace DatAuf {
 
+
 	class CalcDatAuf {
 	public:
 		vector<node> nodes;
@@ -38,5 +39,6 @@ namespace DatAuf {
 
 	static double GetDistanceMeters3D(node node1, node node2);
 	static double deg2rad(double grad);
+	//static double rad2deg(double rad);
 }
 

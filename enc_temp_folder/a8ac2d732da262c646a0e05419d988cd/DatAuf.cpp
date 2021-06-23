@@ -48,7 +48,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		while (NodeItem < MaxNumberNodes - 1) {
 
 			//Fix points for Spline interpolation in this refinement segment
-			cout << "NodeItem = " << NodeItem << endl;
 			CopyNodesToSplineKnots(NodeItem);
 
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(nodes[NodeItem], nodes[NodeItem + 1]);
@@ -76,7 +75,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 				case 1:
 					Delta_t = 1.0 / int(nodes[NodeItem].distanceToNext);
-
+					cout << "NodeItem = " << NodeItem << endl;
 					PrevNode = nodes[NodeItem];
 
 					t_previous = 0.0;
@@ -119,18 +118,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 								if (DistanceTwoNodes > 1.0) {
 									cout << "Warnung:  InsertAdditionalNode insert last node....." << endl;										// Error Handling: offen
 									t_current = 0.5 * (1.0 + t_previous);
-
-									RefinementIterator += 1;
-
-									SplineSegment.CalcInterpolKnot(t_current);
-									NewNode = GetInterpolKnot();
-									DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
-
-									NumberAdditionalNodes += 1;
-									InsertOneAdditionalNode(NodeItem, NumberAdditionalNodes, NewNode);
-
-									break;
-
 								}
 							}
 
