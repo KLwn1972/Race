@@ -2,10 +2,28 @@
 #include <cstring>
 #include <iostream>
 
-using namespace std;
+//Informationen aus HGT müssen auf Heap, zu gross fur Stack
 
-class ElevationCalculator {
-public:
-	static double getElevationFromSRTM_SIRCdata(const double &longitude, const double &latitude);
-	static double getElevationFromSRTM_XSARdata(const double &longitude, const double &latitude);
-};
+//__int16 srtm_data[SRTM_SIZE][SRTM_SIZE] = { 0 };
+
+using namespace std;
+//namespace NASA {
+
+	extern const string  nasa_download_zielpfad;
+	extern const string  nasa_url_base;
+	extern const string  nasa_url_addon; 
+
+	class HGT_ElevationCalculator {
+	public:
+		static double getElevationFromSRTM_SIRCdata(const double& longitude, const double& latitude);
+
+	private:
+		static bool checkIfFileExists(string filename);
+		static double readSingleElevationValueFromFile(double &longitude_deltasec, double &latitude_deltasec, string filename);
+
+		//Für Debuggingzwecke behalten, Funktion liest vollständige HGT ein
+		//static double readElevationFromEntireFile(double &longitude_deltasec, double &latitude_deltasec, string filename);
+
+	};
+
+//}

@@ -14,6 +14,7 @@
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
 
+
 #include "Soll_Fahrtbestimmung.h"
 
 #include "DatAuf.h"
@@ -22,6 +23,33 @@ using namespace std;
 
 int main()
 {
+
+///////////////////////////////////////////////////////////////////////
+// 	   Usage Beispiele aus NASA Team
+// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
+//		string nasa_download_zielpfad 
+//		string nasa_download_zielpfad_win 
+///////////////////////////////////////////////////////////////////////
+#if 0	
+	// Herunterladen aller HGT für Deutschland
+	//NASA::NASADataFileHandler filehandle;
+	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
+
+	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
+	double long_stuttgart = 9.206802;
+	double lat_stuttgart = 48.742211;
+	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
+
+	double long_nuerburgringstart = 6.966279;
+	double lat_nuerburgringstart = 50.346094;
+	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
+#endif
+
+
+
+
+
+#if 1
 	//std::cout << "Hello World!\n";
 	vector<node> nodes;
 	string route = "38566";
@@ -46,18 +74,6 @@ int main()
 	//delete OSM_Sued;
 	//*/
 
-	//NASA
-	//double long_stuttgart = 9.206802;
-	//double lat_stuttgart = 48.742211;
-	//ElevationCalculator calc;
-	//cout.setf(ios::fixed, ios::floatfield);
-	//cout.precision(6);
-	//cout << calc.getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
-	//cout << GeoCoordConversion::getGrad_From_WGS84Decimal(long_stuttgart) << endl;
-	//cout << setw(20) << GeoCoordConversion::getMin_From_WGS84Decimal(long_stuttgart) << endl;
-	//cout << setw(20) << GeoCoordConversion::getSeconds_From_WGS84Decimal(long_stuttgart) << endl;
-	//cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
-
 	//Fahrphysik
 	auto track = ExampleHillTrack();
 	string SimulationConfigFile = "Testconfiguration/SimulationConfig.json";
@@ -78,6 +94,8 @@ int main()
 	ausgabe_visualisierung(nodes, "Nordschleife");
 
 	//////////////////////////////////////////////////////////////////////////
+
+#endif
 
 	return 0;
 }

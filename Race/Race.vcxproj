@@ -166,6 +166,7 @@
     <ClInclude Include="Ausgabe-Visualisierung.h" />
     <ClInclude Include="DatAuf.h" />
     <ClInclude Include="ExampleTracks.h" />
+    <ClInclude Include="NASA_src\NASA_constants.h" />
     <ClInclude Include="NASA_src\NASA_DataFileHandler.h" />
     <ClInclude Include="NASA_src\NASA_ElevationCalculator.h" />
     <ClInclude Include="NASA_src\NASA_GeoCoordConversion.h" />
