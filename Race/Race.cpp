@@ -16,6 +16,9 @@
 
 #include "Soll_Fahrtbestimmung.h"
 
+#include "DatAuf.h"
+#include "VectorklassenTest.h"
+
 using namespace std;
 
 int main()
@@ -27,13 +30,26 @@ int main()
 	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
 	int retval = OSM_Nord->GetNodesFromOSM();
 
-	//// Hier macht Datenaufbereitung weiter
-	if (retval == 0) {
-		vector<node> nodes = OSM_Nord->nodes;
-		
-	}
-	// Wenn nicht mehr benötigt wird
-	delete OSM_Nord;
+    // Hier macht Datenaufbereitung weiter
+    if (retval == 0) {
+        vector<node> nodes = OSM_Nord->nodes;
+    }
+
+
+    // **** DATENAUFBEREITUNG Start ********
+
+    DatAuf::CalcDatAuf DatAuf_Nord;             // Muss DatAuf_Nord über new allokiert werden?!
+    DatAuf_Nord.nodes = OSM_Nord->nodes;
+    delete OSM_Nord;
+    DatAuf_Nord.DataProcessing();
+    //node node1, node2;
+    //DatAuf::GetDistanceMeters(node1, node2);
+
+    // **** DATENAUFBEREITUNG ENDE *********
+
+
+
+
 
 	///* Da noch Sued. Eigentlich eine beliebige Route
 	//route = "38567";
