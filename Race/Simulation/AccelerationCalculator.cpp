@@ -54,7 +54,7 @@ double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gr
 	double maximumTorque = 0;
 	if (this->vehicle->PowertrainType == PowerTrainTypes::Electric)
 	{
-		maximumTorque = this->vehicle->VehiclespeedTorqueCurve->getY(velocity);
+		maximumTorque = this->vehicle->VehicleSpeedTorqueCurve->getY(velocity);
 	}
 	else if (this->vehicle->PowertrainType == PowerTrainTypes::ICE)
 	{

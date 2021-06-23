@@ -32,7 +32,7 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 
 	//EnvironmentData
 	EnvironmentObject->setAirtemperatureCelsius(getDoubleFromcJSON(Environment, "Airtemperature [C]"));
-	EnvironmentObject->setWindspeed(getDoubleFromcJSON(Environment, "Windspeed [km/h]") * KMH2MS);
+	EnvironmentObject->setWindspeed(getDoubleFromcJSON(Environment, "WindSpeed [km/h]") * KMH2MS);
 	EnvironmentObject->setRollingResistanceCoefficient(getDoubleFromcJSON(Environment, "RollingResistanceCoefficient [-]"));
 	EnvironmentObject->setFrictionTable(getVectorFromcJSON(Environment, "FrictionCoefficient_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(Environment, "FrictionCoefficient_fac_CUR [-]"));
 
@@ -40,8 +40,9 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	VehicleObject->Manufacturer = getStringFromcJSON(VehicleData, "Manufacturer");
 	VehicleObject->Model = getStringFromcJSON(VehicleData, "Model");
 	(getStringFromcJSON(VehicleData, "PowertrainType") == "Electric" ? VehicleObject->PowertrainType = PowerTrainTypes::Electric : VehicleObject->PowertrainType = PowerTrainTypes::ICE);
-	VehicleObject->VMaxLimited = getDoubleFromcJSON(VehicleData, "VMaxLimited");
+	VehicleObject->VMaxLimited = getDoubleFromcJSON(VehicleData, "VMaxLimited [km/h]") * KMH2MS;
 	VehicleObject->NumberOfGears = getDoubleFromcJSON(VehicleData, "NumberOfGears");
+	VehicleObject->EngineSpeedMax = getDoubleFromcJSON(VehicleData, "EngineSpeedMax [1/min]") * RPM2HZ;
 	VehicleObject->EngineInertia = getDoubleFromcJSON(VehicleData, "EngineInertia [kgm2]");
 	VehicleObject->AxleInertia = getDoubleFromcJSON(VehicleData, "AxleInertia [kgm2]");
 	VehicleObject->Mass = getDoubleFromcJSON(VehicleData, "Mass [kg]");
@@ -54,8 +55,8 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	VehicleObject->WheelRatioPercent = getDoubleFromcJSON(VehicleData, "WheelRatioPercent [%]");
 	VehicleObject->WheelSize = getDoubleFromcJSON(VehicleData, "WheelSize [inch]") * INCH2M;
 	VehicleObject->WheelInertia = getDoubleFromcJSON(VehicleData, "WheelInertia [kgm2]");
-	VehicleObject->VehiclespeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "VehiclespeedTorque_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(VehicleData, "VehiclespeedTorque_trq_CUR [Nm]"));
-	VehicleObject->EnginespeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "EnginespeedTorque_n_CUR [1/min]", RPM2HZ), getVectorFromcJSON(VehicleData, "EnginespeedTorque_trq_CUR [Nm]"));
+	VehicleObject->VehicleSpeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "VehicleSpeedTorque_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(VehicleData, "VehicleSpeedTorque_trq_CUR [Nm]"));
+	VehicleObject->EngineSpeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "EngineSpeedTorque_n_CUR [1/min]", RPM2HZ), getVectorFromcJSON(VehicleData, "EngineSpeedTorque_trq_CUR [Nm]"));
 
 	this->vehicle = VehicleObject;
 	this->environment = EnvironmentObject;
