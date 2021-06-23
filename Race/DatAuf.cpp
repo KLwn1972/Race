@@ -458,7 +458,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 			if (denominator > 0 || denominator < 0) {
 				// radius at Index
-				radiusIndex = 0.5 * sqrt(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / denominator);
+				radiusIndex = 0.5 * sqrt(abs(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / denominator));
 			
 				// limitations	-> tertiärer Operator?			
 				if (radiusIndex < minRadius) {
