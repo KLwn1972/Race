@@ -185,6 +185,7 @@
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Testconfiguration\SimulationConfig_ModelSPerf.json" />
     <None Include="Testconfiguration\SimulationConfig.json" />
     <ClInclude Include="DatAuf_SplineCatmullRom.h" />
   </ItemGroup>

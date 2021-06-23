@@ -30,7 +30,7 @@ int main()
 	int retval = OSM_Nord->GetNodesFromOSM();
 
     //DATENAUFBEREITUNG
-    DatAuf::CalcDatAuf DatAuf_Nord;        
+    DatAuf::CalcDatAuf DatAuf_Nord;
     DatAuf_Nord.nodes = OSM_Nord->nodes;
     delete OSM_Nord;
     DatAuf_Nord.DataProcessing();
@@ -78,14 +78,11 @@ int main()
 	//vector<node> Strecke = ExampleStraightTrack(0);
 	//SollFahrt->SpeedLimit_route(Strecke);
 
-	
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
 	ausgabe_visualisierung(nodes, "Nordschleife");
 
-
 	//////////////////////////////////////////////////////////////////////////
-
 
 	return 0;
 }
