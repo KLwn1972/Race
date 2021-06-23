@@ -134,6 +134,15 @@ cJSON* OpenStreetMap::JSON_ReadFileToStructur(string FileName) {
 }
 
 HRESULT OpenStreetMap::DownloadFile(string URL, string OutFile) {
+	// Datei existiert bereits
+	if (GetFileAttributes(StrToTchar(OutFile)) != INVALID_FILE_ATTRIBUTES) {
+		#ifdef DEBUG
+			cout << endl << URL << endl << OutFile << endl << "File exists already" << endl;
+		#else
+			cout << "=";
+		#endif
+		return S_OK;
+	}
 	HRESULT result = URLDownloadToFile(NULL, this->StrToTchar(URL), this->StrToTchar(OutFile), NULL, NULL);
 	#ifdef DEBUG
 		cout << endl << URL << endl << OutFile << endl;
