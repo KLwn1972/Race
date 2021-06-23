@@ -1,3 +1,9 @@
+/*
+Team Fahrphysik: Alexander Eirich, Yuying Zhu, Max Paschke
+
+Vehicle holds all the data to describe the vehicle and some calculation functions
+*/
+
 #pragma once
 
 #ifndef VEHICLEDEF
@@ -5,7 +11,7 @@
 
 #include <vector>
 #include <map>
-#include "DataMap2D.h"
+#include "DataMap1D.h"
 using namespace std;
 
 namespace Simulation
@@ -15,8 +21,8 @@ namespace Simulation
 	public:
 		double ShiftDownLimitMin = nan(""); //rpm at which driver should shift down
 		double ShiftUpLimitMax = nan(""); //rpm at which driver should shift up
-		DataMap2D LowerShiftLimit; //DataMap with engine speed [1/s], low shift pedal point
-		DataMap2D UpperShiftLimit; //DataMap with engine speed [1/s], upshift pedal point
+		DataMap1D LowerShiftLimit; //DataMap with engine speed [1/s], low shift pedal point
+		DataMap1D UpperShiftLimit; //DataMap with engine speed [1/s], upshift pedal point
 		double GearRatio = nan("");
 	};
 
@@ -38,13 +44,13 @@ namespace Simulation
 		double DragCoefficient = nan("");
 
 		double EngineUpperRevLimit = nan(""); //rpm
-		DataMap2D* EngineSpeedTorqueCurve; //Curve with enginespeed, torque [1/s, Nm]
+		DataMap1D* EngineSpeedTorqueCurve; //Curve with enginespeed, torque [1/s, Nm]
 		double EngineInertia = nan("");
 		double AxleInertia = nan("");
 		double WheelInertia = nan("");
 		double PowertrainEfficiency = nan("");
 
-		DataMap2D* VehicleSpeedTorqueCurve; //Curve with speed, torque [m/s, Nm]
+		DataMap1D* VehicleSpeedTorqueCurve; //Curve with speed, torque [m/s, Nm]
 		PowerTrainTypes PowertrainType = PowerTrainTypes::Electric;
 
 		double WheelWidth = nan(""); //m /0.205

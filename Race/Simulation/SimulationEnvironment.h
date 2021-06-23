@@ -1,3 +1,9 @@
+/*
+Team Fahrphysik: Alexander Eirich, Yuying Zhu, Max Paschke
+
+SimulationEnvironment provides Environmentdata to do the simulation.
+*/
+
 #pragma once
 #ifndef SIMENVIRONMENT
 #define SIMENVIRONMENT
@@ -5,7 +11,7 @@
 #include <tuple>
 #include <cmath>
 #include <vector>
-#include "DataMap2D.h"
+#include "DataMap1D.h"
 #include <string>
 
 namespace Simulation
@@ -61,7 +67,7 @@ namespace Simulation
 		double Windspeed = nan("");
 		double Winddirection = nan(""); //[°];
 		double RollingResistanceCoefficient = nan("");
-		DataMap2D FrictionTable; //VehicleSpeed[m/s], µ [-]
+		DataMap1D FrictionTable; //VehicleSpeed[m/s], µ [-]
 	};
 
 	SimulationEnvironment* ExampleSimulationEnvironment();

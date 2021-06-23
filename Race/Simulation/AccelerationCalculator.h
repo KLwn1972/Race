@@ -1,3 +1,9 @@
+/*
+Team Fahrphysik: Alexander Eirich, Yuying Zhu, Max Paschke
+
+AccelerationCalculator is a function which calculates the acceleration for a vehicle.
+*/
+
 #pragma once
 #include "Vehicle.h"
 #include "SimulationEnvironment.h"
