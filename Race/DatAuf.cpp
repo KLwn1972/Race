@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <iostream>
-#include <vector>
+// #include <vector>
 #include<string>
 #include "DatAuf.h"
 #include "DatAuf_SplineCatmullRom.h"
@@ -11,7 +11,7 @@ using namespace std;
 
 
 void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
-		GetTestData();
+		//GetTestData();
 		// Check and insert additional knots if necessary
 		cout << "DatAuf: Insert nodes..." << endl;
 		this->InsertAdditionalNodes();
@@ -385,8 +385,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 				radiusIndex = 0.5 * sqrt(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / (dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost));
 
 				// limitations
-				if (radiusIndex < 10E-6) {
-					this->nodes[index].horizontalCurveRadius = 10E-6;
+				if (radiusIndex < minRadius) {
+					this->nodes[index].horizontalCurveRadius = minRadius;
 					cout << "Warning: horizontal radius is smaller than "<< minRadius <<". Node: " << index << endl;										// Error Handling: offen
 				}
 				else if (radiusIndex > maxRadius) {

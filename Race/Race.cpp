@@ -24,19 +24,17 @@ int main()
     // Hier macht Datenaufbereitung weiter
     if (retval == 0) {
         vector<node> nodes = OSM_Nord->nodes;
+    
+
+
+    // DATENAUFBEREITUNG
+    if (retval == 0) {
+        DatAuf::CalcDatAuf DatAuf_Nord;             // Muss DatAuf_Nord über new allokiert werden?!
+        DatAuf_Nord.nodes = OSM_Nord->nodes;
+        delete OSM_Nord;
+        DatAuf_Nord.DataProcessing();
+        //return-Wert einfuegen
     }
-
-
-    // **** DATENAUFBEREITUNG Start ********
-
-    DatAuf::CalcDatAuf DatAuf_Nord;             // Muss DatAuf_Nord über new allokiert werden?!
-    DatAuf_Nord.nodes = OSM_Nord->nodes;
-    delete OSM_Nord;
-    DatAuf_Nord.DataProcessing();
-    //node node1, node2;
-    //DatAuf::GetDistanceMeters(node1, node2);
-
-    // **** DATENAUFBEREITUNG ENDE *********
 
 
 
