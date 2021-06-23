@@ -166,7 +166,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Testconfiguration\SimulationConfig.json">
+    <None Include="Testconfiguration\SimulationConfig_ModelSPerf.json">
       <Filter>Ressourcendateien</Filter>
     </None>
   </ItemGroup>
