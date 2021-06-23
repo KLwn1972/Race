@@ -40,9 +40,14 @@ vector<Simulation::SimulationNode> Simulation::DrivingSimulator::ReturnModifiedT
 	return this->modifiedtrack;
 }
 
+void Simulation::DrivingSimulator::setInterpolationLevel(unsigned int level)
+{
+	cout << "Setting interpolation level to " << level;
+	this->InterpolationLevel = level;
+}
+
 void Simulation::DrivingSimulator::createModifiedTrack()
 {
-	const size_t NumberOfInterpolationPoints = 1;
 	vector<SimulationNode> newTrack = vector<SimulationNode>();
 
 	SimulationNode oldStepSimNode = SimulationNode();
@@ -53,9 +58,9 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 		if (i > 0)
 		{
 			double DistanceOldNew = oldStepSimNode.distanceToNext;
-			double DistanceBetweenPoints = DistanceOldNew / (NumberOfInterpolationPoints + 1);
+			double DistanceBetweenPoints = DistanceOldNew / (this->InterpolationLevel + 1);
 			newTrack.at(i - 1).distanceToNext = DistanceBetweenPoints;
-			for (int j = 1; j <= NumberOfInterpolationPoints; j++)
+			for (unsigned int j = 1; j <= this->InterpolationLevel; j++)
 			{
 				double DistanceToCheck = j * DistanceBetweenPoints;
 				SimulationNode interpolatedNode = SimulationNode();
