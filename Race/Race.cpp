@@ -56,27 +56,27 @@ int main()
 	//cout << setw(20) << GeoCoordConversion::getDecimal_From_WGS84GradMinSec(9, 13, 24.4872) << endl;
 
 	//Fahrphysik
-	auto track = ExampleHillTrack();
-	string SimulationConfigFile = "Testconfiguration/SimulationConfig.json";
-	track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
-	auto SimulationConfig = Simulation::ImportSimulationConfig(SimulationConfigFile);
-	auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
-	vector<node> result = Drivingsim.RunSimulation();
-	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
+	//auto track = ExampleHillTrack();
+	//string SimulationConfigFile = "Testconfiguration/SimulationConfig.json";
+	//track.at(track.size() - 1).speedLimit = 10 * KMH2MS;
+	//auto SimulationConfig = Simulation::ImportSimulationConfig(SimulationConfigFile);
+	//auto Drivingsim = Simulation::DrivingSimulator(track, SimulationConfig);
+	//vector<node> result = Drivingsim.RunSimulation();
+	//Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
 
-	vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
-	vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };
-	Simulation::DataMap2D* Datamap = new Simulation::DataMap2D(xdata, ydata);
-	cout << Datamap->getY(-1) << "\n";
-	cout << Datamap->getY(1.9) << "\n";
-	cout << Datamap->getY(800) << "\n";
+	//vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
+	//vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };
+	//Simulation::DataMap2D* Datamap = new Simulation::DataMap2D(xdata, ydata);
+	//cout << Datamap->getY(-1) << "\n";
+	//cout << Datamap->getY(1.9) << "\n";
+	//cout << Datamap->getY(800) << "\n";
 
-	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
-	SollFahrt->setVehicle(SimulationConfig.getVehicle());
-	SollFahrt->setEnvironment(SimulationConfig.getEnvironment());
-	//SollFahrt->V_max();
-	vector<node> Strecke = ExampleStraightTrack(0);
-	SollFahrt->SpeedLimit_route(Strecke);
+	//Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
+	//SollFahrt->setVehicle(SimulationConfig.getVehicle());
+	//SollFahrt->setEnvironment(SimulationConfig.getEnvironment());
+	////SollFahrt->V_max();
+	//vector<node> Strecke = ExampleStraightTrack(0);
+	//SollFahrt->SpeedLimit_route(Strecke);
 
 	
 	//////////////////////////////////////////////////////////////////////////
