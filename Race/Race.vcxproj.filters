@@ -187,5 +187,8 @@
     <None Include="Testconfiguration\SimulationConfig_ModelSPerf.json">
       <Filter>Ressourcendateien</Filter>
     </None>
+    <None Include="Testconfiguration\SimulationConfig_SMARTe.json">
+      <Filter>Ressourcendateien</Filter>
+    </None>
   </ItemGroup>
 </Project>
