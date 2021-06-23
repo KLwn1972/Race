@@ -66,14 +66,14 @@ int main()
 	vector<double> xdata = vector<double>{ 0,1,2,3,5,6,7 };
 	vector<double> ydata = vector<double>{ 0,100,200,300,500,600,700 };
 	Simulation::DataMap2D* Datamap = new Simulation::DataMap2D(xdata, ydata);
-	cout << Datamap->getY(-1) << "\n";
-	cout << Datamap->getY(1.9) << "\n";
-	cout << Datamap->getY(800) << "\n";
+	//cout << Datamap->getY(-1) << "\n";
+	//cout << Datamap->getY(1.9) << "\n";
+	//cout << Datamap->getY(800) << "\n";
 
+	//Main von Gruppe 5: Soll_Fahrtbestimmung
 	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
 	SollFahrt->setVehicle(SimulationConfig.getVehicle());
 	SollFahrt->setEnvironment(SimulationConfig.getEnvironment());
-	//SollFahrt->V_max();
 	vector<node> Strecke = ExampleStraightTrack(0);
 	SollFahrt->SpeedLimit_route(Strecke);
 	return 0;
@@ -114,8 +114,8 @@ vector<node> ExampleStraightTrack(double length)
 		newnode.longitude = Simulation::interpolateValues(0, startlong, distance, endlong, i * stepWidth);
 		newnode.gradient = ((endelevation - startelevation) / distance) * 100;
 		newnode.speedLimit = 200 * Simulation::KMH2MS;
-		newnode.horizontalCurveRadius = INFINITY;
-		newnode.verticalCurveRadius = INFINITY;
+		newnode.horizontalCurveRadius = 1000000;
+		newnode.verticalCurveRadius = 1000000;
 		newnode.id = std::to_string(i);
 		result.push_back(newnode);
 	}
