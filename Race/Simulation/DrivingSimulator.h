@@ -19,6 +19,7 @@ namespace Simulation {
 		~DrivingSimulator();
 
 		vector<node> RunSimulation();
+		vector<SimulationNode> ReturnModifiedTrack();
 	private:
 		//Create a modified track which contains the simulationNodes
 		void createModifiedTrack();
@@ -32,7 +33,6 @@ namespace Simulation {
 		void calcIsSpeedandTime();
 
 		double calcRaceTimeBetweenTwoPointsWithDifferentAccleration(double acceleration, double Speed_LocalPoint, double Speed_nextPoint, double Distance);
-		double calcDistanceBetweenTwoPoints(node Trackpoint, node NextPoint);
 
 		vector<node> rawtrack;
 		vector<SimulationNode> modifiedtrack; //Switch to normal nodes
