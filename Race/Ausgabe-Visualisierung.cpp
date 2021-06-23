@@ -51,7 +51,9 @@ XMLError output_gpx(vector<node>& track, string trackName) {
 
     //insert Trackpoints to gpx
     for (unsigned int i = 0; i < track.size(); i++) {
-        add_node_gpx(&xmlDoc, &track[i], pElement2, startTime);
+        if (track[i].id != "") {
+            add_node_gpx(&xmlDoc, &track[i], pElement2, startTime);
+        }
     }
     Element_trk->InsertEndChild(pElement2);
     pRoot->InsertEndChild(Element_trk);
@@ -83,7 +85,7 @@ void add_node_gpx(tinyxml2::XMLDocument* xmlDoc, node* node_to_add, XMLElement* 
 // Function to create a date_string out of a starTime [s] and a raceTime [s]
 string timeConversion(double raceTime, time_t startTime) {
     time_t rawtime;
-    if (isnan(raceTime)) rawtime = (time_t)0 + startTime;
+    if (isnan(raceTime) || raceTime == numeric_limits<double>::infinity()) rawtime = (time_t)0 + startTime;
     else rawtime = (time_t)raceTime + startTime;
     struct tm timeinfo;
     localtime_s(&timeinfo, &rawtime);
