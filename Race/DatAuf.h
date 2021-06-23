@@ -21,6 +21,8 @@ namespace DatAuf {
 		node GetInterpolKnot();
 		node GetNode(int NodeItem);
 		void InsertOneAdditionalNode(int NodeItem, int NumberAdditionalNodes, node NewNode);
+		void UpdateNodeIDProperty(int NodeItem, int NumberAdditionalNodes);
+		void CalcDistanceToAllNextNode();
 		void CalcRadiusGradientData();
 		double GetDistanceMeters2D(node node1, node node2);
 		void GetTestData();

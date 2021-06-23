@@ -39,12 +39,6 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		//  Case 1: Adaptation of t depending on calculated distance, target distance: <1.0 
 		InsertMode = 1;
 
-
-		// Schleife ueber alle "nodes"
-		//Start bei Index "1" und Ende bei "MaxNumberNodes - 1" (Behandlung von Index "0" und "Max" wird danach gemacht 
-		//NodeItem = 1;
-		//MaxNumberNodes = MaxNumberNodes - 1;
-		//Schleife fuer NICHT geschlossenen Kurs
 		while (NodeItem < MaxNumberNodes - 1) {
 
 			//Fix points for Spline interpolation in this refinement segment
@@ -142,18 +136,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		cout << "Iteratorwert = " << RefinementIterator << endl;
 
-		MaxNumberNodes = this->nodes.size();
-		for (NodeItem = 0;NodeItem < MaxNumberNodes-1;NodeItem++) {
-			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(this->nodes[NodeItem], this->nodes[NodeItem+1]);
-		}
-		//if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
-		if (this->nodes.front().id == this->nodes.back().id) {
-			nodes[NodeItem].distanceToNext = nodes[0].distanceToNext;
-		}
-		else {
-			nodes[NodeItem].distanceToNext = 0.0;
-		}
-
+		CalcDistanceToAllNextNode();
 
 	}
 
@@ -238,14 +221,43 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	void DatAuf::CalcDatAuf::InsertOneAdditionalNode(int NodeItem, int NumberAdditionalNodes, node NewNode) {
 		std::vector<node>::iterator NewNodeItemInsert = this->nodes.begin() + NodeItem + NumberAdditionalNodes;
+		
 		this->nodes.insert(NewNodeItemInsert, NewNode);
-		this->nodes[NodeItem + NumberAdditionalNodes].id += to_string(NodeItem);
+		this->UpdateNodeIDProperty(NodeItem, NumberAdditionalNodes);
+		
+		//this->nodes[NodeItem + NumberAdditionalNodes].id += to_string(NodeItem);
+		//this->nodes[NodeItem + NumberAdditionalNodes].id = this->nodes[NodeItem].id;
+		//this->nodes[NodeItem + NumberAdditionalNodes].id += "_";
+		//this->nodes[NodeItem + NumberAdditionalNodes].id += to_string(NumberAdditionalNodes);
+
+		return;
+	}
+
+	void DatAuf::CalcDatAuf::UpdateNodeIDProperty(int NodeItem, int NumberAdditionalNodes) {
+		
+		this->nodes[NodeItem + NumberAdditionalNodes].id = this->nodes[NodeItem].id;
 		this->nodes[NodeItem + NumberAdditionalNodes].id += "_";
 		this->nodes[NodeItem + NumberAdditionalNodes].id += to_string(NumberAdditionalNodes);
 
 		return;
 	}
 
+	void DatAuf::CalcDatAuf::CalcDistanceToAllNextNode() {
+		int MaxNumberNodes = this->nodes.size();
+		int NodeItem;
+		for (NodeItem = 0;NodeItem < MaxNumberNodes - 1;NodeItem++) {
+			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(this->nodes[NodeItem], this->nodes[NodeItem + 1]);
+		}
+		//Special handling of last vector-element depending on type of circuit
+		if (this->nodes.front().id == this->nodes.back().id) {
+			this->nodes.back().distanceToNext = nodes.front().distanceToNext;
+		}
+		else {
+			nodes.back().distanceToNext = 0.0;
+		}
+
+		return;
+	}
 
 	void DatAuf::CalcDatAuf::CalcRadiusGradientData() {
 
@@ -595,8 +607,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		nodes[8].longitude = nodes[0].longitude;
 		nodes[8].latitude = nodes[0].latitude;
 		nodes[8].elevation = nodes[0].elevation;
-		//nodes[8].id = nodes[0].id;
-		nodes[8].id = "";
+		nodes[8].id = nodes[0].id;
+		//nodes[8].id = "";
 		nodes[8].distanceToNext = nodes[0].distanceToNext;
 
 	}
