@@ -188,6 +188,7 @@
   <ItemGroup>
     <None Include="Testconfiguration\SimulationConfig_ModelSPerf.json" />
     <ClInclude Include="DatAuf_SplineCatmullRom.h" />
+    <None Include="Testconfiguration\SimulationConfig_SMARTe.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
