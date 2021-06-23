@@ -4,7 +4,7 @@
 		"WindSpeed [km/h]": 0,
 		"RollingResistanceCoefficient [-]": 0.014,
 		"FrictionCoefficient_v_CUR [km/h]": [0, 50, 90, 130],
-		"FrictionCoefficient_fac_CUR [-]": [1.15, 1.1, 1.05, 1]
+		"FrictionCoefficient_fac_CUR [-]": [ 1.15, 1.1, 1.05, 1 ]
 	}],
 
 	"VehicleData": [

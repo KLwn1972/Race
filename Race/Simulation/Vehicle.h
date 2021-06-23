@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef VEHICLEDEF
+#define VEHICLEDEF
+
 #include <vector>
 #include <map>
 #include "DataMap2D.h"
@@ -70,3 +73,5 @@ namespace Simulation
 
 	Vehicle* ExampleElectricVehicle();
 }
+
+#endif

@@ -1,5 +1,4 @@
-//#ifndef _VECTOR_H		// Brauchen wir Vector.h nur hier?
-//#define _VECTOR_H
+#pragma once
 
 #include <iostream>
 #include "DatAuf_SplineCatmullRom.h"
@@ -43,7 +42,3 @@ namespace DatAuf {
 	//static double rad2deg(double rad);
 }
 
-
-
-
-//#endif

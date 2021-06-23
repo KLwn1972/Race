@@ -64,7 +64,7 @@ Vehicle* Simulation::ExampleElectricVehicle()
 
 	result->WheelWidth = 0.205;
 	result->WheelRatioPercent = 75;
-	result->WheelSize = 16 * INCH2M;
+	result->WheelSize = 16;
 	result->WheelInertia = 0.35;
 
 	result->VMaxLimited = 250 * KMH2MS;
@@ -95,28 +95,20 @@ double Simulation::Vehicle::interpolateEngineTorqueFromVelocity(double V) {
 	double dx, dy;
 
 	if (V <= xData[0]) {
-		/* x is less than the minimum element
-		 * handle error here if you want */
-
-		cout << "Drehmoment" << yData[0] << "\n";
-		return yData[0]; /* return minimum element */
+		return yData[0];
 	}
 
-	if (V >= xData[count - 1]) {
-		cout << "Drehmoment" << yData[count - 1] << "\n";
-		return yData[count - 1]; /* return maximum */
+	if (V >= xData[count - (int64_t)1]) {
+		return yData[count - (int64_t)1];
 	}
 
-	/* find i, such that EngineTorque_v_CUR[i] <= x < EngineTorque_v_CUR[i+1] */
 	for (i = 0; i < count - 1; i++) {
-		if (xData[i + 1] > V) {
+		if (xData[i + (int64_t)1] > V) {
 			break;
 		}
 	}
 
-	/* interpolate */
-	dx = xData[i + 1] - xData[i];
-	dy = yData[i + 1] - yData[i];
-	cout << "Drehmoment" << (yData[i] + (V - xData[i]) * dy / dx) << "\n";
+	dx = xData[i + (int64_t)1] - xData[i];
+	dy = yData[i + (int64_t)1] - yData[i];
 	return (yData[i] + (V - xData[i]) * dy / dx);
 }
