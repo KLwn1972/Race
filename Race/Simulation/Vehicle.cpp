@@ -96,17 +96,17 @@ double Simulation::Vehicle::interpolateEngineTorqueFromVelocity(double V) {
 		return yData[0];
 	}
 
-	if (V >= xData[count - 1]) {
-		return yData[count - 1];
+	if (V >= xData[count - (int64_t)1]) {
+		return yData[count - (int64_t)1];
 	}
 
 	for (i = 0; i < count - 1; i++) {
-		if (xData[i + 1] > V) {
+		if (xData[i + (int64_t)1] > V) {
 			break;
 		}
 	}
 
-	dx = xData[i + 1] - xData[i];
-	dy = yData[i + 1] - yData[i];
+	dx = xData[i + (int64_t)1] - xData[i];
+	dy = yData[i + (int64_t)1] - yData[i];
 	return (yData[i] + (V - xData[i]) * dy / dx);
 }
