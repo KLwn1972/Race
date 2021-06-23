@@ -1,6 +1,7 @@
-#pragma once
+#pragma once 
+
 #include <string>
-#include <filesystem>
+
 /*
 * Wichtige Info für Eindung NASA Funktionalität:
 * Alle Funktionen in namespace NASA
@@ -42,8 +43,7 @@
 
 using namespace std;
 //namespace NASA {
-	
-string test = std::filesystem::current_path;
+
 //Noch unglücklich Lösung: Generelle Variablen als Klassenkonstanten
 	//Dateimanagement wird für Zip genutzt
 	static const string nasa_download_zielpfad = "D:/MtM/M_Projekt2/Git/Race/Load/";

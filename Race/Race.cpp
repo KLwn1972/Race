@@ -30,14 +30,14 @@ int main()
 //		string nasa_download_zielpfad 
 //		string nasa_download_zielpfad_win 
 ///////////////////////////////////////////////////////////////////////
-#if 0	
+#if 1	
 	// Herunterladen aller HGT für Deutschland
 	//NASA::NASADataFileHandler filehandle;
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
 
 	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
-	double long_stuttgart = 9.206802;
-	double lat_stuttgart = 48.742211;
+	double long_stuttgart = 9.20;
+	double lat_stuttgart = 48.80;
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
 
 	double long_nuerburgringstart = 6.966279;
@@ -49,7 +49,8 @@ int main()
 
 
 
-#if 1
+
+#if 0
 	//std::cout << "Hello World!\n";
 	vector<node> nodes;
 	string route = "38566";
