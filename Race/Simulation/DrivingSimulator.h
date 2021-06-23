@@ -1,3 +1,9 @@
+/*
+Team Fahrphysik: Alexander Eirich, Yuying Zhu, Max Paschke
+
+The drivingsimulator calculates a vehicle going along a track. The track is provided by the input nodes.
+*/
+
 #pragma once
 #ifndef  DRIVINGSIMULATOR
 #define DRIVINGSIMULATOR
@@ -26,7 +32,7 @@ namespace Simulation {
 		//Map back function for the modified track
 		void mapModifiedToRaw();
 
-		//Calculate new speed limit from deccleration
+		//Calculate new speed limit from deccleration values
 		void calcNewSpeedLimit();
 
 		//Calculate is-speed and the local time

@@ -24,8 +24,8 @@ void Simulation::Vehicle::setSelectedGear(int GearToSet)
 
 Simulation::Vehicle::Vehicle()
 {
-	this->EngineSpeedTorqueCurve = new DataMap2D();
-	this->VehicleSpeedTorqueCurve = new DataMap2D();
+	this->EngineSpeedTorqueCurve = new DataMap1D();
+	this->VehicleSpeedTorqueCurve = new DataMap1D();
 }
 
 Simulation::Vehicle::~Vehicle()
@@ -54,13 +54,13 @@ Vehicle* Simulation::ExampleElectricVehicle()
 	result->AxleInertia = 0.07;
 	vector<double> EngineSpeeds = vector<double>{ 1000 * RPM2HZ,2000 * RPM2HZ,3000 * RPM2HZ,4000 * RPM2HZ,5000 * RPM2HZ,6000 * RPM2HZ,7000 * RPM2HZ };
 	vector<double> EngineTorque = vector<double>{ 100,200,300,400,500,600,700 };
-	result->EngineSpeedTorqueCurve = new DataMap2D(EngineSpeeds, EngineTorque);
+	result->EngineSpeedTorqueCurve = new DataMap1D(EngineSpeeds, EngineTorque);
 
 	result->PowertrainType = PowerTrainTypes::Electric;
 
 	vector<double> VehicleSpeeds = vector<double>{ 10 * KMH2MS,50 * KMH2MS,150 * KMH2MS };
 	vector<double> VehicleTorque = vector<double>{ 100,300,500 };
-	result->VehicleSpeedTorqueCurve = new DataMap2D(VehicleSpeeds, VehicleTorque);
+	result->VehicleSpeedTorqueCurve = new DataMap1D(VehicleSpeeds, VehicleTorque);
 
 	result->WheelWidth = 0.205;
 	result->WheelRatioPercent = 75;
@@ -85,6 +85,7 @@ Vehicle* Simulation::ExampleElectricVehicle()
 }
 
 double Simulation::Vehicle::interpolateEngineTorqueFromVelocity(double V) {
+	//This function is from Team Soll_Fahrtbestimmung
 	/* number of elements in the array */
 	vector<double> xData = this->VehicleSpeedTorqueCurve->getXData();
 	vector<double> yData = this->VehicleSpeedTorqueCurve->getYData();

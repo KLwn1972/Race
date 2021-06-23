@@ -1,7 +1,7 @@
 #include "DrivingSimulator.h"
 #include <string>
 #include "..\Race.h"
-#include "DataMap2D.h"
+#include "DataMap1D.h"
 #include "ImportSimulationConfig.h"
 
 using namespace std;

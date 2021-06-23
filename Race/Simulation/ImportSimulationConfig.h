@@ -1,3 +1,9 @@
+/*
+Team Fahrphysik: Alexander Eirich, Yuying Zhu, Max Paschke
+
+Import of actual files.
+*/
+
 #pragma once
 #ifndef  IMPORTCONFIG
 #define IMPORTCONFIG
@@ -11,7 +17,7 @@
 #include "SimulationEnvironment.h"
 #include "Vehicle.h"
 #include "IImportSimulationConfig.h"
-#include "DataMap2D.h"
+#include "DataMap1D.h"
 
 namespace Simulation {
 	class ImportSimulationConfig : public IImportSimulationConfig

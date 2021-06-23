@@ -1,3 +1,9 @@
+/*
+Team Fahrphysik: Alexander Eirich, Yuying Zhu, Max Paschke
+
+Miscellanious static functions to provide extra utility.
+*/
+
 #pragma once
 #include "../Race.h"
 #include <vector>

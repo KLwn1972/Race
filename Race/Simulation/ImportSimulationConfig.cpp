@@ -57,8 +57,8 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	VehicleObject->WheelRatioPercent = getDoubleFromcJSON(VehicleData, "WheelRatioPercent [%]");
 	VehicleObject->WheelSize = getDoubleFromcJSON(VehicleData, "WheelSize [inch]") * INCH2M;
 	VehicleObject->WheelInertia = getDoubleFromcJSON(VehicleData, "WheelInertia [kgm2]");
-	VehicleObject->VehicleSpeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "VehicleSpeedTorque_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(VehicleData, "VehicleSpeedTorque_trq_CUR [Nm]"));
-	VehicleObject->EngineSpeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "EngineSpeedTorque_n_CUR [1/min]", RPM2HZ), getVectorFromcJSON(VehicleData, "EngineSpeedTorque_trq_CUR [Nm]"));
+	VehicleObject->VehicleSpeedTorqueCurve = new DataMap1D(getVectorFromcJSON(VehicleData, "VehicleSpeedTorque_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(VehicleData, "VehicleSpeedTorque_trq_CUR [Nm]"));
+	VehicleObject->EngineSpeedTorqueCurve = new DataMap1D(getVectorFromcJSON(VehicleData, "EngineSpeedTorque_n_CUR [1/min]", RPM2HZ), getVectorFromcJSON(VehicleData, "EngineSpeedTorque_trq_CUR [Nm]"));
 
 	this->vehicle = VehicleObject;
 	this->environment = EnvironmentObject;
