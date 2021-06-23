@@ -425,12 +425,12 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 			
 				// limitations	-> tertiärer Operator?			
 				if (radiusIndex < minRadius) {
-					cout << "Warning: horizontal radius is smaller than 10E-6. Node: " << index << endl;
+					cout << "Warning: vertical radius is smaller than 10E-6. Node: " << index << endl;
 					radiusIndex = minRadius;
 					// Error Handling: offen
 				}
 				else if (radiusIndex > maxRadius) {
-					cout << "Warning: horizontal radius is larger than 10E6. Node: " << index << endl;
+					cout << "Warning: vertical radius is larger than 10E6. Node: " << index << endl;
 					radiusIndex = maxRadius;
 				}
 				// calculate sign 
