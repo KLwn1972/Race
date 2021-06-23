@@ -62,8 +62,8 @@ int OpenStreetMap::GetNodesFromOSM(){
 				node2add.longitude = coordinates[1];
 				//ElevationCalculator EvalCalc;
 				//node2add.elevation = EvalCalc.getElevationFromSRTM_SIRCdata(coordinates[0], coordinates[1]);
-				//Nutzung als Klassenfunktion
-				node2add.elevation =  HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(coordinates[0], coordinates[1]);
+				//Nutzung als Klassenfunktion und in Aufruf Longitude / Latitude vertauscht --> Richtige Koordinatenreihen in OSM prüfen
+				node2add.elevation =  HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(coordinates[1], coordinates[0]);
 				this->nodes.push_back(node2add);
 				lastNode = node_id;
 			}

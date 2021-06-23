@@ -136,7 +136,7 @@ using namespace std;
 
 
 #ifndef CURL_ON
-		cerr << "CURL_OFF: Unnecessary / unintended function call NASADataFileHandler::unzipAndDeleteNASAFile();
+		cerr << "CURL_OFF: Unnecessary / unintended function call NASADataFileHandler::unzipAndDeleteNASAFile() ";
 #endif // !CURL_ON
 
 
