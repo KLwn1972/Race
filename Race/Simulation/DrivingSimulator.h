@@ -21,7 +21,7 @@ namespace Simulation {
 	class DrivingSimulator
 	{
 	public:
-		DrivingSimulator(vector<node> input, IImportSimulationConfig& config);
+		DrivingSimulator(vector<node> input, IImportSimulationConfig* config);
 		~DrivingSimulator();
 
 		vector<node> RunSimulation();
