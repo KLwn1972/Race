@@ -10,9 +10,11 @@ using namespace std;
 namespace DatAuf {
 
 	class CalcDatAuf {
+
 	public:
 		vector<node> nodes;
 		SplineCatmullRom SplineSegment;
+		int retval = 0;
 		int DataProcessing();
 		void InsertAdditionalNodes();
 		void CopyNodesToSplineKnots(size_t NodeItem);
@@ -23,9 +25,10 @@ namespace DatAuf {
 		void CalcDistanceToAllNextNode();
 		void CalcRadiusGradientData();
 		double GetDistanceMeters2D(node node1, node node2);
-		void GetTestData();
+		void GetTestData();	//muss raus
 		bool isLoop();
-		int retval = 0;
+		double deg2rad(double grad);
+
 	private:
 		void CalcHorizontalCurveRad(size_t index);
 		void CalcVerticalCurveRad(size_t index);
@@ -33,10 +36,9 @@ namespace DatAuf {
 		double CalcForwardDerivativeFD(node NodeCurrent, node NodeForward);
 		double CalcBackwardDerivativeFD(node NodeCurrent, node NodeBackward);
 		void InsertOneNodeRecursiv(node Node1, node Node2, SplineCatmullRom SplineSegment);
-		double Get1Coordinate(int);
 	};
 
 	static double GetDistanceMeters3D(node node1, node node2);
-	static double deg2rad(double grad);
+	//static double deg2rad(double grad);
 }
 
