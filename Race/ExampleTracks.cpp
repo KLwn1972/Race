@@ -1,6 +1,6 @@
 #include "ExampleTracks.h"
 #include "Race.h"
-#include "Simulation/DataMap2D.h"
+#include "Simulation/DataMap1D.h"
 #include "Simulation/SimulationEnvironment.h"
 
 std::vector<node> ExampleTrack()
@@ -14,7 +14,7 @@ std::vector<node> ExampleTrack()
 	return vector<node>();
 }
 
-std::vector<node> ExampleStraightTrack(double length)
+std::vector<node> ExampleStraightTrack()
 {
 	double startlong = 6.945215;
 	double startlat = 50.33409;

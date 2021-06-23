@@ -65,7 +65,7 @@ void Simulation::SimulationEnvironment::setWinddirection(double Winddirection)
 }
 
 void Simulation::SimulationEnvironment::setFrictionTable(std::vector<double> velocityValues, std::vector<double> CoefficientValues) {
-	this->FrictionTable = DataMap2D(velocityValues, CoefficientValues);
+	this->FrictionTable = DataMap1D(velocityValues, CoefficientValues);
 }
 
 SimulationEnvironment* Simulation::ExampleSimulationEnvironment()

@@ -1,12 +1,16 @@
-#include "DataMap2D.h"
+#include "DataMap1D.h"
 #include <string>
 #include <iostream>
 
-Simulation::DataMap2D::DataMap2D(std::vector<double> xData, std::vector<double> yData)
+Simulation::DataMap1D::DataMap1D(std::vector<double> xData, std::vector<double> yData)
 {
 	//Check that data is valid
 	if (xData.size() != yData.size())
-		throw std::invalid_argument("X and Y dimnesions of DataMap2D need to be equal.");
+	{
+		std::string msg = "X and Y dimensions of DataMap1D need to be equal.";
+		std::cout << msg << std::endl;
+		throw std::invalid_argument("X and Y dimnesions of DataMap1D need to be equal.");
+	}
 	if (xData.size() > 1)
 	{
 		double oldXData = xData.at(0);
@@ -15,6 +19,7 @@ Simulation::DataMap2D::DataMap2D(std::vector<double> xData, std::vector<double> 
 			if (newXdata < oldXData)
 			{
 				std::string message = std::string("X Data needs to be increasing monotonously. Error at X= ") + std::to_string(newXdata);
+				std::cout << message << std::endl;
 				throw std::invalid_argument(message);
 			}
 		}
@@ -24,13 +29,13 @@ Simulation::DataMap2D::DataMap2D(std::vector<double> xData, std::vector<double> 
 	this->yData = yData;
 }
 
-Simulation::DataMap2D::DataMap2D(std::vector<double> xData, std::vector<double> yData, std::string xAxisName, std::string yAxisName) :DataMap2D(xData, yData)
+Simulation::DataMap1D::DataMap1D(std::vector<double> xData, std::vector<double> yData, std::string xAxisName, std::string yAxisName) :DataMap1D(xData, yData)
 {
 	this->xAxisName = xAxisName;
 	this->yAxisName = yAxisName;
 }
 
-double Simulation::DataMap2D::getY(double desiredX)
+double Simulation::DataMap1D::getY(double desiredX)
 {
 	if (xData.size() == 0)
 		return nan("");
@@ -65,17 +70,17 @@ double Simulation::DataMap2D::getY(double desiredX)
 	return result;
 }
 
-std::string Simulation::DataMap2D::getXAxisName()
+std::string Simulation::DataMap1D::getXAxisName()
 {
 	return this->yAxisName;
 }
 
-std::string Simulation::DataMap2D::getYAxisName()
+std::string Simulation::DataMap1D::getYAxisName()
 {
 	return this->xAxisName;
 }
 
-Simulation::DataMap2D::DataMap2D()
+Simulation::DataMap1D::DataMap1D()
 {
 	this->xData = std::vector<double>();
 	this->yData = std::vector<double>();
@@ -86,12 +91,12 @@ double Simulation::interpolateValues(double startX, double startValue, double en
 	return startValue + ((endValue - startValue) / (endX - startX)) * (whereToInterPolate - startX);
 }
 
-std::vector<double> Simulation::DataMap2D::getXData()
+std::vector<double> Simulation::DataMap1D::getXData()
 {
 	return this->xData;
 }
 
-std::vector<double> Simulation::DataMap2D::getYData()
+std::vector<double> Simulation::DataMap1D::getYData()
 {
 	return this->yData;
 }

@@ -1,3 +1,10 @@
+/*
+Team Fahrphysik: Alexander Eirich, Yuying Zhu, Max Paschke
+
+Interface for the config importer class. This is used to provide testing possibilites via MockSimulationConfig.
+The driving simulator uses this interface to get the vehicle and environment data.
+*/
+
 #pragma once
 #ifndef  SIMINTERFACE
 #define SIMINTERFACE

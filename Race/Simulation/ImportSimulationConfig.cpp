@@ -8,7 +8,9 @@ Simulation::ImportSimulationConfig::ImportSimulationConfig(std::string Simulatio
 	std::fstream ConfigFileStream;
 	ConfigFileStream.open(SimulationConfigFile, std::ios_base::in);
 	if (!ConfigFileStream) {
-		std::cerr << "Simulation Config Inputfile could not be opened.\n\n";
+		string msg = "Simulation Config Inputfile could not be opened.";
+		std::cerr << msg;
+		throw std::invalid_argument(msg);
 	}
 	else {
 		ConfigFileStream.seekg(0, std::ios::end);
@@ -27,12 +29,12 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	cJSON* VehicleData = cJSON_GetObjectItemCaseSensitive(completeConfigFile, "VehicleData");
 	VehicleData = VehicleData->child;
 
-	Vehicle* VehicleObject = getVehicle();
-	SimulationEnvironment* EnvironmentObject = getEnvironment();
+	Vehicle* VehicleObject = new Vehicle();
+	SimulationEnvironment* EnvironmentObject = new SimulationEnvironment();
 
 	//EnvironmentData
 	EnvironmentObject->setAirtemperatureCelsius(getDoubleFromcJSON(Environment, "Airtemperature [C]"));
-	EnvironmentObject->setWindspeed(getDoubleFromcJSON(Environment, "Windspeed [km/h]") * KMH2MS);
+	EnvironmentObject->setWindspeed(getDoubleFromcJSON(Environment, "WindSpeed [km/h]") * KMH2MS);
 	EnvironmentObject->setRollingResistanceCoefficient(getDoubleFromcJSON(Environment, "RollingResistanceCoefficient [-]"));
 	EnvironmentObject->setFrictionTable(getVectorFromcJSON(Environment, "FrictionCoefficient_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(Environment, "FrictionCoefficient_fac_CUR [-]"));
 
@@ -40,8 +42,9 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	VehicleObject->Manufacturer = getStringFromcJSON(VehicleData, "Manufacturer");
 	VehicleObject->Model = getStringFromcJSON(VehicleData, "Model");
 	(getStringFromcJSON(VehicleData, "PowertrainType") == "Electric" ? VehicleObject->PowertrainType = PowerTrainTypes::Electric : VehicleObject->PowertrainType = PowerTrainTypes::ICE);
-	VehicleObject->VMaxLimited = getDoubleFromcJSON(VehicleData, "VMaxLimited");
-	VehicleObject->NumberOfGears = getDoubleFromcJSON(VehicleData, "NumberOfGears");
+	VehicleObject->VMaxLimited = getDoubleFromcJSON(VehicleData, "VMaxLimited [km/h]") * KMH2MS;
+	VehicleObject->NumberOfGears = getIntFromcJSON(VehicleData, "NumberOfGears");
+	VehicleObject->EngineSpeedMax = getDoubleFromcJSON(VehicleData, "EngineSpeedMax [1/min]") * RPM2HZ;
 	VehicleObject->EngineInertia = getDoubleFromcJSON(VehicleData, "EngineInertia [kgm2]");
 	VehicleObject->AxleInertia = getDoubleFromcJSON(VehicleData, "AxleInertia [kgm2]");
 	VehicleObject->Mass = getDoubleFromcJSON(VehicleData, "Mass [kg]");
@@ -54,8 +57,8 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	VehicleObject->WheelRatioPercent = getDoubleFromcJSON(VehicleData, "WheelRatioPercent [%]");
 	VehicleObject->WheelSize = getDoubleFromcJSON(VehicleData, "WheelSize [inch]") * INCH2M;
 	VehicleObject->WheelInertia = getDoubleFromcJSON(VehicleData, "WheelInertia [kgm2]");
-	VehicleObject->VehiclespeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "VehiclespeedTorque_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(VehicleData, "VehiclespeedTorque_trq_CUR [Nm]"));
-	VehicleObject->EnginespeedTorqueCurve = new DataMap2D(getVectorFromcJSON(VehicleData, "EnginespeedTorque_n_CUR [1/min]", RPM2HZ), getVectorFromcJSON(VehicleData, "EnginespeedTorque_trq_CUR [Nm]"));
+	VehicleObject->VehicleSpeedTorqueCurve = new DataMap1D(getVectorFromcJSON(VehicleData, "VehicleSpeedTorque_v_CUR [km/h]", KMH2MS), getVectorFromcJSON(VehicleData, "VehicleSpeedTorque_trq_CUR [Nm]"));
+	VehicleObject->EngineSpeedTorqueCurve = new DataMap1D(getVectorFromcJSON(VehicleData, "EngineSpeedTorque_n_CUR [1/min]", RPM2HZ), getVectorFromcJSON(VehicleData, "EngineSpeedTorque_trq_CUR [Nm]"));
 
 	this->vehicle = VehicleObject;
 	this->environment = EnvironmentObject;
@@ -71,12 +74,12 @@ std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON
 	return AxisValues;
 }
 
-std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string, const double ConversionFacto) {
+std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON* data, const char* const string, const double ConversionFactor) {
 	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
 	std::vector<double> AxisValues;
 	for (int i = 0; i < cJSON_GetArraySize(input); i++) {
 		cJSON* CUR_Element = cJSON_GetArrayItem(input, i);
-		AxisValues.push_back(CUR_Element->valuedouble * ConversionFacto);
+		AxisValues.push_back(CUR_Element->valuedouble * ConversionFactor);
 	}
 	return AxisValues;
 }
@@ -84,6 +87,11 @@ std::vector<double> Simulation::ImportSimulationConfig::getVectorFromcJSON(cJSON
 double Simulation::ImportSimulationConfig::getDoubleFromcJSON(cJSON* data, const char* const string) {
 	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
 	return input->valuedouble;
+}
+
+int Simulation::ImportSimulationConfig::getIntFromcJSON(cJSON* data, const char* const string) {
+	cJSON* input = cJSON_GetObjectItemCaseSensitive(data, string);
+	return input->valueint;
 }
 
 string Simulation::ImportSimulationConfig::getStringFromcJSON(cJSON* data, const char* const string) {
