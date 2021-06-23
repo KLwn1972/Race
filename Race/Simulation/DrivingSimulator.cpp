@@ -103,8 +103,6 @@ void Simulation::DrivingSimulator::mapModifiedToRaw()
 
 void Simulation::DrivingSimulator::calcNewSpeedLimit()
 {
-	this->modifiedtrack[this->modifiedtrack.size() - 1].speedLimit = this->modifiedtrack[this->modifiedtrack.size() - 1].speedLimit;                      //set the new limit at last point
-
 	for (size_t i = this->modifiedtrack.size() - 1; i > 0; i--) {                                                                                          //calculate the new limit according to the max Brake from last point;
 		node& currentPos = this->modifiedtrack.at(i);
 		node& previousPos = this->modifiedtrack.at(i - 1);

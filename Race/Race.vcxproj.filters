@@ -105,6 +105,12 @@
     <ClCompile Include="ExampleTracks.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="DatAuf_SplineCatmullRom.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="DatAuf.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -162,6 +168,15 @@
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="ExampleTracks.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Ausgabe-Visualisierung.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="DatAuf_SplineCatmullRom.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="DatAuf.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
