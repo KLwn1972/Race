@@ -93,7 +93,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 						SplineSegment.CalcInterpolKnot(t_current);
 						NewNode = GetInterpolKnot();
 						DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
-						
+
 						if (DistanceTwoNodes > 1.0) {
 							Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
 							t_current = t_previous + Delta_t;
@@ -146,9 +146,18 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		cout << "Iteratorwert = " << RefinementIterator << endl;
 
-		for (NodeItem = 0;NodeItem < this->nodes.size()-1;NodeItem++) {
+		MaxNumberNodes = this->nodes.size();
+		for (NodeItem = 0;NodeItem < MaxNumberNodes-1;NodeItem++) {
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(this->nodes[NodeItem], this->nodes[NodeItem+1]);
 		}
+		//if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
+		if (this->nodes.front().id == this->nodes.back().id) {
+			nodes[NodeItem].distanceToNext = nodes[0].distanceToNext;
+		}
+		else {
+			nodes[NodeItem].distanceToNext = 0.0;
+		}
+
 
 	}
 
@@ -158,8 +167,9 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		int MaxNumberNodes = this->nodes.size();
 
 		if (NodeItem == 0) {
-			if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
-				// Closed Curve
+			//if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
+			if (this->nodes.front().id == this->nodes.back().id) {
+					// Closed Curve
 				SplineSegment.SplineKnots[0][0] = this->nodes[MaxNumberNodes - 2].longitude;
 				SplineSegment.SplineKnots[0][1] = this->nodes[MaxNumberNodes - 2].latitude;
 				SplineSegment.SplineKnots[0][2] = this->nodes[MaxNumberNodes - 2].elevation;
@@ -183,7 +193,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 			}
 		}
 		else if (NodeItem == (MaxNumberNodes - 2)) {
-			if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
+			//if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
+			if (this->nodes.front().id == this->nodes.back().id) {
 				// Closed Curve
 				for (int i = 0;i < 3;i++) {
 					SplineSegment.SplineKnots[i][0] = this->nodes[NodeItem - 1 + i].longitude;
@@ -446,20 +457,80 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		// error
 		if (this->nodes[index].verticalCurveRadius == nan("")) {
-			cout << "Error: Calculation of horizontal radius failed. Node: " << index << endl;
+			cout << "Error: Calculation of vertical radius failed. Node: " << index << endl;
 		}
 		
 	}
 
 
 	void DatAuf::CalcDatAuf::CalcGradientPercentage(int index) {
-		//cout << "DatAuf: CalcGradientPercentage2-Funktion wurde aufgerufen." << endl;
+		//cout << "DatAuf: CalcGradientPercentage-Funktion wurde aufgerufen." << endl;
+		node NodeCurrent, NodeForward, NodeBackward;
+		int MaxNumberNodes = this->nodes.size();
 
-		this->nodes[index].gradient = index * 3.0;
+		//this->nodes[index].gradient = index * 3.0;
+
+		//NodeCurrent = GetNode(0);
+
+		if (index == 0) {
+			if (nodes.front().id == nodes.back().id) {
+				// Close
+				NodeCurrent = GetNode(0);
+				NodeBackward = GetNode(MaxNumberNodes - 2);
+				NodeForward =GetNode(1);
+			}
+			else {
+				// Open
+				NodeCurrent = GetNode(0);
+				NodeForward = GetNode(1);
+				// Correction in "elevation" for Backward-node in order to use general formula for Finite Differences
+				NodeBackward = GetNode(1);
+				NodeBackward.elevation = -NodeForward.elevation + 2 * NodeCurrent.elevation;
+			}
+		}
+		else if (index == (MaxNumberNodes - 1)) {
+			if (nodes.front().id == nodes.back().id) {
+				// Close
+				NodeCurrent = GetNode(index);
+				NodeForward = GetNode(1);
+				NodeBackward = GetNode(index - 1);
+			}
+			else {
+				// Open
+				NodeCurrent = GetNode(index);
+				NodeBackward = GetNode(index-1);
+				// Correction in "elevation" in order to use general formula for Finite Differences
+				NodeForward = GetNode(index - 1);
+				NodeForward.elevation = -NodeBackward.elevation + 2 * NodeCurrent.elevation;
+
+			}
+		}
+		else {
+			NodeCurrent = GetNode(index);
+			NodeBackward = GetNode(index - 1);
+			NodeForward = GetNode(index + 1);
+		}
+
+		double ForwardGradientInMeter = CalcForwardDerivativeFD(NodeCurrent, NodeForward);
+		double BackwardGradientInMeter = CalcBackwardDerivativeFD(NodeCurrent, NodeBackward);
+		this->nodes[index].gradient = (ForwardGradientInMeter + BackwardGradientInMeter) / 2.0 * 100.0;
 
 		return;
 	}
 
+	double DatAuf::CalcDatAuf::CalcForwardDerivativeFD(node NodeCurrent, node NodeForward) {
+		
+		double DistanceTwoNodes = GetDistanceMeters3D(NodeCurrent, NodeForward);
+
+		return (NodeForward.elevation - NodeCurrent.elevation) / DistanceTwoNodes;
+	}
+
+	double DatAuf::CalcDatAuf::CalcBackwardDerivativeFD(node NodeCurrent, node NodeBackward) {
+
+		double DistanceTwoNodes = GetDistanceMeters3D(NodeCurrent, NodeBackward);
+
+		return (NodeCurrent.elevation - NodeBackward.elevation)/DistanceTwoNodes;
+	}
 
 	void DatAuf::CalcDatAuf::InsertOneNodeRecursiv(node Node1, node Node2, SplineCatmullRom SplineSegment){
 		cout << "DatAuf: InsertOneNodeRecursiv-Funktion wurde aufgerufen." << endl;
@@ -482,6 +553,11 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 	{
 		int MaxIndexNodes = this->nodes.size() - 1;
 		return  (nodes[0].id == nodes[MaxIndexNodes].id);
+	}
+
+	node DatAuf::CalcDatAuf::GetNode(int NodeItem) {
+
+		return this->nodes[NodeItem];
 	}
 
 
@@ -530,7 +606,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		nodes[8].longitude = nodes[0].longitude;
 		nodes[8].latitude = nodes[0].latitude;
 		nodes[8].elevation = nodes[0].elevation;
-		nodes[8].id = nodes[0].id;
+		//nodes[8].id = nodes[0].id;
+		nodes[8].id = "";
 		nodes[8].distanceToNext = nodes[0].distanceToNext;
 
 	}

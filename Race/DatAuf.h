@@ -19,6 +19,7 @@ namespace DatAuf {
 		void InsertAdditionalNodes();
 		void CopyNodesToSplineKnots(int NodeItem);
 		node GetInterpolKnot();
+		node GetNode(int NodeItem);
 		void InsertOneAdditionalNode(int NodeItem, int NumberAdditionalNodes, node NewNode);
 		void CalcRadiusGradientData();
 		double GetDistanceMeters2D(node node1, node node2);
@@ -28,6 +29,8 @@ namespace DatAuf {
 		void CalcHorizontalCurveRad(int index);
 		void CalcVerticalCurveRad(int index);
 		void CalcGradientPercentage(int index);
+		double CalcForwardDerivativeFD(node NodeCurrent, node NodeForward);
+		double CalcBackwardDerivativeFD(node NodeCurrent, node NodeBackward);
 		void InsertOneNodeRecursiv(node Node1, node Node2, SplineCatmullRom SplineSegment);
 		double Get1Coordinate(int);
 
