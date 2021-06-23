@@ -105,6 +105,12 @@
     <ClCompile Include="ExampleTracks.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="DatAuf_SplineCatmullRom.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="DatAuf.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Race.h">
@@ -170,9 +176,15 @@
     <ClInclude Include="NASA_src\NASA_constants.h">
       <Filter>Headerdateien\NASA</Filter>
     </ClInclude>
+    <ClInclude Include="DatAuf_SplineCatmullRom.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="DatAuf.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Testconfiguration\SimulationConfig.json">
+    <None Include="Testconfiguration\SimulationConfig_ModelSPerf.json">
       <Filter>Ressourcendateien</Filter>
     </None>
   </ItemGroup>

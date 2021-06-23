@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="cJSON.c" />
     <ClCompile Include="Ausgabe-Visualisierung.cpp" />
+    <ClCompile Include="DatAuf.cpp" />
     <ClCompile Include="ExampleTracks.cpp" />
     <ClCompile Include="NASA_src\NASA_DataFileHandler.cpp" />
     <ClCompile Include="NASA_src\NASA_ElevationCalculator.cpp" />
@@ -159,9 +160,11 @@
     <ClCompile Include="Simulation\Vehicle.cpp" />
     <ClCompile Include="Soll_Fahrtbestimmung.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
+    <ClCompile Include="DatAuf_SplineCatmullRom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ausgabe-Visualisierung.h" />
+    <ClInclude Include="DatAuf.h" />
     <ClInclude Include="ExampleTracks.h" />
     <ClInclude Include="NASA_src\NASA_constants.h" />
     <ClInclude Include="NASA_src\NASA_DataFileHandler.h" />
@@ -183,7 +186,9 @@
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Testconfiguration\SimulationConfig_ModelSPerf.json" />
     <None Include="Testconfiguration\SimulationConfig.json" />
+    <ClInclude Include="DatAuf_SplineCatmullRom.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
