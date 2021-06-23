@@ -3,7 +3,7 @@
 
 void ausgabe_visualisierung(vector<node>&, string);
 XMLError output_gpx(vector<node>&, string);
-void add_node_gpx(tinyxml2::XMLDocument*, node*, XMLElement*, time_t);
+void add_node_gpx(tinyxml2::XMLDocument*, node*, XMLElement*, time_t, XMLElement*, XMLElement*, XMLElement*);
 string timeConversion(double, time_t);
 XMLError output_kml(vector<node>&, string);
 void insertElementKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
