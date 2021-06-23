@@ -10,16 +10,18 @@ using namespace std;
 
 
 
-void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
-		//GetTestData();
-		// Check and insert additional knots if necessary
-		cout << "DatAuf: Insert nodes..." << endl;
-		this->InsertAdditionalNodes();
-		cout << "DatAuf: Done.." << endl;
-		cout << "DatAuf: Calculation of vertical and horizontal radius and gradient..." << endl;
-		// Calculate Data for SOLL-Fahrtbestimmmung 
-		this->CalcRadiusGradientData();
-		cout << "DatAuf: Done." << endl;
+int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
+	//GetTestData();
+	// Check and insert additional knots if necessary
+	cout << "DatAuf: Insert nodes..." << endl;
+	this->InsertAdditionalNodes();
+	cout << "DatAuf: Done.." << endl;
+	cout << "DatAuf: Calculation of vertical and horizontal radius and gradient..." << endl;
+	// Calculate Data for SOLL-Fahrtbestimmmung 
+	this->CalcRadiusGradientData();
+	cout << "DatAuf: Done." << endl;
+
+	return this->retval;
 	}
 
 
@@ -28,11 +30,11 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 		int RefinementIterator = 0;
 
-		int NodeItem = 0;
-		int NodeItemInsert;
-		int MaxNumberNodes = this->nodes.size();
-		int NumberAdditionalNodes;
-		int InsertMode = 0;
+		size_t NodeItem = 0;
+		size_t NodeItemInsert=0;
+		size_t MaxNumberNodes = this->nodes.size();
+		size_t NumberAdditionalNodes;
+		size_t InsertMode = 0;
 		node NewNode, PrevNode;
 		std::vector<node>::iterator NewNodeItemInsert;
 		double DistanceTwoNodes = 0.0;
@@ -145,9 +147,9 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 	}
 
 
-	void DatAuf::CalcDatAuf::CopyNodesToSplineKnots(int NodeItem) {
+	void DatAuf::CalcDatAuf::CopyNodesToSplineKnots(size_t NodeItem) {
 
-		int MaxNumberNodes = this->nodes.size();
+		size_t MaxNumberNodes = this->nodes.size();
 
 		if (NodeItem == 0) {
 			//if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
@@ -223,7 +225,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 	}
 
 
-	void DatAuf::CalcDatAuf::InsertOneAdditionalNode(int NodeItem, int NumberAdditionalNodes, node NewNode) {
+	void DatAuf::CalcDatAuf::InsertOneAdditionalNode(size_t NodeItem, size_t NumberAdditionalNodes, node NewNode) {
 		std::vector<node>::iterator NewNodeItemInsert = this->nodes.begin() + NodeItem + NumberAdditionalNodes;
 		
 		this->nodes.insert(NewNodeItemInsert, NewNode);
@@ -237,7 +239,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		return;
 	}
 
-	void DatAuf::CalcDatAuf::UpdateNodeIDProperty(int NodeItem, int NumberAdditionalNodes) {
+	void DatAuf::CalcDatAuf::UpdateNodeIDProperty(size_t NodeItem, size_t NumberAdditionalNodes) {
 		
 		this->nodes[NodeItem + NumberAdditionalNodes].id = this->nodes[NodeItem].id;
 		this->nodes[NodeItem + NumberAdditionalNodes].id += "_";
@@ -247,8 +249,8 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 	}
 
 	void DatAuf::CalcDatAuf::CalcDistanceToAllNextNode() {
-		int MaxNumberNodes = this->nodes.size();
-		int NodeItem;
+		size_t MaxNumberNodes = this->nodes.size();
+		size_t NodeItem;
 		for (NodeItem = 0;NodeItem < MaxNumberNodes - 1;NodeItem++) {
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(this->nodes[NodeItem], this->nodes[NodeItem + 1]);
 		}
@@ -265,7 +267,7 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	void DatAuf::CalcDatAuf::CalcRadiusGradientData() {
 
-		int MaxNumberNodes = this->nodes.size();
+		size_t MaxNumberNodes = this->nodes.size();
 
 		for (int index = 0; index < MaxNumberNodes; index++) {
 
@@ -335,15 +337,15 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 	}
 
 
-	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(int index) {
+	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(size_t index) {
 		double radiusIndex = 0;
 		double maxRadius = 10E9;
 		double minRadius = 10E-6;
 		
 		// define Index for 3 points																	// Prüfen was an Rändern passiert
-		int MaxIndexNodes = this->nodes.size() - 1;
-		int preIndex = index - 1;
-		int postIndex = index + 1;
+		size_t MaxIndexNodes = this->nodes.size() - 1;
+		size_t preIndex = index - 1;
+		size_t postIndex = index + 1;
 
 		bool loop = this->isLoop();
 
@@ -409,14 +411,14 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 	}
 
 
-	void DatAuf::CalcDatAuf::CalcVerticalCurveRad(int index) {
+	void DatAuf::CalcDatAuf::CalcVerticalCurveRad(size_t index) {
 		double radiusIndex = 0;
 		double maxRadius = 10E9;
 		double minRadius = 10E-6;
 		// define Index for 3 points														// Prüfen was an Rändern passiert
-		int MaxIndexNodes = this->nodes.size() - 1;
-		int preIndex = index - 1;//-1
-		int postIndex = index + 1;
+		size_t MaxIndexNodes = this->nodes.size() - 1;
+		size_t preIndex = index - 1;//-1
+		size_t postIndex = index + 1;
 
 		bool loop = this->isLoop();															// bool wird jedes mal aufgerufen?!
 
@@ -475,10 +477,10 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 	}
 
 
-	void DatAuf::CalcDatAuf::CalcGradientPercentage(int index) {
+	void DatAuf::CalcDatAuf::CalcGradientPercentage(size_t index) {
 		//cout << "DatAuf: CalcGradientPercentage-Funktion wurde aufgerufen." << endl;
 		node NodeCurrent, NodeForward, NodeBackward;
-		int MaxNumberNodes = this->nodes.size();
+		size_t MaxNumberNodes = this->nodes.size();
 
 		//this->nodes[index].gradient = index * 3.0;
 
@@ -563,11 +565,11 @@ void DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	bool DatAuf::CalcDatAuf::isLoop()
 	{
-		int MaxIndexNodes = this->nodes.size() - 1;
+		size_t MaxIndexNodes = this->nodes.size() - 1;
 		return  (nodes[0].id == nodes[MaxIndexNodes].id);
 	}
 
-	node DatAuf::CalcDatAuf::GetNode(int NodeItem) {
+	node DatAuf::CalcDatAuf::GetNode(size_t NodeItem) {
 
 		return this->nodes[NodeItem];
 	}
