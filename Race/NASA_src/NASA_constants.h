@@ -1,3 +1,9 @@
+/*
+* Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
+* Zweck der Datei: Header zur Definition der notwendigen Konstanten
+*/
+
+
 #pragma once 
 
 #include <string>
@@ -10,11 +16,10 @@
 *	double lat_stuttgart = 48.742211;
 *	cout << NASA::HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
 *
-* ACHTUNG !!! Anpassen von Dateipfad für Download vor Ausführung notwendig !!!
-* 			string nasa_download_zielpfad
-*			string nasa_download_zielpfad_win
-* ACHTUNG 2 !!! Nutzung auf Linux: Anpassung für Unzip notwendig !!!
-* Schalten auf Linux-Kommandos über USE_WINDOS Flag
+* Schalten auf Linux-Kommandos über Deaktivierung USE_WINDOS Flag
+* Offen: Anpassung der Linux-Abschnitte in den Funktionen
+*	NASADataFileHandler::unzipNASAZipfile
+*	NASADataFileHandler::deleteNASAZipfile
 *
 * Falls CURL nicht installiert ist, Lib zunächst Installieren.
 * Anleitung: https://stackoverflow.com/questions/53861300/how-do-you-properly-install-libcurl-for-use-in-visual-studio-2017
@@ -45,15 +50,11 @@ using namespace std;
 //namespace NASA {
 
 //Noch unglücklich Lösung: Generelle Variablen als Klassenkonstanten und Code in header 
-// 
-// 
-// 
-
-	//Dateimanagement wird für Zip genutzt
 //static const string nasa_download_zielpfad = "D:/MtM/M_Projekt2/Git/Race/Load/";
 static const string nasa_relative_download_zielpfad = "Race\\Load\\";
+static const string nasa_project_compilefolder = "\\Debug";
 #ifdef USE_WINDOWS
-static const string nasa_download_zielpfad_win = "D:\\MtM\\M_Projekt2\\Git\\Race\\Load\\";
+//static const string nasa_download_zielpfad_win = "D:\\MtM\\M_Projekt2\\Git\\Race\\Load\\";
 #endif
 //static const string nasa_download_zielpfad = "../Load/";
 static const string nasa_url_base = "https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL1.003/2000.02.11/";

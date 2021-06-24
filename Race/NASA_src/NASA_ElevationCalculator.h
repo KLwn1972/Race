@@ -1,3 +1,9 @@
+/*
+* Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
+* Zweck der Datei: Definition der HGT-Auswertung. Ggf. werden bei aktiviertem CURL HGT nachgeladen.
+* Lösung als Klasse NASADataFileHandler mit Klassenroutine
+*/
+
 #pragma once
 #include <cstring>
 #include <iostream>
