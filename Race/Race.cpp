@@ -100,7 +100,7 @@ int main()
 	elog.TestSollfahrtbestimmung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
-	//Fahrphysik
+	//Fahrphysik Test
 	Simulation::DrivingSimulator* Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
 	nodes.clear();
 	nodes = Drivingsim->RunSimulation();
