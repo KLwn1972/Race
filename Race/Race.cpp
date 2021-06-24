@@ -180,7 +180,7 @@ int main()
 	nodes.at(nodes.size() / 2).speedLimit = 1;
 	nodes.at(nodes.size() / 3).speedLimit = 1;
 
-	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfigSmart);
 	nodes = DrivingsimSmart->RunSimulation();
 	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_0_Straight_Speed.csv");
 
