@@ -28,15 +28,14 @@ using namespace std;
 
 int main()
 {
+#if 0	
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
-	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
-	//		string nasa_download_zielpfad
-	//		string nasa_download_zielpfad_win
+	// 	   Beschreibung in NASA_constants.h lesen.
 	///////////////////////////////////////////////////////////////////////
-#if 0
+
 	// Herunterladen aller HGT für Deutschland
-	//NASA::NASADataFileHandler filehandle;
+	//NASADataFileHandler filehandle;
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
 
 	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
@@ -46,8 +45,9 @@ int main()
 
 	double long_nuerburgringstart = 6.966279;
 	double lat_nuerburgringstart = 50.346094;
-	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
+	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
 #endif
+
 
 #if 1
 	//////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,6 @@ int main()
 
 	// Datenbeschaffungsteam
 	// Sued: route = "38567";
-	
 	vector<node> nodes;
 	string route = "38566"; // Nord
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
@@ -80,7 +79,7 @@ int main()
 	if (nodes.size() > 4) {
 		DatAuf::CalcDatAuf DatAuf_Nord;
 		DatAuf_Nord.nodes = nodes;
-		retval=DatAuf_Nord.DataProcessing();
+		retval = DatAuf_Nord.DataProcessing();
 		nodes = DatAuf_Nord.nodes;
 		retval = 0;  // Asure running of program version
 		if (retval != 0) {
@@ -200,7 +199,7 @@ int main()
 	nodes.at(nodes.size() / 2).speedLimit = 1;
 	nodes.at(nodes.size() / 3).speedLimit = 1;
 
-	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfigSmart);
 	nodes = DrivingsimSmart->RunSimulation();
 	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_0_Straight_Speed.csv");
 

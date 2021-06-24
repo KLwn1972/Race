@@ -4,9 +4,6 @@ using namespace std;
 #include "race.h"
 
 
-//Parameter abhängig von der Teststrecke, hier Nordschleife-Nürburgring
-
-
 class Testing
 {
 public:

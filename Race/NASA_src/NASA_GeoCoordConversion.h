@@ -1,3 +1,9 @@
+/*
+* Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
+* Zweck der Datei: Definition der Umrechnungsroutinenen für Koordinaten.
+* Umsetzung als Klassenroutinen einer Hilfsklassenroutine
+*/
+
 #pragma once
 
 //namespace NASA {

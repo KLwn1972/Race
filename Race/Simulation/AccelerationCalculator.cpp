@@ -44,13 +44,13 @@ double Simulation::AccelerationCalculator::calcAirResistance(double velocity, do
 
 double Simulation::AccelerationCalculator::calcRollingResistance(double gradient)
 {
-	double gradientAngle = angleRadFromGradientVector(gradient);
+	double gradientAngle = angleRadFromGradient(gradient);
 	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->getRollingResistanceCoefficient() * cos(gradientAngle);
 }
 
 double Simulation::AccelerationCalculator::calcGradientResistance(double gradient)
 {
-	double gradientAngle = angleRadFromGradientVector(gradient);
+	double gradientAngle = angleRadFromGradient(gradient);
 	return this->vehicle->Mass * GRAVITATIONALCONSTANT * sin(gradientAngle);
 }
 
@@ -75,7 +75,7 @@ double Simulation::AccelerationCalculator::calcEffectiveWheelForceLong(double gr
 
 double Simulation::AccelerationCalculator::calcAdhesionLimit(double gradient, double velocity)
 {
-	double gradientAngle = angleRadFromGradientVector(gradient);
+	double gradientAngle = angleRadFromGradient(gradient);
 	return this->vehicle->Mass * GRAVITATIONALCONSTANT * this->environment->calcFrictionCoefficient(velocity) * cos(gradientAngle);
 }
 
