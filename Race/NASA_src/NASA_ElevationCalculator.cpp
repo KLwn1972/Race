@@ -1,3 +1,9 @@
+/*
+* Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
+* Zweck der Datei: Implementierung der HGT-Auswertung. Ggf. werden bei aktiviertem CURL HGT nachgeladen.
+*/
+
+
 #include <cstring>
 #include <iostream>
 #include <fstream> 
@@ -79,7 +85,7 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 // Zu durchsuchender Dateiname
 // Ausgabe:
 //	- Hoehenwert
-//	- -32768			falls Fehler (incl. cerr Ausgabe)
+//	- -32768.0			falls Fehler (incl. cerr Ausgabe)
 ///////////////////////////////////////////////////////////////////////////////////
 double HGT_ElevationCalculator::readSingleElevationValueFromFile(double& longitude_deltasec, double& latitude_deltasec, string filename) {
 	double elevationvalue = -32768.0;

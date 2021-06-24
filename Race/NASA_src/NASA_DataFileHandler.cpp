@@ -1,3 +1,10 @@
+/*
+* Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
+* Zweck der Datei: Implementierung der Datenroutinen: Download, Unzip, Löschen und Hilfsroutinen
+*/
+
+
+
 #pragma once 
 #include <string>
 #include <stdlib.h>
@@ -39,7 +46,7 @@ using namespace std;
 		int error = 0;
 		for (int long_i = longitude_start; long_i < longitude_end; long_i++) {
 			for (int lat_i = latitude_start; lat_i < latitude_end; lat_i++) {
-				cout << "Dowload Longitude: " << long_i << "\t Latitude: " << lat_i << endl;
+				cout << "Download Longitude: " << long_i << "\t Latitude: " << lat_i << endl;
 				error = downloadNASAFile(long_i, lat_i);
 				if (!error) {
 					unzipNASAZipfile(long_i, lat_i);
@@ -103,7 +110,7 @@ using namespace std;
 			curl_easy_cleanup(ptr_curl);		//Aufräumen danach
 #endif //CURL_ON
 #ifndef CURL_ON
-			cerr << "CURL_OFF: " << downloadurl << " cannot be downloaded.\nError in ASADataFileHandler::downloadNASAFile() --> Activate CURL in Race.h" << endl << endl;
+			cerr << "CURL_OFF: " << downloadurl << " cannot be downloaded.\nError in NASADataFileHandler::downloadNASAFile() --> Activate CURL in Race.h" << endl << endl;
 			ret = -1;
 #endif // !CURL_ON
 
