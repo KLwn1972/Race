@@ -1,3 +1,10 @@
+/*
+* Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
+* Zweck der Datei: Definition der Datenroutinen: Download, Unzip, Löschen und Hilfsroutinen in einer Klasse NASADataFileHandler
+* Teilweise als Klassenroutinen
+*/
+
+
 #pragma once
 #include <string>
 

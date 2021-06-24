@@ -28,15 +28,14 @@ using namespace std;
 
 int main()
 {
+#if 0	
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
-	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
-	//		string nasa_download_zielpfad
-	//		string nasa_download_zielpfad_win
+	// 	   Beschreibung in NASA_constants.h lesen.
 	///////////////////////////////////////////////////////////////////////
-#if 0
+
 	// Herunterladen aller HGT für Deutschland
-	//NASA::NASADataFileHandler filehandle;
+	//NASADataFileHandler filehandle;
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
 
 	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
@@ -48,6 +47,7 @@ int main()
 	double lat_nuerburgringstart = 50.346094;
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
 #endif
+
 
 #if 1
 	//////////////////////////////////////////////////////////////////////////

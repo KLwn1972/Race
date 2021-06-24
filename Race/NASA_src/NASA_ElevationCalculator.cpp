@@ -1,3 +1,9 @@
+/*
+* Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
+* Zweck der Datei: Implementierung der HGT-Auswertung. Ggf. werden bei aktiviertem CURL HGT nachgeladen.
+*/
+
+
 #include <cstring>
 #include <iostream>
 #include <fstream> 
@@ -64,7 +70,7 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 		elevation = -32768.0;
 
 		cerr << "Request HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata() outside of NE [" << longitude << ", " << latitude <<"]" << endl;
-		cerr << "Limits: Longitude ]" << longitude_min << "," << longitude_max + 1 << "[, Latitiude ]" << latitude_min << "," << latitude_max +1 << "[" << endl;
+		cerr << "Limits: Longitude [" << longitude_min << "," << longitude_max + 1 << "[, Latitude [" << latitude_min << "," << latitude_max +1 << "[" << endl;
 #ifdef DEBUG
 		cerr << "Returned INT_MIN: " << elevation << endl;
 #endif 
@@ -79,7 +85,7 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 // Zu durchsuchender Dateiname
 // Ausgabe:
 //	- Hoehenwert
-//	- -32768			falls Fehler (incl. cerr Ausgabe)
+//	- -32768.0			falls Fehler (incl. cerr Ausgabe)
 ///////////////////////////////////////////////////////////////////////////////////
 double HGT_ElevationCalculator::readSingleElevationValueFromFile(double& longitude_deltasec, double& latitude_deltasec, string filename) {
 	double elevationvalue = -32768.0;
@@ -114,7 +120,9 @@ double HGT_ElevationCalculator::readSingleElevationValueFromFile(double& longitu
 	return elevationvalue;
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////
+// Hilfsfunktion zur Prüfung ob eine Datei exisitiert
+///////////////////////////////////////////////////////////////////////////////////
 bool HGT_ElevationCalculator::checkIfFileExists(string filename) {
 	fstream file;
 	string zieldatei = NASADataFileHandler::createDownloadZielpfadFromCurrentPath() + filename;
