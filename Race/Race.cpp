@@ -28,7 +28,7 @@ using namespace std;
 
 int main()
 {
-#if 0	
+#if 1	
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
 	// 	   Beschreibung in NASA_constants.h lesen.
@@ -43,13 +43,13 @@ int main()
 	double lat_stuttgart = 48.80;
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
 
-	double long_nuerburgringstart = 6.966279;
-	double lat_nuerburgringstart = 50.346094;
+	double long_nuerburgringstart = 6.94067417;
+	double lat_nuerburgringstart = 50.3309196;
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
 #endif
 
 
-#if 1
+#if 0
 	//////////////////////////////////////////////////////////////////////////
 	//Initialisierung Testing Log
 	ErrorLog elog = ErrorLog();
