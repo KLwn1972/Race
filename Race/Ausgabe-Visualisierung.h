@@ -5,6 +5,13 @@ Team Ausgabe_Visualisierung: Yihao Zhu, Bernhard Lauss
 
 #pragma once
 #include "Race.h"
+#include <iostream>
+#include <vector>
+#include "Race.h"
+#include "tinyxml2.h"
+#include <string>
+#include <time.h>
+#include <sstream>
 
 void ausgabe_visualisierung(vector<node>&, string);
 XMLError output_gpx(vector<node>&, string, bool);
