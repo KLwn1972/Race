@@ -16,7 +16,6 @@ namespace DatAuf {
 		SplineCatmullRom SplineSegment;
 		int retval = 0;
 		int DataProcessing();
-		void InsertAdditionalNodes_2();
 		void InsertAdditionalNodes();
 		void CopyNodesToSplineKnots(size_t NodeItem);
 		node GetInterpolKnot();
