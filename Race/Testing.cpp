@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include <string>
 #include <vector>
+#include "Race.h"
 
 //Parameter Nordschleife
 
@@ -12,6 +13,7 @@ double NeunzigGradSteigung = 5728; //[%] 89° da 90° undefiniert
 string IDStartpunkt = "6535972824";
 double LatitudeStartPunkt = 50.3451467;
 double LongitudeStartPunkt = 6.9264464;
+double MaxSpeedTesla = 261 /3.6;  //[m/s]
 
 void ErrorLog::TestDatenbeschaffung(vector<node>& nodes) {
 	Testing Test2add;
@@ -22,6 +24,7 @@ void ErrorLog::TestDatenbeschaffung(vector<node>& nodes) {
 			Test2add.Ergebnisse = "Failed";
 		}
 	Testvektor.push_back(Test2add);
+	
 	Test2add.Aufgabe = "Datenbeschaffung";
 	Test2add.Testname = "KoordinatenStartPunkt";
 	Test2add.Ergebnisse = "Passed";
@@ -45,6 +48,7 @@ void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 		index++;
 	}
 	Testvektor.push_back(Test2add);
+	
 	Test2add.Aufgabe = "Datenaufbereitung";
 	Test2add.Testname = "SteigungWertebereich";
 	Test2add.Ergebnisse = "Passed";
@@ -56,6 +60,7 @@ void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 		index++;
 	}
 	Testvektor.push_back(Test2add);
+	
 	Test2add.Aufgabe = "Datenaufbereitung";
 	Test2add.Testname = "MinKurvenRadius";
 	Test2add.Ergebnisse = "Passed";
@@ -67,6 +72,7 @@ void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 		index++;
 	}
 	Testvektor.push_back(Test2add);
+	
 	Test2add.Aufgabe = "Datenaufbereitung";
 	Test2add.Testname = "DistanceToNext";
 	Test2add.Ergebnisse = "Passed";
@@ -94,6 +100,7 @@ void ErrorLog::TestSollfahrtbestimmung(vector<node>& nodes) {
 		index++;
 	}
 	Testvektor.push_back(Test2add);
+	
 	index = 0;
 	Test2add.Aufgabe = "Sollfahrtbestimmung";
 	Test2add.Testname = "Nur positive Geschwindigkeit";
@@ -116,6 +123,7 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
+	
 	Test2add.Aufgabe = "Fahrphysik";
 	Test2add.Testname = "KoordinatenStartPunkt";
 	Test2add.Ergebnisse = "Passed";
@@ -123,7 +131,7 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
-	Testing Test2add;
+	
 	Test2add.Aufgabe = "Fahrphysik";
 	Test2add.Testname = "GeschwindigkeitStartPunkt";
 	Test2add.Ergebnisse = "Passed";
@@ -131,17 +139,39 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
-	/*int index = 0;
-	Testing Test2add;
+	
+	int index = 0;
 	Test2add.Aufgabe = "Fahrphysik";
 	Test2add.Testname = "KeinNaNmehr";
 	Test2add.Ergebnisse = "Passed";
 	size_t Sizevektor = nodes.size();
 	while (index < Sizevektor - 1) {
-		if (nodes[index].speedIs > nodes[index].speedLimit) {
+		if (nodes[index].longitude == nan("") ||
+			nodes[index].latitude == nan("") ||
+			nodes[index].elevation == nan("") ||
+			nodes[index].distanceToNext == nan("") ||
+			nodes[index].horizontalCurveRadius == nan("") ||
+			nodes[index].verticalCurveRadius == nan("") ||
+			nodes[index].gradient == nan("") ||
+			nodes[index].speedLimit == nan("") ||
+			nodes[index].speedIs == nan("") ||
+			nodes[index].raceTime == nan("")) {
 			Test2add.Ergebnisse = "Failed";
 		}
 		index++;
 	}
-	Testvektor.push_back(Test2add);*/
+	Testvektor.push_back(Test2add);
+	
+	index = 0;
+	Test2add.Aufgabe = "Fahrphysik";
+	Test2add.Testname = "MaxSpeedRealistisch";
+	Test2add.Ergebnisse = "Passed";
+	size_t Sizevektor = nodes.size();
+	while (index < Sizevektor - 1) {
+		if (nodes[index].speedIs > MaxSpeedTesla) {
+			Test2add.Ergebnisse = "Failed";
+		}
+		index++;
+	}
+	Testvektor.push_back(Test2add);
 }
