@@ -1,3 +1,10 @@
+/*
+Team Ausgabe_Visualisierung: Yihao Zhu, Bernhard Lauss
+
+
+*/
+
+
 #include <iostream>
 #include <vector>
 #include "Race.h"
@@ -14,20 +21,31 @@ using namespace tinyxml2;
 void ausgabe_visualisierung(vector<node>& track, string trackName) {
     XMLError fault_flag_gpx, fault_flag_kml;
     if (track.size() > 1) {
-        fault_flag_gpx = output_gpx(track, trackName);
-        fault_flag_kml = output_kml(track, trackName);
+        fault_flag_gpx = output_gpx(track, trackName,0);
+        fault_flag_kml = output_kml(track, trackName,0);
         if (fault_flag_gpx != 0)
             cout << "Error while creating gpx-File. ErrorID: " << fault_flag_gpx << endl;
         else cout << "Outputfile: " << trackName << ".gpx succesfull created. "<<endl;
         if (fault_flag_kml != 0)
             cout << "Error while creating kml-File. ErrorID: " << fault_flag_kml << endl;
         else cout << "Outputfile: " << trackName << ".kml succesfull created. " << endl;
+        
+        fault_flag_gpx = output_gpx(track, trackName+"_reduced", 1);
+        fault_flag_kml = output_kml(track, trackName+"_reduced", 1);
+        if (fault_flag_gpx != 0)
+            cout << "Error while creating gpx-File. ErrorID: " << fault_flag_gpx << endl;
+        else cout << "Outputfile: " << trackName << "_reduced.gpx succesfull created. " << endl;
+        if (fault_flag_kml != 0)
+            cout << "Error while creating kml-File. ErrorID: " << fault_flag_kml << endl;
+        else cout << "Outputfile: " << trackName << "_reduced.kml succesfull created. " << endl;
+    
+    
     }
     else cout << "Vector-Size <2, don't execute ausgabe_visualisierung" << endl;
 }
 
 //Creates the gpx Document of the Racetrack
-XMLError output_gpx(vector<node>& track, string trackName) {
+XMLError output_gpx(vector<node>& track, string trackName, bool reduced_resolution) {
     time_t startTime;
     time(&startTime);
     string timestr;
@@ -53,7 +71,9 @@ XMLError output_gpx(vector<node>& track, string trackName) {
 
     //insert Trackpoints to gpx
     for (unsigned int i = 0; i < track.size(); i++) {
-            add_node_gpx(&xmlDoc, &track[i], pElement2, startTime, Element_trkpt, Element_elevation,Element_time);
+        if (is_main_node(track[i].id)||!reduced_resolution) {
+            add_node_gpx(&xmlDoc, &track[i], pElement2, startTime, Element_trkpt, Element_elevation, Element_time);
+        }
     }
     Element_trk->InsertEndChild(pElement2);
     pRoot->InsertEndChild(Element_trk);
@@ -93,10 +113,7 @@ string timeConversion(double raceTime, time_t startTime) {
 }
 
 //Erstellung KML Ausgabe
-XMLError output_kml(vector<node>& track, string trackName) {
-    time_t startTime;
-    time(&startTime);
-    string timestr;
+XMLError output_kml(vector<node>& track, string trackName, bool reduced_resolution) {
     //modeselector - Select Datatype for coloring the track: 0=elevation 1=horizontalCurveRadius 2=speedLimit 3=speedIs
     int mode_selector = 3;
     tinyxml2::XMLDocument xmlDoc;
@@ -107,44 +124,29 @@ XMLError output_kml(vector<node>& track, string trackName) {
     XMLElement* Element_Document = xmlDoc.NewElement("Document");
 
     insertElementKML(xmlDoc, Element_Document, "name", trackName);
-    vector<node>::iterator it = track.end() - 1;
     double value_min = get_min_value(track, mode_selector);
     double value_max = get_max_value(track, mode_selector);
     double v_max = get_max_speedIs(track);
+    vector<node>::iterator it = track.end() - 1;
     string description = "race time = " + to_string(it->raceTime)
         + " s\nmax. speed = " + to_string(v_max) + " m/s";
     insertElementKML(xmlDoc, Element_Document, "description", description);
     insertElementKML(xmlDoc, Element_Document, "visibility", "1");
     insertElementKML(xmlDoc, Element_Document, "open", "1");
 
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color0", "ff0000ff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color1", "ff0040ff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color2", "ff0080ff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color3", "ff00bfff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color4", "ff00ffff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color5", "ffbfff00");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color6", "ff80ff00");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color7", "ff40ff00");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color8", "ff00ff00");
-
     it = track.begin();
-    //for (vector<node>::iterator it = track.begin(); it < track.end() - 1; ) {
-    for (size_t i = 0; i < track.size() - 1; i++) {
+    do{
         XMLElement* Element_Placemark = xmlDoc.NewElement("Placemark");
         Element_Document->InsertEndChild(Element_Placemark);
 
         insertElementKML(xmlDoc, Element_Placemark, "visibility", "1");
         insertElementKML(xmlDoc, Element_Placemark, "open", "0");
-        //string color = "#color" + to_string(i % 9);  //Funktionsaufruf generate_color_code
 
-        //string color = generate_color_code(it->speedIs, v_min, v_max);
-        //insertElementKML(xmlDoc, Element_Placemark, "styleUrl", ("#"+color).c_str());
-
-        string colorCode = generate_color_code2(get_act_value(*it, mode_selector), value_min, value_max);
+        string colorCode = generate_color_code(get_act_value(*it, mode_selector), value_min, value_max);
         insertColorDefinitionKML(xmlDoc, Element_Document, it->id, colorCode);
         insertElementKML(xmlDoc, Element_Placemark, "styleUrl", ("#" + it->id).c_str());
 
-        string name = "Track no. " + to_string(i);
+        string name = "node id: " + it->id;
         insertElementKML(xmlDoc, Element_Placemark, "name", name.c_str());
         description = createNotesKML(it);
         insertElementKML(xmlDoc, Element_Placemark, "description", description.c_str());
@@ -161,11 +163,14 @@ XMLError output_kml(vector<node>& track, string trackName) {
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
         it++;
+        while (!is_main_node(it->id)&&reduced_resolution) {
+            it++;
+        }
         coordinates += to_string(it->longitude) + ","
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
         insertElementKML(xmlDoc, Element_LineString, "coordinates", coordinates);
-    }
+    } while (it != track.end() - 1);
     pRoot->InsertEndChild(Element_Document);
     xmlDoc.InsertEndChild(pRoot);
 
@@ -192,41 +197,13 @@ void insertColorDefinitionKML(tinyxml2::XMLDocument& xmlDoc, XMLElement* Element
     insertElementKML(xmlDoc, Element_LineStyle, "width", "12");
 }
 
-//Funktion gives back a colorcode
-//string generate_color_code(double act_value, double min_value, double max_value) {
-//    const int number_categories = 9;
-//    int  act_category;
-//    string color_code = "color0";
-//    act_category = (int)((act_value - min_value) / (max_value - min_value) * (number_categories - 1.));
-//    switch (act_category) {
-//    case 0: color_code = "color0";
-//        break;
-//    case 1: color_code = "color1";
-//        break;
-//    case 2: color_code = "color2";
-//        break;
-//    case 3: color_code = "color3";
-//        break;
-//    case 4: color_code = "color4";
-//        break;
-//    case 5: color_code = "color5";
-//        break;
-//    case 6: color_code = "color6";
-//        break;
-//    case 7: color_code = "color7";
-//        break;
-//    case 8: color_code = "color8";
-//        break;
-//    }
-//    return color_code;
-//}
 
 //Funktion gives back a colorcode
-string generate_color_code2(double act_value, double min_value, double max_value) {
+string generate_color_code(double act_value, double min_value, double max_value) {
     long long int relative_value, color_number;
     stringstream stream;
 
-    relative_value = (long long int)(act_value / (max_value - min_value) * 510);
+    relative_value = (long long int)((act_value - min_value) / (max_value - min_value) * 510);
 
     if (relative_value < 256) color_number = 4278255615 - (255 - relative_value) * 256;
     else                      color_number = 4278255615 - (relative_value - 255);
@@ -241,14 +218,14 @@ string createNotesKML(vector<node>::iterator it) {
         + "<br>longetude:" + to_string(it->longitude)
         + "<br>latitude:" + to_string(it->latitude)
         + "<br>elevation:" + to_string(it->elevation)
-        + "<br>distanceToNext:" + to_string(it->distanceToNext)
+        + "[m]<br>distanceToNext:" + to_string(it->distanceToNext)
         + "[m]<br>horizontalCurveRadius:" + to_string(it->horizontalCurveRadius)
         + "[m]<br>verticalCurveRadius:" + to_string(it->verticalCurveRadius)
         + "[m]<br>gradient:" + to_string(it->gradient)
         + "[%]<br>speed limit:" + to_string(it->speedLimit)
         + "[m/s]<br>current speed:" + to_string(it->speedIs)
         + "[m/s]<br>race time:" + to_string(it->raceTime)
-        + "[s]]]>";
+        + "[s]\n]]>";
     return notes;
 }
 

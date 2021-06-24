@@ -1,15 +1,19 @@
+/*
+Team Ausgabe_Visualisierung: Yihao Zhu, Bernhard Lauss
+
+*/
+
 #pragma once
 #include "Race.h"
 
 void ausgabe_visualisierung(vector<node>&, string);
-XMLError output_gpx(vector<node>&, string);
+XMLError output_gpx(vector<node>&, string, bool);
 void add_node_gpx(tinyxml2::XMLDocument*, node*, XMLElement*, time_t, XMLElement*, XMLElement*, XMLElement*);
 string timeConversion(double, time_t);
-XMLError output_kml(vector<node>&, string);
+XMLError output_kml(vector<node>&, string, bool);
 void insertElementKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
 void insertColorDefinitionKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
 string generate_color_code(double, double, double);
-string generate_color_code2(double, double, double);
 string createNotesKML(vector<node>::iterator);
 
 //get_min get_max

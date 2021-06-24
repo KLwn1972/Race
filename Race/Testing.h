@@ -1,0 +1,21 @@
+#pragma once
+using namespace std;
+#include <string>
+#include "race.h"
+
+
+class Testing
+{
+public:
+	string Aufgabe = "";
+	string Testname = "";
+	string Ergebnisse = "";
+};
+
+class ErrorLog
+{
+public:
+	vector<Testing> Testvektor=vector<Testing>();
+	void TestSollfahrtbestimmung(vector<node>& nodes);
+	void TestDatenAufbereitung(vector<node>& nodes);
+};

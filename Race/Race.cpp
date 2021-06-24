@@ -14,6 +14,7 @@
 #include "Simulation/SimulationEnvironment.h"
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
+#include "Testing.h"
 
 #include "Soll_Fahrtbestimmung.h"
 
@@ -44,14 +45,18 @@ int main()
 
 	double long_nuerburgringstart = 6.966279;
 	double lat_nuerburgringstart = 50.346094;
-	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
+	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
 #endif
 
 
 #if 1
 	//////////////////////////////////////////////////////////////////////////
+	//Initialisierung Testing Log
+	ErrorLog elog = ErrorLog();
+
 	// Datenbeschaffungsteam
 	// Sued: route = "38567";
+
 	vector<node> nodes;
 	string route = "38566"; // Nord
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
@@ -69,7 +74,7 @@ int main()
 	if (nodes.size() > 4) {
 		DatAuf::CalcDatAuf DatAuf_Nord;
 		DatAuf_Nord.nodes = nodes;
-		retval=DatAuf_Nord.DataProcessing();
+		retval = DatAuf_Nord.DataProcessing();
 		nodes = DatAuf_Nord.nodes;
 		retval = 0;  // Asure running of program version
 		if (retval != 0) {
@@ -91,6 +96,8 @@ int main()
 	SollFahrt->setVehicle(SimulationConfig->getVehicle());
 	SollFahrt->setEnvironment(SimulationConfig->getEnvironment());
 	SollFahrt->SpeedLimit_route(nodes);
+
+	elog.TestSollfahrtbestimmung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	//Fahrphysik
