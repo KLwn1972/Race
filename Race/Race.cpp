@@ -36,7 +36,7 @@ int main()
 	//		string nasa_download_zielpfad
 	//		string nasa_download_zielpfad_win
 	///////////////////////////////////////////////////////////////////////
-#if 0
+#if 1
 	// Herunterladen aller HGT für Deutschland
 	//NASA::NASADataFileHandler filehandle;
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
@@ -52,7 +52,7 @@ int main()
 #endif
 
 
-#if 1
+#if 0
 	//////////////////////////////////////////////////////////////////////////
 	// Datenbeschaffungsteam
 	// Sued: route = "38567";

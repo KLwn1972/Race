@@ -220,7 +220,7 @@ using namespace std;
 		using convert_type = std::codecvt_utf8<wchar_t>;
 		std::wstring_convert<convert_type, wchar_t> converter;
 		std::string current_dir = converter.to_bytes(std::wstring(buffer).substr(0, pos));
-		std::string download_dir_win = std::regex_replace(current_dir, std::regex("\\Debug"), nasa_relative_download_zielpfad);
+		std::string download_dir_win = std::regex_replace(current_dir, std::regex(nasa_project_compilefolder), nasa_relative_download_zielpfad);
 		std::string download_dir_ux = download_dir_win;
 		size_t start_pos = 0;
 		while ((start_pos = download_dir_ux.find("\\", start_pos)) != std::string::npos) {

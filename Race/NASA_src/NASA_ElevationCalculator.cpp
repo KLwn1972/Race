@@ -64,7 +64,7 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 		elevation = -32768.0;
 
 		cerr << "Request HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata() outside of NE [" << longitude << ", " << latitude <<"]" << endl;
-		cerr << "Limits: Longitude ]" << longitude_min << "," << longitude_max + 1 << "[, Latitiude ]" << latitude_min << "," << latitude_max +1 << "[" << endl;
+		cerr << "Limits: Longitude [" << longitude_min << "," << longitude_max + 1 << "[, Latitude [" << latitude_min << "," << latitude_max +1 << "[" << endl;
 #ifdef DEBUG
 		cerr << "Returned INT_MIN: " << elevation << endl;
 #endif 

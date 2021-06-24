@@ -45,13 +45,9 @@ using namespace std;
 //namespace NASA {
 
 //Noch unglücklich Lösung: Generelle Variablen als Klassenkonstanten und Code in header 
-// 
-// 
-// 
-
-	//Dateimanagement wird für Zip genutzt
 //static const string nasa_download_zielpfad = "D:/MtM/M_Projekt2/Git/Race/Load/";
 static const string nasa_relative_download_zielpfad = "Race\\Load\\";
+static const string nasa_project_compilefolder = "\\Debug";
 #ifdef USE_WINDOWS
 static const string nasa_download_zielpfad_win = "D:\\MtM\\M_Projekt2\\Git\\Race\\Load\\";
 #endif
