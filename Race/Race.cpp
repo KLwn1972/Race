@@ -27,9 +27,6 @@ using namespace std;
 
 int main()
 {
-
-	 
-
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
 	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
@@ -50,7 +47,6 @@ int main()
 	double lat_nuerburgringstart = 50.346094;
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
 #endif
-
 
 #if 1
 	//////////////////////////////////////////////////////////////////////////
@@ -154,8 +150,9 @@ int main()
 
 	Drivingsim->setInterpolationLevel(10);
 	nodes = Drivingsim->RunSimulation();
-	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_4_Straight_Speed.csv");
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_10_Straight_Speed.csv");
 
+	nodes = ExampleHillTrack();
 	auto SimulationConfigSmart = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_SMARTe.json");
 	Simulation::DrivingSimulator* DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfigSmart);
 	DrivingsimSmart->setInterpolationLevel(0);
