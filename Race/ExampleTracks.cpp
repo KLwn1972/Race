@@ -104,7 +104,7 @@ std::vector<node> ExamplePointToPoint(node startPoint, node endPoint, size_t Num
 		newnode.elevation = Simulation::interpolateValues(0, startPoint.elevation, distance, endPoint.elevation, i * stepWidth);
 		newnode.latitude = Simulation::interpolateValues(0, startPoint.latitude, distance, endPoint.latitude, i * stepWidth);
 		newnode.longitude = Simulation::interpolateValues(0, startPoint.longitude, distance, endPoint.longitude, i * stepWidth);
-		newnode.gradient = ((startPoint.elevation - endPoint.elevation) / distance) * 100;
+		newnode.gradient = ((endPoint.elevation - startPoint.elevation) / distance) * 100;
 		newnode.speedLimit = 200 * Simulation::KMH2MS;
 		newnode.horizontalCurveRadius = INFINITY;
 		newnode.verticalCurveRadius = INFINITY;
