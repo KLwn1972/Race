@@ -15,7 +15,7 @@
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
 #include "Testing.h"
-
+#include <fstream>
 #include "Soll_Fahrtbestimmung.h"
 
 #include "DatAuf.h"
@@ -53,6 +53,11 @@ int main()
 	//////////////////////////////////////////////////////////////////////////
 	//Initialisierung Testing Log
 	ErrorLog elog = ErrorLog();
+	Testing Inittest;
+	Inittest.Aufgabe = "Aufgabe";
+	Inittest.Testname = "Testname";
+	Inittest.Ergebnisse = "Ergebnisse";
+	elog.Testvektor.push_back(Inittest);
 
 	//////////////////////////////////////////////////////////////////////////
 	/* Datenbeschaffung OpenStreetMap
@@ -71,10 +76,13 @@ int main()
 		std::cout << endl << "#####ERROR: The download failed!!!" << endl;
 		return -1;
 	}
+
 	std::cout << endl << "The download was successful." << endl;
 	nodes = OSM_Nord->nodes;
 	delete OSM_Nord;
 	OSM_Nord = nullptr;
+  
+  elog.TestDatenbeschaffung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	// DATENAUFBEREITUNG
@@ -94,6 +102,8 @@ int main()
 		return -1;
 	}
 
+	elog.TestDatenAufbereitung(nodes);
+	
 	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
 	auto SimulationConfig = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
 
@@ -113,9 +123,21 @@ int main()
 	nodes = Drivingsim->RunSimulation();
 	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresult.csv");
 
+	elog.TestFahrphysik(nodes);
+
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
 	ausgabe_visualisierung(nodes, "Nordschleife");
+
+	//Ausgabe Testlog
+	size_t Sizetestvektor = elog.Testvektor.size();
+	ofstream outputfile;
+	outputfile.open("ErrorLog.txt");
+	for (int i = 0; i < Sizetestvektor; i++) {
+		outputfile << elog.Testvektor[i].Aufgabe << "," << "\t" << elog.Testvektor[i].Testname << "," << "\t" << elog.Testvektor[i].Ergebnisse << "\n";
+	}
+	outputfile.close();
+
 
 #endif
 

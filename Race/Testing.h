@@ -18,4 +18,6 @@ public:
 	vector<Testing> Testvektor=vector<Testing>();
 	void TestSollfahrtbestimmung(vector<node>& nodes);
 	void TestDatenAufbereitung(vector<node>& nodes);
+	void TestDatenbeschaffung(vector<node>& nodes);
+	void TestFahrphysik(vector<node>& nodes);
 };
