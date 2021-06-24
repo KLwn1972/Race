@@ -13,16 +13,19 @@ using namespace std;
 		void downloadElevationDataofGermany_NASA_SIRC();
 		string createFilenamefromLongLat(int longitude, int latitude);
 		static bool checkLongitudeLatitudeinNEquadrant(int longitude, int latitude);
+		static string createDownloadZielpfadFromCurrentPath();
 
 	private:
 
 		//returns 0 in case of success, returns -1 in case of curl error
 		int downloadNASAFile(int longitude, int latitude);
+
 		void unzipNASAZipfile(int longitude, int latitude);
 		void deleteNASAZipfile(int longitude, int latitude);
 		string createDownloadURL(int longitude, int latitude);
 		static size_t write_data_callback(void* ptr, size_t size, size_t nmemb, FILE* stream);
 		//Nicht vorhandene Daten bei NASA resultieren in 1 KB zip Dateien im Pfad
+
 	};
 
 //}

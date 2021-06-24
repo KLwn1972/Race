@@ -17,7 +17,6 @@ using namespace std;
 //	- 0,				wenn innerhalb mˆglicher SRTM Daten, aber File nicht vorhanden --> Meer
 //	- -32768			falls Anfrage auﬂerhalb NordOst-Quadrant
 ///////////////////////////////////////////////////////////////////////////////////
-
 double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& longitude, const double& latitude) {
 	double elevation;
 
@@ -35,7 +34,7 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 		string sourcefilename = filehandler.createFilenamefromLongLat(long_deg, lat_deg) + ".hgt";
 
 #ifdef DEBUG
-		cout << "Lese Hoeheninfo [" << longitude << ", " << latitude << "] aus " << nasa_download_zielpfad + sourcefilename << endl;
+		cout << "Lese Hoeheninfo [" << longitude << ", " << latitude << "] aus " << NASADataFileHandler::createDownloadZielpfadFromCurrentPath() + sourcefilename << endl;
 #endif
 		if (!checkIfFileExists(sourcefilename)) {
 			cout << sourcefilename << " not available. Download starting ..." << endl;
@@ -46,8 +45,6 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 			cerr << "CURL_OFF: Missing " << sourcefilename << " cannot be downloaded. \nError in HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata() --> Activate CURL in Race.h" << endl << endl;
 #endif // !CURL_ON
 		}
-
-
 
 		if (checkIfFileExists(sourcefilename)) { //Nachgezogener Download erfolgreich?
 			elevation = readSingleElevationValueFromFile(delta_sec_long, delta_sec_lat, sourcefilename);
@@ -67,7 +64,7 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 		elevation = -32768.0;
 
 		cerr << "Request HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata() outside of NE [" << longitude << ", " << latitude <<"]" << endl;
-		cerr << "Limits: Longitude ]" << longitude_min << "," << longitude_max + 1 << "[, Latitiude ]" << latitude_min << "," << latitude_max << "[" << endl;
+		cerr << "Limits: Longitude ]" << longitude_min << "," << longitude_max + 1 << "[, Latitiude ]" << latitude_min << "," << latitude_max +1 << "[" << endl;
 #ifdef DEBUG
 		cerr << "Returned INT_MIN: " << elevation << endl;
 #endif 
@@ -76,6 +73,14 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////
+// Auslesen eines Zielwerts aus HGT File 
+//	Input: Unterschied Langen- und Breitengrad zu letztem vollen Grad 
+// Zu durchsuchender Dateiname
+// Ausgabe:
+//	- Hoehenwert
+//	- -32768			falls Fehler (incl. cerr Ausgabe)
+///////////////////////////////////////////////////////////////////////////////////
 double HGT_ElevationCalculator::readSingleElevationValueFromFile(double& longitude_deltasec, double& latitude_deltasec, string filename) {
 	double elevationvalue = -32768.0;
 	// Position Zielwert in eingelesenem File bestimmen (Untere linke Ecke bestimmt Dateinamen, Werte in Matrix in Lattitude gedreht
@@ -91,7 +96,7 @@ double HGT_ElevationCalculator::readSingleElevationValueFromFile(double& longitu
 #endif // DEBUG
 
 	fstream hgtfile;
-	string zieldatei = nasa_download_zielpfad + filename;
+	string zieldatei = NASADataFileHandler::createDownloadZielpfadFromCurrentPath() + filename;
 	hgtfile.open(zieldatei.c_str(), ios_base::in | ios_base::binary);
 
 	if (!hgtfile.good()) {
@@ -112,7 +117,7 @@ double HGT_ElevationCalculator::readSingleElevationValueFromFile(double& longitu
 
 bool HGT_ElevationCalculator::checkIfFileExists(string filename) {
 	fstream file;
-	string zieldatei = nasa_download_zielpfad + filename;
+	string zieldatei = NASADataFileHandler::createDownloadZielpfadFromCurrentPath() + filename;
 	file.open(zieldatei, ios_base::in);
 	if (file.good()) {
 		file.close();
@@ -143,7 +148,7 @@ bool HGT_ElevationCalculator::checkIfFileExists(string filename) {
 //#endif // DEBUG
 //
 //		fstream hgtfile;
-//		string zieldatei = nasa_download_zielpfad + filename;
+//		string zieldatei = NASADataFileHandler::createDownloadZielpfadFromCurrentPath() + filename;
 //		hgtfile.open(zieldatei.c_str(), ios_base::in | ios_base::binary);
 //
 //		if (!hgtfile.good()) {
