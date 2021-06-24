@@ -131,6 +131,9 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 			NodeItem += 1;
 			// Update MaxNumberNodes after insertion
 			MaxNumberNodes = this->nodes.size();
+			if (NodeItem == 3075) {
+				cout << " " << endl;
+			}
 		}
 		//cout << "Iteratorwert = " << RefinementIterator << endl;
 		CalcDistanceToAllNextNode();
@@ -497,6 +500,10 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		// error
 		if (this->nodes[index].gradient == nan("")) {
 			cout << "Error: Calculation of gradient failed. Node: " << index << endl;
+			this->retval = -1;
+		}
+		if (this->nodes[index].gradient < -100.0 || this->nodes[index].gradient > 100.0) {
+			cout << "Error: Absolute value of calculated gradient bigger 100 percent:  Node: " << index << endl;
 			this->retval = -1;
 		}
 	}
