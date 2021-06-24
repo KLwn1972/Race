@@ -24,7 +24,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 	return this->retval;
 	}
 
-
 	void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
 		cout << "DatAuf: InsertAdditionalNodes aufgerufen" << endl;
 

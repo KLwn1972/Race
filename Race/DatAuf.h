@@ -16,6 +16,7 @@ namespace DatAuf {
 		SplineCatmullRom SplineSegment;
 		int retval = 0;
 		int DataProcessing();
+		void InsertAdditionalNodes_2();
 		void InsertAdditionalNodes();
 		void CopyNodesToSplineKnots(size_t NodeItem);
 		node GetInterpolKnot();
@@ -39,6 +40,5 @@ namespace DatAuf {
 	};
 
 	static double GetDistanceMeters3D(node node1, node node2);
-	//static double deg2rad(double grad);
 }
 

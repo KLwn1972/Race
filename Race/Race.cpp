@@ -78,7 +78,7 @@ int main()
 		}
 	}
 	else {
-		// Fehler mindestans vier Nodes
+		// Fehler weniger wie 4 Nodes
 		return -1;
 	}
 
