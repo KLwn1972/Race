@@ -9,3 +9,4 @@ Sollfahrtbestimmung,	Vmax kleiner Vmax_Limited,	Passed
 Sollfahrtbestimmung,	Nur positive Geschwindigkeit,	Passed
 Fahrphysik,	IdStartPunkt,	Failed
 Fahrphysik,	KoordinatenStartPunkt,	Failed
+Fahrphysik,	GeschwindigkeitStartPunkt,	Failed
