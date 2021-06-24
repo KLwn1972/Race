@@ -108,7 +108,8 @@ void Simulation::DrivingSimulator::calcNewSpeedLimit()
 		if (previousPos.speedLimit > currentPos.speedLimit) {   //calculate the brake velocity wenn decceleration
 			double BrakeDecceleration = this->accelerationcalc->calcDecceleration(currentPos.speedLimit, previousPos, currentPos);   //get max decceleration at current point
 			double localDistance = previousPos.distanceToNext;                        //get Distance between local point and previous point
-			double BrakeSpeed = sqrt((currentPos.speedLimit) * (currentPos.speedLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
+			double BrakeSpeedSquared = (currentPos.speedLimit) * (currentPos.speedLimit) - 2 * BrakeDecceleration * localDistance;
+			double BrakeSpeed = sqrt(BrakeSpeedSquared); //calculate the brake Velocity
 			previousPos.speedLimit = min(BrakeSpeed, previousPos.speedLimit);                                                         //get new limit
 		}
 	}

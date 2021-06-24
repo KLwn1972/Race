@@ -47,11 +47,6 @@ int main()
 	//cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
 #endif
 
-
-
-
-
-
 #if 1
 	//////////////////////////////////////////////////////////////////////////
 	// Datenbeschaffungsteam
@@ -151,8 +146,9 @@ int main()
 
 	Drivingsim->setInterpolationLevel(10);
 	nodes = Drivingsim->RunSimulation();
-	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_4_Straight_Speed.csv");
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_10_Straight_Speed.csv");
 
+	nodes = ExampleHillTrack();
 	auto SimulationConfigSmart = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_SMARTe.json");
 	Simulation::DrivingSimulator* DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfigSmart);
 	DrivingsimSmart->setInterpolationLevel(0);
