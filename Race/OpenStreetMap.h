@@ -1,4 +1,3 @@
-#pragma once
 #include "Race.h"
 #include "cJSON.h"
 
