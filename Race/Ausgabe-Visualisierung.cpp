@@ -18,8 +18,10 @@ void ausgabe_visualisierung(vector<node>& track, string trackName) {
         fault_flag_kml = output_kml(track, trackName);
         if (fault_flag_gpx != 0)
             cout << "Error while creating gpx-File. ErrorID: " << fault_flag_gpx << endl;
+        else cout << "Outputfile: " << trackName << ".gpx succesfull created. "<<endl;
         if (fault_flag_kml != 0)
             cout << "Error while creating kml-File. ErrorID: " << fault_flag_kml << endl;
+        else cout << "Outputfile: " << trackName << ".kml succesfull created. " << endl;
     }
     else cout << "Vector-Size <2, don't execute ausgabe_visualisierung" << endl;
 }
@@ -51,7 +53,7 @@ XMLError output_gpx(vector<node>& track, string trackName) {
 
     //insert Trackpoints to gpx
     for (unsigned int i = 0; i < track.size(); i++) {
-        add_node_gpx(&xmlDoc, &track[i], pElement2, startTime);
+            add_node_gpx(&xmlDoc, &track[i], pElement2, startTime, Element_trkpt, Element_elevation,Element_time);
     }
     Element_trk->InsertEndChild(pElement2);
     pRoot->InsertEndChild(Element_trk);
@@ -63,10 +65,7 @@ XMLError output_gpx(vector<node>& track, string trackName) {
 }
 
 //Adds a node to the gpx-Document
-void add_node_gpx(tinyxml2::XMLDocument* xmlDoc, node* node_to_add, XMLElement* parent_element, time_t starttime) {
-    XMLElement* Element_trkpt = xmlDoc->NewElement("trkpt");
-    XMLElement* Element_elevation = xmlDoc->NewElement("ele");
-    XMLElement* Element_time = xmlDoc->NewElement("time");
+void add_node_gpx(tinyxml2::XMLDocument* xmlDoc, node* node_to_add, XMLElement* parent_element, time_t starttime, XMLElement* Element_trkpt, XMLElement* Element_elevation, XMLElement* Element_time) {
     string timestr;
     Element_trkpt = xmlDoc->NewElement("trkpt");
     Element_trkpt->SetAttribute("lat", node_to_add->latitude);
@@ -83,7 +82,7 @@ void add_node_gpx(tinyxml2::XMLDocument* xmlDoc, node* node_to_add, XMLElement* 
 // Function to create a date_string out of a starTime [s] and a raceTime [s]
 string timeConversion(double raceTime, time_t startTime) {
     time_t rawtime;
-    if (isnan(raceTime)) rawtime = (time_t)0 + startTime;
+    if (isnan(raceTime) || raceTime == numeric_limits<double>::infinity()) rawtime = (time_t)0 + startTime;
     else rawtime = (time_t)raceTime + startTime;
     struct tm timeinfo;
     localtime_s(&timeinfo, &rawtime);
@@ -98,6 +97,7 @@ XMLError output_kml(vector<node>& track, string trackName) {
     time_t startTime;
     time(&startTime);
     string timestr;
+    //modeselector - Select Datatype for coloring the track: 0=elevation 1=horizontalCurveRadius 2=speedLimit 3=speedIs
     int mode_selector = 3;
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.LinkEndChild(xmlDoc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\""));
