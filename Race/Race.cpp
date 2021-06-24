@@ -2,11 +2,12 @@
 //
 
 #include<stdio.h>
+#include <string>
 #include "Race.h"
 #include "OpenStreetMap.h"
 #include "Ausgabe-Visualisierung.h"
 #include "Simulation/Vehicle.h"
-#include "Simulation/DataMap2D.h"
+#include "Simulation/DataMap1D.h"
 #include "Simulation/ImportSimulationConfig.h"
 #include "Simulation/DrivingSimulator.h"
 #include "Simulation/MockSimulationConfig.h"
@@ -14,39 +15,41 @@
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
 
-
 #include "Soll_Fahrtbestimmung.h"
 
 #include "DatAuf.h"
 
 using namespace std;
 
+//#define USEDEBUGMAIN
+
+#ifndef USEDEBUGMAIN
+
 int main()
 {
+
+	 
 
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
 	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
-	//		string nasa_download_zielpfad 
-	//		string nasa_download_zielpfad_win 
+	//		string nasa_download_zielpfad
+	//		string nasa_download_zielpfad_win
 	///////////////////////////////////////////////////////////////////////
-#if 0	
+#if 0
 	// Herunterladen aller HGT für Deutschland
 	//NASA::NASADataFileHandler filehandle;
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
 
 	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
-	double long_stuttgart = 9.206802;
-	double lat_stuttgart = 48.742211;
+	double long_stuttgart = 9.20;
+	double lat_stuttgart = 48.80;
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_stuttgart, lat_stuttgart) << endl;
 
 	double long_nuerburgringstart = 6.966279;
 	double lat_nuerburgringstart = 50.346094;
-	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
+	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
 #endif
-
-
-
 
 
 #if 1
@@ -83,21 +86,21 @@ int main()
 	}
 
 	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
-	auto SimulationConfig = Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig.json");
+	auto SimulationConfig = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
 
 	//////////////////////////////////////////////////////////////////////////
 	//Sollfahrtbestimmung
 	Soll_Fahrtbestimmung* SollFahrt = new Soll_Fahrtbestimmung();
-	SollFahrt->setVehicle(SimulationConfig.getVehicle());
-	SollFahrt->setEnvironment(SimulationConfig.getEnvironment());
+	SollFahrt->setVehicle(SimulationConfig->getVehicle());
+	SollFahrt->setEnvironment(SimulationConfig->getEnvironment());
 	SollFahrt->SpeedLimit_route(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	//Fahrphysik
-	auto Drivingsim = Simulation::DrivingSimulator(nodes, SimulationConfig);
+	Simulation::DrivingSimulator* Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
 	nodes.clear();
-	nodes = Drivingsim.RunSimulation();
-	Simulation::plotNodeVector(Drivingsim.ReturnModifiedTrack(), "simulationresult.csv");
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresult.csv");
 
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
@@ -107,3 +110,85 @@ int main()
 
 	return 0;
 }
+
+#endif // STANDARDMAIN
+
+#ifdef USEDEBUGMAIN
+int main()
+{
+	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
+	auto SimulationConfig = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
+
+	auto nodes = ExampleHillTrack();
+	Simulation::DrivingSimulator* Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	Drivingsim->setInterpolationLevel(0);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_0_Hilltrack.csv");
+	Drivingsim->setInterpolationLevel(1);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_1_Hilltrack.csv");
+	Drivingsim->setInterpolationLevel(4);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_4_Hilltrack.csv");
+	Drivingsim->setInterpolationLevel(10);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_10_Hilltrack.csv");
+
+	nodes = ExampleStraightTrack();
+	nodes.at(nodes.size() - 1).speedLimit = 1;
+	nodes.at(nodes.size() / 2).speedLimit = 1;
+	nodes.at(nodes.size() / 3).speedLimit = 1;
+
+	Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_0_Straight_Speed.csv");
+
+	Drivingsim->setInterpolationLevel(1);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_1_Straight_Speed.csv");
+
+	Drivingsim->setInterpolationLevel(4);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_4_Straight_Speed.csv");
+
+	Drivingsim->setInterpolationLevel(10);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_4_Straight_Speed.csv");
+
+	auto SimulationConfigSmart = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_SMARTe.json");
+	Simulation::DrivingSimulator* DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfigSmart);
+	DrivingsimSmart->setInterpolationLevel(0);
+	nodes = DrivingsimSmart->RunSimulation();
+	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_0_Hilltrack.csv");
+	DrivingsimSmart->setInterpolationLevel(1);
+	nodes = DrivingsimSmart->RunSimulation();
+	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_1_Hilltrack.csv");
+	DrivingsimSmart->setInterpolationLevel(4);
+	nodes = DrivingsimSmart->RunSimulation();
+	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_4_Hilltrack.csv");
+	DrivingsimSmart->setInterpolationLevel(10);
+	nodes = DrivingsimSmart->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultSmart_10_Hilltrack.csv");
+
+	nodes = ExampleStraightTrack();
+	nodes.at(nodes.size() - 1).speedLimit = 1;
+	nodes.at(nodes.size() / 2).speedLimit = 1;
+	nodes.at(nodes.size() / 3).speedLimit = 1;
+
+	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	nodes = DrivingsimSmart->RunSimulation();
+	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_0_Straight_Speed.csv");
+
+	DrivingsimSmart->setInterpolationLevel(1);
+	nodes = DrivingsimSmart->RunSimulation();
+	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_1_Straight_Speed.csv");
+
+	DrivingsimSmart->setInterpolationLevel(4);
+	nodes = DrivingsimSmart->RunSimulation();
+	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_4_Straight_Speed.csv");
+
+	DrivingsimSmart->setInterpolationLevel(10);
+	nodes = DrivingsimSmart->RunSimulation();
+	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_4_Straight_Speed.csv");
+}
+#endif

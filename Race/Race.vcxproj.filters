@@ -57,7 +57,7 @@
     <ClCompile Include="OpenStreetMap.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation\DataMap2D.cpp">
+    <ClCompile Include="Simulation\DataMap1D.cpp">
       <Filter>Quelldateien\Simulation</Filter>
     </ClCompile>
     <ClCompile Include="Ausgabe-Visualisierung.cpp">
@@ -131,7 +131,7 @@
     <ClInclude Include="Simulation\AccelerationCalculator.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="Simulation\DataMap2D.h">
+    <ClInclude Include="Simulation\DataMap1D.h">
       <Filter>Headerdateien\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml2.h">
@@ -185,6 +185,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Testconfiguration\SimulationConfig_ModelSPerf.json">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="Testconfiguration\SimulationConfig_SMARTe.json">
       <Filter>Ressourcendateien</Filter>
     </None>
   </ItemGroup>

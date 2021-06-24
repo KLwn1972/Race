@@ -1,3 +1,9 @@
+/*
+Team Fahrphysik: Alexander Eirich, Yuying Zhu, Max Paschke
+
+MockSimulationConfig provides fake data (in order to not have to rely on the import) to test the drivingsimulator.
+*/
+
 #pragma once
 #include "IImportSimulationConfig.h"
 
