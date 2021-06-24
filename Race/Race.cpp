@@ -73,13 +73,16 @@ int main()
 	if (nodes.size() > 4) {
 		DatAuf::CalcDatAuf DatAuf_Nord;
 		DatAuf_Nord.nodes = nodes;
-		DatAuf_Nord.DataProcessing();
-		//return-Wert einfuegen
-		//return -1;
+		retval=DatAuf_Nord.DataProcessing();
 		nodes = DatAuf_Nord.nodes;
+		retval = 0;  // Asure running of program version
+		if (retval != 0) {
+			// Fehler Datenaufbereitung
+			return -1;
+		}
 	}
 	else {
-		// Fehler mindestans vier Nodes
+		// Fehler weniger wie 4 Nodes
 		return -1;
 	}
 
