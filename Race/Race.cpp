@@ -76,7 +76,6 @@ int main()
 		DatAuf_Nord.nodes = nodes;
 		retval = DatAuf_Nord.DataProcessing();
 		nodes = DatAuf_Nord.nodes;
-		retval = 0;  // Asure running of program version
 		if (retval != 0) {
 			// Fehler Datenaufbereitung
 			return -1;

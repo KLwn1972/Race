@@ -1,21 +1,18 @@
 ﻿#pragma once
 
 #include <iostream>
-// #include <vector>
-#include<string>
+#include <string>
 #include "DatAuf.h"
 #include "DatAuf_SplineCatmullRom.h"
 
 using namespace std;
 
-
-
 int DatAuf::CalcDatAuf::DataProcessing() {
-	//GetTestData();
 	// Check and insert additional knots if necessary
 	cout << "DatAuf: Insert nodes..." << endl;
 	this->InsertAdditionalNodes();
 	cout << "DatAuf: Done." << endl;
+
 	// Calculate Data for SOLL-Fahrtbestimmmung 
 	cout << "DatAuf: Calculation of vertical and horizontal radius and gradient..." << endl;
 	this->CalcRadiusGradientData();
@@ -25,17 +22,14 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 	}
 
 	void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
-		//cout << "DatAuf: InsertAdditionalNodes aufgerufen" << endl;
-
-		int RefinementIterator = 0;
-
+		node NewNode, PrevNode;
+		std::vector<node>::iterator NewNodeItemInsert;
 		size_t NodeItem = 0;
 		size_t NodeItemInsert=0;
 		size_t MaxNumberNodes = this->nodes.size();
 		size_t NumberAdditionalNodes;
 		size_t InsertMode = 0;
-		node NewNode, PrevNode;
-		std::vector<node>::iterator NewNodeItemInsert;
+		int RefinementIterator = 0;
 		double DistanceTwoNodes = 0.0;
 		double Delta_t, t_previous, t_current;
 
@@ -45,36 +39,29 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		InsertMode = 1;
 
 		while (NodeItem < MaxNumberNodes - 1) {
-			//Fix points for Spline interpolation in this refinement segment
-			//cout << "NodeItem = " << NodeItem << endl;
 			CopyNodesToSplineKnots(NodeItem);
 
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(nodes[NodeItem], nodes[NodeItem + 1]);
 			if (nodes[NodeItem].distanceToNext > 1.0) {				
 				switch (InsertMode) {
 				case 0:
-					NumberAdditionalNodes = int(nodes[NodeItem].distanceToNext);
-
+					NumberAdditionalNodes = int(nodes[NodeItem].distanceToNext);					
 					Delta_t = 1.0 / NumberAdditionalNodes;
-
 					for (int i = 1;i < NumberAdditionalNodes;i++) {
-						//cout << "Eingefuegter Node #" << i << endl;
 						SplineSegment.CalcInterpolKnot(i * Delta_t);
 						NewNode = GetInterpolKnot();
 						InsertOneAdditionalNode(NodeItem, i, NewNode);
-					}
-										
+					}										
 					// Zaehler mit eingefuegten Punkten ergaenzen, "-1", da ohne einfuegen der Zaehler automatisch um 1 erhoeht wird
 					NodeItem += NumberAdditionalNodes-1;
+
 					break;
 				case 1:
 					Delta_t = 1.0 / int(nodes[NodeItem].distanceToNext);
-
+					NumberAdditionalNodes = 0;
 					PrevNode = nodes[NodeItem];
-
 					t_previous = 0.0;
 					t_current = t_previous + Delta_t;
-					NumberAdditionalNodes = 0;
 
 					while (t_current <= 1.0) {
 						RefinementIterator += 1;
@@ -82,7 +69,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 						SplineSegment.CalcInterpolKnot(t_current);
 						NewNode = GetInterpolKnot();
 						DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
-
 						if (DistanceTwoNodes > 1.0) {
 							Delta_t = Delta_t *0.9;
 							t_current = t_previous + Delta_t;
@@ -94,36 +80,37 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 						else {
 							//Insert Additional Node
 							NumberAdditionalNodes += 1;
-							InsertOneAdditionalNode(NodeItem, NumberAdditionalNodes, NewNode);
-							
+							InsertOneAdditionalNode(NodeItem, NumberAdditionalNodes, NewNode);							
 							//Preparation next iteration step
 							PrevNode = NewNode;
 							t_previous = t_current;
 							t_current = t_current + Delta_t;
-
 							if (t_current >= 1.0) {
-								//cout << "Grenzfall t_current ist aufgetreten, Iteration: " << RefinementIterator << " NodeItem: "<< NodeItem+NumberAdditionalNodes << endl;
+#ifdef DEBUG								
+								cout << "Grenzfall t_current ist aufgetreten, Iteration: " << RefinementIterator << " NodeItem: "<< NodeItem+NumberAdditionalNodes << endl;
+#endif
 								SplineSegment.CalcInterpolKnot(1.0);
 								NewNode = GetInterpolKnot();
 								DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
-
 								if (DistanceTwoNodes > 1.0) {
-									//cout << "Warnung:  InsertAdditionalNode insert last node....." << endl;										// Error Handling: offen
+#ifdef DEBUG								
+									cout << "Warnung:  InsertAdditionalNode insert last node....." << endl;	
+#endif
 									t_current = 0.5 * (1.0 + t_previous);
-
 									RefinementIterator += 1;
-
 									SplineSegment.CalcInterpolKnot(t_current);
 									NewNode = GetInterpolKnot();
 									DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
 									NumberAdditionalNodes += 1;
 									InsertOneAdditionalNode(NodeItem, NumberAdditionalNodes, NewNode);
+
 									break;
 								}
 							}
 						}
 					}
 					NodeItem += NumberAdditionalNodes;
+
 					break;
 				}
 			}
@@ -131,20 +118,14 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 			NodeItem += 1;
 			// Update MaxNumberNodes after insertion
 			MaxNumberNodes = this->nodes.size();
-			if (NodeItem == 3075) {
-				cout << " " << endl;
-			}
 		}
-		//cout << "Iteratorwert = " << RefinementIterator << endl;
+#ifdef DEBUG
+		cout << "Iteratorwert = " << RefinementIterator << endl;
+#endif
 		CalcDistanceToAllNextNode();
-		if (this->retval==-1) {
-			 cout<< "Fehler: Distance larger than 1 meter." << endl;
-		}
 	}
 
-
 	void DatAuf::CalcDatAuf::CopyNodesToSplineKnots(size_t NodeItem) {
-
 		size_t MaxNumberNodes = this->nodes.size();
 
 		if (NodeItem == 0) {
@@ -193,7 +174,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 				SplineSegment.SplineKnots[3][0] = this->nodes[MaxNumberNodes - 1].longitude;
 				SplineSegment.SplineKnots[3][1] = this->nodes[MaxNumberNodes - 1].latitude;
 				SplineSegment.SplineKnots[3][2] = this->nodes[MaxNumberNodes - 1].elevation;
-
 			}
 		}
 		else {
@@ -205,16 +185,13 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		}
 	}
 
-
 	node DatAuf::CalcDatAuf::GetInterpolKnot() {
 		node Node;
 		Node.longitude = SplineSegment.InterpolKnot[0];
 		Node.latitude = SplineSegment.InterpolKnot[1];
 		Node.elevation = SplineSegment.InterpolKnot[2];
-
 		return Node;
 	}
-
 
 	void DatAuf::CalcDatAuf::InsertOneAdditionalNode(size_t NodeItem, size_t NumberAdditionalNodes, node NewNode) {
 		std::vector<node>::iterator NewNodeItemInsert = this->nodes.begin() + NodeItem + NumberAdditionalNodes;
@@ -234,10 +211,11 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		for (NodeItem = 0;NodeItem < MaxNumberNodes - 1;NodeItem++) {
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(this->nodes[NodeItem], this->nodes[NodeItem + 1]);
 			if (nodes[NodeItem].distanceToNext >= 1.0) {
-				this->retval = -1;
-//#ifdef DEBUG
-				//cout << "NodeItem: " << NodeItem << " distance bigger than 1m." << endl;
-//#endif
+				// retval-value kept at incoming value because insertion method could create single value to violate distance requirement
+				//this->retval = -1;
+#ifdef DEBUG				
+				cout << "NodeItem: " << NodeItem << " distance bigger than 1m." << endl;
+#endif
 			}
 		}
 		//Special handling of last vector-element depending on type of circuit
@@ -303,9 +281,8 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(size_t index) {
 		double radiusIndex = 0;
 		double maxRadius = 10E6;
-		double minRadius = 10E-6;
-		
-		// define Index for 3 points														// Prüfen was an Rändern passiert
+		double minRadius = 10E-6;		
+		// define Index for 3 points
 		size_t MaxIndexNodes = this->nodes.size() - 1;
 		size_t preIndex = index - 1;
 		size_t postIndex = index + 1;
@@ -350,19 +327,18 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 			if ((denominator > 0 && nominator > 0) || (denominator < 0 && nominator < 0)) {
 				// radius at Index
 				radiusIndex = 0.5 * sqrt(nominator / denominator);
-
 				// limitations
 				if (radiusIndex < minRadius) {
 					this->nodes[index].horizontalCurveRadius = minRadius;
-					//#ifdef DEBUG
+#ifdef DEBUG
 					cout << "Warning: horizontal radius is smaller than " << minRadius << ". Node: " << index << endl;
-					//#endif
+#endif
 				}
 				else if (radiusIndex > maxRadius) {
-					this->nodes[index].horizontalCurveRadius = maxRadius;
-					//#ifdef DEBUG
-					cout << "Warning: horizontal radius is larger than " << maxRadius << ". Node: " << index << endl;
-					//#endif
+					this->nodes[index].horizontalCurveRadius = maxRadius;					
+#ifdef DEBUG
+					cout << "Warning: horizontal radius is larger than " << maxRadius << ". Node: " << index << endl;					
+#endif
 				}
 				else {
 					this->nodes[index].horizontalCurveRadius = radiusIndex;
@@ -419,16 +395,16 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 				radiusIndex = 0.5 * sqrt((nominator / denominator));
 			
 				// limitations	
-				if (radiusIndex < minRadius) {
-					//#ifdef DEBUG
-					cout << "Warning: vertical radius is smaller than " << minRadius << ". Node: " << index << endl;
-					//#endif
+				if (radiusIndex < minRadius) {					
+#ifdef DEBUG
+					cout << "Warning: vertical radius is smaller than " << minRadius << ". Node: " << index << endl;					
+#endif
 					radiusIndex = minRadius;
 				}
-				else if (radiusIndex > maxRadius) {
-					//#ifdef DEBUG
-					cout << "Warning: vertical radius is larger than " << maxRadius << ". Node: " << index << endl;
-					//#endif
+				else if (radiusIndex > maxRadius) {					
+#ifdef DEBUG
+					cout << "Warning: vertical radius is larger than " << maxRadius << ". Node: " << index << endl;					
+#endif
 					radiusIndex = maxRadius;
 				}
 
@@ -484,7 +460,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 				// Correction in "elevation" in order to use general formula for Finite Differences
 				NodeForward = GetNode(index - 1);
 				NodeForward.elevation = -NodeBackward.elevation + 2 * NodeCurrent.elevation;
-
 			}
 		}
 		else {
@@ -508,94 +483,26 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		}
 	}
 
-	double DatAuf::CalcDatAuf::CalcForwardDerivativeFD(node NodeCurrent, node NodeForward) {
-		
+	double DatAuf::CalcDatAuf::CalcForwardDerivativeFD(node NodeCurrent, node NodeForward) {		
 		double DistanceTwoNodes = GetDistanceMeters3D(NodeCurrent, NodeForward);
-
 		return (NodeForward.elevation - NodeCurrent.elevation) / DistanceTwoNodes;
 	}
 
 	double DatAuf::CalcDatAuf::CalcBackwardDerivativeFD(node NodeCurrent, node NodeBackward) {
-
 		double DistanceTwoNodes = GetDistanceMeters3D(NodeCurrent, NodeBackward);
-
 		return (NodeCurrent.elevation - NodeBackward.elevation)/DistanceTwoNodes;
 	}
-
-	void DatAuf::CalcDatAuf::InsertOneNodeRecursiv(node Node1, node Node2, SplineCatmullRom SplineSegment){
-		cout << "DatAuf: InsertOneNodeRecursiv-Funktion wurde aufgerufen." << endl;
-		double DistanceTwoNodes = GetDistanceMeters3D(Node1, Node2);
-
-		if (DistanceTwoNodes > 1.0) {
-		}
-	}
-
 
 	double DatAuf::CalcDatAuf::deg2rad(double grad) {
 		double rad = grad * 3.14159265358979 / 180;
 		return rad;
 	}
 
-
-	bool DatAuf::CalcDatAuf::isLoop()
-	{
+	bool DatAuf::CalcDatAuf::isLoop(){
 		size_t MaxIndexNodes = this->nodes.size() - 1;
-		return  (nodes[0].id == nodes[MaxIndexNodes].id);
+		return (nodes[0].id == nodes[MaxIndexNodes].id);
 	}
 
 	node DatAuf::CalcDatAuf::GetNode(size_t NodeItem) {
-
 		return this->nodes[NodeItem];
-	}
-
-
-// TEST-Daten:
-	void DatAuf::CalcDatAuf::GetTestData()
-	{
-		nodes[0].longitude = 6.945215;
-		nodes[0].latitude = 50.33409;
-		nodes[0].distanceToNext = 50;
-		nodes[0].elevation = 500;
-		nodes[0].id = "loop";
-
-		nodes[1].longitude = 6.971891;
-		nodes[1].latitude = 50.34831;
-		nodes[1].distanceToNext = 50;
-		nodes[1].elevation = 333;
-
-		nodes[2].longitude = 6.994314;
-		nodes[2].latitude = 50.360358;
-		nodes[2].distanceToNext = 50;
-		nodes[2].elevation = 222;
-
-		nodes[3].longitude = 6.995172;
-		nodes[3].latitude = 50.376866;
-		nodes[3].distanceToNext = 50;
-		nodes[3].elevation = 148;
-
-		nodes[4].longitude = 6.992038;
-		nodes[4].latitude = 50.373581;
-		nodes[4].distanceToNext = 50;
-		nodes[4].elevation = 150;
-
-		nodes[5].longitude = 6.985426;
-		nodes[5].latitude = 50.371774;
-		nodes[5].elevation = 66;
-
-		nodes[6].longitude = 6.989161;
-		nodes[6].latitude = 50.374539;
-		nodes[6].elevation = 99;
-
-		nodes[7].longitude = 6.980189;
-		nodes[7].latitude = 50.372267;
-		nodes[7].elevation = 148;
-		nodes[7].distanceToNext = 300;
-
-		nodes[8].longitude = nodes[0].longitude;
-		nodes[8].latitude = nodes[0].latitude;
-		nodes[8].elevation = nodes[0].elevation;
-		nodes[8].id = nodes[0].id;
-		//nodes[8].id = "";
-		nodes[8].distanceToNext = nodes[0].distanceToNext;
-
 	}
