@@ -14,7 +14,6 @@ XMLError output_kml(vector<node>&, string, bool);
 void insertElementKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
 void insertColorDefinitionKML(tinyxml2::XMLDocument&, XMLElement*, string, string);
 string generate_color_code(double, double, double);
-string generate_color_code2(double, double, double);
 string createNotesKML(vector<node>::iterator);
 
 //get_min get_max
