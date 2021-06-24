@@ -1,9 +1,11 @@
 Aufgabe,	Testname,	Ergebnisse
 Datenbeschaffung,	IdStartPunkt,	Failed
-Datenbeschaffung,	IdKoordinaten,	Failed
+Datenbeschaffung,	KoordinatenStartPunkt,	Failed
 Datenaufbereitung,	SteigungKleiner90Grad,	Passed
-Datenaufbereitung,	SteigungWertebereich,	Passed
+Datenaufbereitung,	SteigungWertebereich,	Failed
 Datenaufbereitung,	MinKurvenRadius,	Failed
 Datenaufbereitung,	DistanceToNext,	Failed
-Sollfahrtbestimmung,	Vmax kleiner Vmax_Limited,	Failed
+Sollfahrtbestimmung,	Vmax kleiner Vmax_Limited,	Passed
 Sollfahrtbestimmung,	Nur positive Geschwindigkeit,	Passed
+Fahrphysik,	IdStartPunkt,	Failed
+Fahrphysik,	KoordinatenStartPunkt,	Failed

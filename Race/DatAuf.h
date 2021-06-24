@@ -28,8 +28,9 @@ namespace DatAuf {
 		bool isLoop();
 
 	private:
-		void CalcHorizontalCurveRad(size_t index);
+		void CalcHorizontalCurveRad_viaXYcoordinates(size_t index);
 		void CalcVerticalCurveRad(size_t index);
+		void CalcHorizontalCurveRad_viaDistance(size_t index);
 		void CalcGradientPercentage(size_t index);
 		double CalcForwardDerivativeFD(node NodeCurrent, node NodeForward);
 		double CalcBackwardDerivativeFD(node NodeCurrent, node NodeBackward);
