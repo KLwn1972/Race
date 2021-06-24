@@ -182,6 +182,9 @@
     <ClInclude Include="DatAuf.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Simulation\SimulationConstants.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Testconfiguration\SimulationConfig_ModelSPerf.json">

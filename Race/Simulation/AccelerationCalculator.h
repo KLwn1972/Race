@@ -16,8 +16,22 @@ namespace Simulation
 	{
 	public:
 		AccelerationCalculator(Vehicle* vehicle, SimulationEnvironment* environment);
-		//Calculate acceleration
+		/// <summary>
+		/// Calculate the acceleration
+		/// </summary>
+		/// <param name="velocity"></param>
+		/// <param name="TrackPoint">Current Point in the track</param>
+		/// <param name="NextPoint">Next Point</param>
+		/// <returns></returns>
 		double calcAcceleration(double velocity, SimulationNode& TrackPoint, SimulationNode& NextPoint);
+
+		/// <summary>
+		/// Calculate the decceleration
+		/// </summary>
+		/// <param name="velocity"></param>
+		/// <param name="TrackPoint">Current Point in the track</param>
+		/// <param name="NextPoint">Next entry in the track</param>
+		/// <returns></returns>
 		double calcDecceleration(double velocity, SimulationNode& TrackPoint, SimulationNode& NextPoint);
 	private:
 		double calcAirResistance(double velocity, double height);
@@ -29,6 +43,9 @@ namespace Simulation
 
 		Vehicle* vehicle;
 		SimulationEnvironment* environment;
+		/// <summary>
+		/// Vehicle direction in [rad]
+		/// </summary>
 		double vehicledirection = nan("");
 	};
 }

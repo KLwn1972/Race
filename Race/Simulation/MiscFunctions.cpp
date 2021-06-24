@@ -39,7 +39,7 @@ void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 	}
 }
 
-double Simulation::angleRadFromGradientVector(double gradient)
+double Simulation::angleRadFromGradient(double gradient)
 {
 	return atan(gradient / 100);
 }
