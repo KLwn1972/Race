@@ -120,7 +120,9 @@ double HGT_ElevationCalculator::readSingleElevationValueFromFile(double& longitu
 	return elevationvalue;
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////
+// Hilfsfunktion zur Prüfung ob eine Datei exisitiert
+///////////////////////////////////////////////////////////////////////////////////
 bool HGT_ElevationCalculator::checkIfFileExists(string filename) {
 	fstream file;
 	string zieldatei = NASADataFileHandler::createDownloadZielpfadFromCurrentPath() + filename;
