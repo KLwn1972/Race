@@ -50,7 +50,7 @@ using namespace std;
 // 
 
 	//Dateimanagement wird für Zip genutzt
-static const string nasa_download_zielpfad = "D:/MtM/M_Projekt2/Git/Race/Load/";
+//static const string nasa_download_zielpfad = "D:/MtM/M_Projekt2/Git/Race/Load/";
 static const string nasa_relative_download_zielpfad = "Race\\Load\\";
 #ifdef USE_WINDOWS
 static const string nasa_download_zielpfad_win = "D:\\MtM\\M_Projekt2\\Git\\Race\\Load\\";

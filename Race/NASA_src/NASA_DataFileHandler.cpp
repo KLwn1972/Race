@@ -44,7 +44,7 @@ using namespace std;
 				if (!error) {
 					unzipNASAZipfile(long_i, lat_i);
 				}
-				deleteNASAZipfile(long_i, lat_i);
+				//deleteNASAZipfile(long_i, lat_i);
 			}
 		}
 		return;
@@ -59,8 +59,8 @@ using namespace std;
 		int ret = 0;
 		string targetfile = createFilenamefromLongLat(longitude, latitude) + ".zip";
 		string downloadurl = createDownloadURL(longitude, latitude);
-		string ausgabedatei = nasa_download_zielpfad + targetfile;
-		string cookiedatei = nasa_download_zielpfad + "NASA_cookies.txt";
+		string ausgabedatei = createDownloadZielpfadFromCurrentPath() + targetfile;
+		string cookiedatei = createDownloadZielpfadFromCurrentPath() + "NASA_cookies.txt";
 #ifdef DEBUG
 		std::cout << "Download to: \t" << ausgabedatei << std::endl;
 		std::cout << "URL Source: \t" << downloadurl << std::endl;
@@ -125,15 +125,15 @@ using namespace std;
 		//Entpacken mit sytemcall von 7Zip
 
 #ifdef USE_WINDOWS
-		string zipfile = nasa_download_zielpfad + createFilenamefromLongLat(longitude, latitude) + ".zip";
-		string zipcall = nasa_download_zielpfad + "7z.exe e ";
-		string ziptarget = " -aoa -o" + nasa_download_zielpfad +" -y >NUL";
+		string zipfile = createDownloadZielpfadFromCurrentPath() + createFilenamefromLongLat(longitude, latitude) + ".zip";
+		string zipcall = createDownloadZielpfadFromCurrentPath() + "7z.exe e ";
+		string ziptarget = " -aoa -o" + createDownloadZielpfadFromCurrentPath() +" -y >NUL";
 #endif //USE_WINDOWS
 
 #ifndef USE_WINDOWS   //Linux System
-		string zipfile = nasa_download_zielpfad + createFilenamefromLongLat(longitude, latitude) + ".zip";
+		string zipfile = createDownloadZielpfadFromCurrentPath() + createFilenamefromLongLat(longitude, latitude) + ".zip";
 		string zipcall = " LINUX 7 ZIP CALL!!! "  ; //Auf Linux-System korrigieren / Testen
-		string ziptarget = " -aoa -o" + nasa_download_zielpfad;
+		string ziptarget = " -aoa -o" + createDownloadZielpfadFromCurrentPath();
 #endif //!USE_WINDOWS
 		std::cout << "7Zip Extract: \t" << zipfile << std::endl;
 
