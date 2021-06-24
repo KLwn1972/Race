@@ -18,14 +18,14 @@ void ErrorLog::TestDatenbeschaffung(vector<node>& nodes) {
 	Test2add.Aufgabe = "Datenbeschaffung";
 	Test2add.Testname = "IdStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-		if (nodes[1].id != IDStartpunkt) { //
-			Test2add.Ergebnisse = "Failed";
-		}
+	if (nodes[1].id != IDStartpunkt) { //
+		Test2add.Ergebnisse = "Failed";
+	}
 	Testvektor.push_back(Test2add);
 	Test2add.Aufgabe = "Datenbeschaffung";
 	Test2add.Testname = "KoordinatenStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	if (nodes[1].latitude != LatitudeStartPunkt || nodes[1].longitude != LongitudeStartPunkt) { 
+	if (nodes[1].latitude != LatitudeStartPunkt || nodes[1].longitude != LongitudeStartPunkt) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
@@ -39,7 +39,7 @@ void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 	Test2add.Ergebnisse = "Passed";
 	size_t Sizevektor = nodes.size();
 	while (index < Sizevektor - 1) {
-	if (nodes[index].gradient > NeunzigGradSteigung) { //89° in %
+		if (nodes[index].gradient > NeunzigGradSteigung) { //89° in %
 			Test2add.Ergebnisse = "Failed";
 		}
 		index++;
@@ -99,7 +99,7 @@ void ErrorLog::TestSollfahrtbestimmung(vector<node>& nodes) {
 	Test2add.Testname = "Nur positive Geschwindigkeit";
 	Test2add.Ergebnisse = "Passed";
 	while (index < Sizevektor - 1) {
-		if (nodes[index].speedIs <0) {
+		if (nodes[index].speedIs < 0) {
 			Test2add.Ergebnisse = "Failed";
 		}
 		index++;
@@ -123,11 +123,11 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
-	Testing Test2add;
+	Test2add = Testing();
 	Test2add.Aufgabe = "Fahrphysik";
 	Test2add.Testname = "GeschwindigkeitStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	if (nodes[1].speedIs != 0) { 
+	if (nodes[1].speedIs != 0) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
