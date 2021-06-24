@@ -393,3 +393,7 @@ Race/simulationresult.csv
 Race/simulationresult*.csv
 Race/Nordschleife.gpx
 Race/Nordschleife.kml
+Race/Nordschleife*.gpx
+Race/Nordschleife*.kml
+/Race/Nordschleife.gpx~origin_master
+/Race/Nordschleife.kml~origin_master

@@ -1,3 +1,10 @@
+/*
+Team Ausgabe_Visualisierung: Yihao Zhu, Bernhard Lauss
+
+
+*/
+
+
 #include <iostream>
 #include <vector>
 #include "Race.h"
@@ -14,20 +21,31 @@ using namespace tinyxml2;
 void ausgabe_visualisierung(vector<node>& track, string trackName) {
     XMLError fault_flag_gpx, fault_flag_kml;
     if (track.size() > 1) {
-        fault_flag_gpx = output_gpx(track, trackName);
-        fault_flag_kml = output_kml(track, trackName);
+        fault_flag_gpx = output_gpx(track, trackName,0);
+        fault_flag_kml = output_kml(track, trackName,0);
         if (fault_flag_gpx != 0)
             cout << "Error while creating gpx-File. ErrorID: " << fault_flag_gpx << endl;
         else cout << "Outputfile: " << trackName << ".gpx succesfull created. "<<endl;
         if (fault_flag_kml != 0)
             cout << "Error while creating kml-File. ErrorID: " << fault_flag_kml << endl;
         else cout << "Outputfile: " << trackName << ".kml succesfull created. " << endl;
+        
+        fault_flag_gpx = output_gpx(track, trackName+"_reduced", 1);
+        fault_flag_kml = output_kml(track, trackName+"_reduced", 1);
+        if (fault_flag_gpx != 0)
+            cout << "Error while creating gpx-File. ErrorID: " << fault_flag_gpx << endl;
+        else cout << "Outputfile: " << trackName << "_reduced.gpx succesfull created. " << endl;
+        if (fault_flag_kml != 0)
+            cout << "Error while creating kml-File. ErrorID: " << fault_flag_kml << endl;
+        else cout << "Outputfile: " << trackName << "_reduced.kml succesfull created. " << endl;
+    
+    
     }
     else cout << "Vector-Size <2, don't execute ausgabe_visualisierung" << endl;
 }
 
 //Creates the gpx Document of the Racetrack
-XMLError output_gpx(vector<node>& track, string trackName) {
+XMLError output_gpx(vector<node>& track, string trackName, bool reduced_resolution) {
     time_t startTime;
     time(&startTime);
     string timestr;
@@ -53,7 +71,9 @@ XMLError output_gpx(vector<node>& track, string trackName) {
 
     //insert Trackpoints to gpx
     for (unsigned int i = 0; i < track.size(); i++) {
-            add_node_gpx(&xmlDoc, &track[i], pElement2, startTime, Element_trkpt, Element_elevation,Element_time);
+        if (is_main_node(track[i].id)||!reduced_resolution) {
+            add_node_gpx(&xmlDoc, &track[i], pElement2, startTime, Element_trkpt, Element_elevation, Element_time);
+        }
     }
     Element_trk->InsertEndChild(pElement2);
     pRoot->InsertEndChild(Element_trk);
@@ -93,7 +113,7 @@ string timeConversion(double raceTime, time_t startTime) {
 }
 
 //Erstellung KML Ausgabe
-XMLError output_kml(vector<node>& track, string trackName) {
+XMLError output_kml(vector<node>& track, string trackName, bool reduced_resolution) {
     time_t startTime;
     time(&startTime);
     string timestr;
@@ -129,7 +149,8 @@ XMLError output_kml(vector<node>& track, string trackName) {
 
     it = track.begin();
     //for (vector<node>::iterator it = track.begin(); it < track.end() - 1; ) {
-    for (size_t i = 0; i < track.size() - 1; i++) {
+    //for (size_t i = 0; i < track.size() - 1; i++) {
+    do{
         XMLElement* Element_Placemark = xmlDoc.NewElement("Placemark");
         Element_Document->InsertEndChild(Element_Placemark);
 
@@ -144,7 +165,7 @@ XMLError output_kml(vector<node>& track, string trackName) {
         insertColorDefinitionKML(xmlDoc, Element_Document, it->id, colorCode);
         insertElementKML(xmlDoc, Element_Placemark, "styleUrl", ("#" + it->id).c_str());
 
-        string name = "Track no. " + to_string(i);
+        string name = "node id: " + it->id;
         insertElementKML(xmlDoc, Element_Placemark, "name", name.c_str());
         description = createNotesKML(it);
         insertElementKML(xmlDoc, Element_Placemark, "description", description.c_str());
@@ -161,11 +182,14 @@ XMLError output_kml(vector<node>& track, string trackName) {
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
         it++;
+        while (!is_main_node(it->id)&&reduced_resolution) {
+            it++;
+        }
         coordinates += to_string(it->longitude) + ","
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
         insertElementKML(xmlDoc, Element_LineString, "coordinates", coordinates);
-    }
+    } while (it != track.end() - 1);
     pRoot->InsertEndChild(Element_Document);
     xmlDoc.InsertEndChild(pRoot);
 
