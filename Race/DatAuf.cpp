@@ -26,7 +26,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 
 	void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
-		cout << "DatAuf: InsertAdditionalNodes aufgerufen" << endl;
+		//cout << "DatAuf: InsertAdditionalNodes aufgerufen" << endl;
 
 		int RefinementIterator = 0;
 
@@ -43,12 +43,12 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		// Set Insertmode for Node insertion:
 		//  Case 0: Equidistant in parameter t of the Spline
 		//  Case 1: Adaptation of t depending on calculated distance, target distance: <1.0 
-		InsertMode = 0;
+		InsertMode = 1;
 
 		while (NodeItem < MaxNumberNodes - 1) {
 
 			//Fix points for Spline interpolation in this refinement segment
-			cout << "NodeItem = " << NodeItem << endl;
+			//cout << "NodeItem = " << NodeItem << endl;
 			CopyNodesToSplineKnots(NodeItem);
 
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(nodes[NodeItem], nodes[NodeItem + 1]);
@@ -65,8 +65,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 						//cout << "Eingefuegter Node #" << i << endl;
 						SplineSegment.CalcInterpolKnot(i * Delta_t);
 						NewNode = GetInterpolKnot();
-						NewNodeItemInsert = nodes.begin() + NodeItem + i;
-						this->nodes.insert(NewNodeItemInsert, NewNode);
+						InsertOneAdditionalNode(NodeItem, i, NewNode);
 					}
 										
 					// Zaehler mit eingefuegten Punkten ergaenzen, "-1", da ohne einfuegen der Zaehler automatisch um 1 erhoeht wird
@@ -83,7 +82,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 					t_current = t_previous + Delta_t;
 					NumberAdditionalNodes = 0;
 
-					while (t_current < 1.0) {
+					while (t_current <= 1.0) {
 						RefinementIterator += 1;
 
 						SplineSegment.CalcInterpolKnot(t_current);
@@ -91,11 +90,13 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 						DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
 
 						if (DistanceTwoNodes > 1.0) {
-							Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
+							//Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
+							Delta_t = Delta_t * 0.9;
 							t_current = t_previous + Delta_t;
 						}
 						else if (DistanceTwoNodes < 0.98){
-							Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
+							//Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
+							Delta_t = Delta_t * 1.05;
 							t_current = t_previous + Delta_t;
 						}
 						else {
@@ -108,54 +109,39 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 							t_previous = t_current;
 							t_current = t_current + Delta_t;
 
-							if (t_current > 1.0) {
-
-								cout << "Grenzfall t_current ist aufgetreten, Iteration: " << RefinementIterator << " NodeItem: "<< NodeItem+NumberAdditionalNodes << endl;
-
+							if (t_current >= 1.0) {
+								//cout << "Grenzfall t_current ist aufgetreten, Iteration: " << RefinementIterator << " NodeItem: "<< NodeItem+NumberAdditionalNodes << endl;
 								SplineSegment.CalcInterpolKnot(1.0);
 								NewNode = GetInterpolKnot();
 								DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
 
 								if (DistanceTwoNodes > 1.0) {
-									cout << "Warnung:  InsertAdditionalNode insert last node....." << endl;										// Error Handling: offen
+									//cout << "Warnung:  InsertAdditionalNode insert last node....." << endl;										// Error Handling: offen
 									t_current = 0.5 * (1.0 + t_previous);
-
+#ifdef DEBUG
 									RefinementIterator += 1;
-
+#endif
 									SplineSegment.CalcInterpolKnot(t_current);
 									NewNode = GetInterpolKnot();
 									DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
-
 									NumberAdditionalNodes += 1;
 									InsertOneAdditionalNode(NodeItem, NumberAdditionalNodes, NewNode);
-
 									break;
-
 								}
 							}
-
 						}
-
-
 					}
-
 					NodeItem += NumberAdditionalNodes;
-
 					break;
-
 				}
-
 			}
 			//Increment NodeItem
 			NodeItem += 1;
 			// Update MaxNumberNodes after insertion
 			MaxNumberNodes = this->nodes.size();
 		}
-
-		cout << "Iteratorwert = " << RefinementIterator << endl;
-
+		//cout << "Iteratorwert = " << RefinementIterator << endl;
 		CalcDistanceToAllNextNode();
-
 	}
 
 
@@ -164,7 +150,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		size_t MaxNumberNodes = this->nodes.size();
 
 		if (NodeItem == 0) {
-			//if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
 			if (this->nodes.front().id == this->nodes.back().id) {
 					// Closed Curve
 				SplineSegment.SplineKnots[0][0] = this->nodes[MaxNumberNodes - 2].longitude;
@@ -186,11 +171,9 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 					SplineSegment.SplineKnots[i][1] = this->nodes[NodeItem - 1 + i].latitude;
 					SplineSegment.SplineKnots[i][2] = this->nodes[NodeItem - 1 + i].elevation;
 				}
-
 			}
 		}
 		else if (NodeItem == (MaxNumberNodes - 2)) {
-			//if (this->nodes[0].id == this->nodes[MaxNumberNodes - 1].id) {
 			if (this->nodes.front().id == this->nodes.back().id) {
 				// Closed Curve
 				for (int i = 0;i < 3;i++) {
@@ -201,7 +184,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 				SplineSegment.SplineKnots[3][0] = this->nodes[1].longitude;
 				SplineSegment.SplineKnots[3][1] = this->nodes[1].latitude;
 				SplineSegment.SplineKnots[3][2] = this->nodes[1].elevation;
-
 			}
 			else {
 				// Open Curve
@@ -239,24 +221,15 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	void DatAuf::CalcDatAuf::InsertOneAdditionalNode(size_t NodeItem, size_t NumberAdditionalNodes, node NewNode) {
 		std::vector<node>::iterator NewNodeItemInsert = this->nodes.begin() + NodeItem + NumberAdditionalNodes;
-		
 		this->nodes.insert(NewNodeItemInsert, NewNode);
 		this->UpdateNodeIDProperty(NodeItem, NumberAdditionalNodes);
-		
-		//this->nodes[NodeItem + NumberAdditionalNodes].id += to_string(NodeItem);
-		//this->nodes[NodeItem + NumberAdditionalNodes].id = this->nodes[NodeItem].id;
-		//this->nodes[NodeItem + NumberAdditionalNodes].id += "_";
-		//this->nodes[NodeItem + NumberAdditionalNodes].id += to_string(NumberAdditionalNodes);
-
 		return;
 	}
 
 	void DatAuf::CalcDatAuf::UpdateNodeIDProperty(size_t NodeItem, size_t NumberAdditionalNodes) {
-		
 		this->nodes[NodeItem + NumberAdditionalNodes].id = this->nodes[NodeItem].id;
 		this->nodes[NodeItem + NumberAdditionalNodes].id += "_";
 		this->nodes[NodeItem + NumberAdditionalNodes].id += to_string(NumberAdditionalNodes);
-
 		return;
 	}
 
@@ -265,6 +238,12 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		size_t NodeItem;
 		for (NodeItem = 0;NodeItem < MaxNumberNodes - 1;NodeItem++) {
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(this->nodes[NodeItem], this->nodes[NodeItem + 1]);
+			if (nodes[NodeItem].distanceToNext >= 1.0) {
+				this->retval = -1;
+#ifdef DEBUG
+				cout << "NodeItem: " << NodeItem << " distance bigger than 1m." << endl;
+#endif
+			}
 		}
 		//Special handling of last vector-element depending on type of circuit
 		if (this->nodes.front().id == this->nodes.back().id) {
@@ -493,11 +472,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		//cout << "DatAuf: CalcGradientPercentage-Funktion wurde aufgerufen." << endl;
 		node NodeCurrent, NodeForward, NodeBackward;
 		size_t MaxNumberNodes = this->nodes.size();
-
-		//this->nodes[index].gradient = index * 3.0;
-
-		//NodeCurrent = GetNode(0);
-
 		if (index == 0) {
 			if (nodes.front().id == nodes.back().id) {
 				// Close
