@@ -8,6 +8,7 @@ AccelerationCalculator is a function which calculates the acceleration for a veh
 #include "Vehicle.h"
 #include "SimulationEnvironment.h"
 #include "../Race.h"
+#include "SimulationNode.h"
 
 namespace Simulation
 {
@@ -16,8 +17,8 @@ namespace Simulation
 	public:
 		AccelerationCalculator(Vehicle* vehicle, SimulationEnvironment* environment);
 		//Calculate acceleration
-		double calcAcceleration(double velocity, node TrackPoint, node NextPoint);
-		double calcDecceleration(double velocity, node TrackPoint, node NextPoint);
+		double calcAcceleration(double velocity, SimulationNode& TrackPoint, SimulationNode& NextPoint);
+		double calcDecceleration(double velocity, SimulationNode& TrackPoint, SimulationNode& NextPoint);
 	private:
 		double calcAirResistance(double velocity, double height);
 		double calcRollingResistance(double velocity);
