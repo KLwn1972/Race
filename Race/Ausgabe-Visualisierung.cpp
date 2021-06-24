@@ -265,14 +265,14 @@ string createNotesKML(vector<node>::iterator it) {
         + "<br>longetude:" + to_string(it->longitude)
         + "<br>latitude:" + to_string(it->latitude)
         + "<br>elevation:" + to_string(it->elevation)
-        + "<br>distanceToNext:" + to_string(it->distanceToNext)
+        + "[m]<br>distanceToNext:" + to_string(it->distanceToNext)
         + "[m]<br>horizontalCurveRadius:" + to_string(it->horizontalCurveRadius)
         + "[m]<br>verticalCurveRadius:" + to_string(it->verticalCurveRadius)
         + "[m]<br>gradient:" + to_string(it->gradient)
         + "[%]<br>speed limit:" + to_string(it->speedLimit)
         + "[m/s]<br>current speed:" + to_string(it->speedIs)
         + "[m/s]<br>race time:" + to_string(it->raceTime)
-        + "[s]]]>";
+        + "[s]\n]]>";
     return notes;
 }
 
