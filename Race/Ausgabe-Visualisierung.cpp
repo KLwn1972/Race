@@ -5,14 +5,9 @@ Team Ausgabe_Visualisierung: Yihao Zhu, Bernhard Lauss
 */
 
 
-#include <iostream>
-#include <vector>
-#include "Race.h"
-#include "tinyxml2.h"
+
 #include "Ausgabe-Visualisierung.h"
-#include <string>
-#include <time.h>
-#include <sstream>
+
 
 using namespace std;
 using namespace tinyxml2;
@@ -20,7 +15,10 @@ using namespace tinyxml2;
 // Mainfunction of ausgabe_visualisierung
 void ausgabe_visualisierung(vector<node>& track, string trackName) {
     XMLError fault_flag_gpx, fault_flag_kml;
+    
     if (track.size() > 1) {
+        
+        //Create Outputfiles with alle nodes
         fault_flag_gpx = output_gpx(track, trackName,0);
         fault_flag_kml = output_kml(track, trackName,0);
         if (fault_flag_gpx != 0)
@@ -30,21 +28,22 @@ void ausgabe_visualisierung(vector<node>& track, string trackName) {
             cout << "Error while creating kml-File. ErrorID: " << fault_flag_kml << endl;
         else cout << "Outputfile: " << trackName << ".kml succesfull created. " << endl;
         
+        //Create Outputfiles with only main nodes
         fault_flag_gpx = output_gpx(track, trackName+"_reduced", 1);
         fault_flag_kml = output_kml(track, trackName+"_reduced", 1);
+       
         if (fault_flag_gpx != 0)
             cout << "Error while creating gpx-File. ErrorID: " << fault_flag_gpx << endl;
         else cout << "Outputfile: " << trackName << "_reduced.gpx succesfull created. " << endl;
         if (fault_flag_kml != 0)
             cout << "Error while creating kml-File. ErrorID: " << fault_flag_kml << endl;
-        else cout << "Outputfile: " << trackName << "_reduced.kml succesfull created. " << endl;
-    
-    
+        else cout << "Outputfile: " << trackName << "_reduced.kml succesfull created. " << endl;   
     }
     else cout << "Vector-Size <2, don't execute ausgabe_visualisierung" << endl;
 }
 
 //Creates the gpx Document of the Racetrack
+//Inputs are a vector of nodes of the Racetrack, the name of the Racetrack and a bool wether only the main nodes should be written into the outputfile
 XMLError output_gpx(vector<node>& track, string trackName, bool reduced_resolution) {
     time_t startTime;
     time(&startTime);
@@ -78,8 +77,6 @@ XMLError output_gpx(vector<node>& track, string trackName, bool reduced_resoluti
     Element_trk->InsertEndChild(pElement2);
     pRoot->InsertEndChild(Element_trk);
     xmlDoc.InsertEndChild(pRoot);
-
-
     XMLError eResult = xmlDoc.SaveFile((trackName + ".gpx").c_str());
     return eResult;
 }
@@ -106,13 +103,13 @@ string timeConversion(double raceTime, time_t startTime) {
     else rawtime = (time_t)raceTime + startTime;
     struct tm timeinfo;
     localtime_s(&timeinfo, &rawtime);
-
     char buffer[21];
     strftime(buffer, 21, "%FT%TZ", &timeinfo);
     return buffer;
 }
 
-//Erstellung KML Ausgabe
+//Create KML Outputfile
+//Inputs are a vector of nodes of the Racetrack, the name of the Racetrack and a bool wether only the main nodes should be written into the outputfile
 XMLError output_kml(vector<node>& track, string trackName, bool reduced_resolution) {
     //modeselector - Select Datatype for coloring the track: 0=elevation 1=horizontalCurveRadius 2=speedLimit 3=speedIs
     int mode_selector = 3;
@@ -213,6 +210,7 @@ string generate_color_code(double act_value, double min_value, double max_value)
     return color_code;
 }
 
+//Funktion creates a Notes_element for a .KML Document
 string createNotesKML(vector<node>::iterator it) {
     string notes = "<![CDATA[<br>node Id:" + it->id
         + "<br>longetude:" + to_string(it->longitude)
@@ -229,6 +227,15 @@ string createNotesKML(vector<node>::iterator it) {
     return notes;
 }
 
+//function returns whether a given node is main node or not
+bool is_main_node(string node_id) {
+    if (node_id.find("_") == string::npos) return 1;
+    else return 0;
+}
+
+
+
+//Helperfunctions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// get min selector
 double get_min_value(vector<node>& in_vector,int selector) {
@@ -284,6 +291,8 @@ double get_act_value(node& in_node, int selector) {
     }
     return act_value;
 }
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// get max/min functions 
 //get max SpeedIs
@@ -421,8 +430,3 @@ double get_min_gradient(vector<node>& in_vector) {
     return min;
 }
 
-//function returns whether a given node is main node or not
-bool is_main_node(string node_id) {
-    if (node_id.find("_") == string::npos) return 1;
-    else return 0;
-}
