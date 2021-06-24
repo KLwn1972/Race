@@ -14,6 +14,7 @@
 #include "Simulation/SimulationEnvironment.h"
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
+#include "Testing.h"
 
 #include "Soll_Fahrtbestimmung.h"
 
@@ -27,15 +28,14 @@ using namespace std;
 
 int main()
 {
+#if 0	
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
-	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
-	//		string nasa_download_zielpfad
-	//		string nasa_download_zielpfad_win
+	// 	   Beschreibung in NASA_constants.h lesen.
 	///////////////////////////////////////////////////////////////////////
-#if 0
+
 	// Herunterladen aller HGT für Deutschland
-	//NASA::NASADataFileHandler filehandle;
+	//NASADataFileHandler filehandle;
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
 
 	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
@@ -48,10 +48,15 @@ int main()
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
 #endif
 
+
 #if 1
 	//////////////////////////////////////////////////////////////////////////
+	//Initialisierung Testing Log
+	ErrorLog elog = ErrorLog();
+
 	// Datenbeschaffungsteam
 	// Sued: route = "38567";
+
 	vector<node> nodes;
 	string route = "38566"; // Nord
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
@@ -91,6 +96,8 @@ int main()
 	SollFahrt->setVehicle(SimulationConfig->getVehicle());
 	SollFahrt->setEnvironment(SimulationConfig->getEnvironment());
 	SollFahrt->SpeedLimit_route(nodes);
+
+	elog.TestSollfahrtbestimmung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	//Fahrphysik

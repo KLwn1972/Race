@@ -160,6 +160,7 @@
     <ClCompile Include="Simulation\Vehicle.cpp" />
     <ClCompile Include="DatAuf_SplineCatmullRom.cpp" />
     <ClCompile Include="Soll_Fahrtbestimmung.cpp" />
+    <ClCompile Include="Testing.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="Simulation\SimulationNode.h" />
     <ClInclude Include="Simulation\Vehicle.h" />
     <ClInclude Include="Soll_Fahrtbestimmung.h" />
+    <ClInclude Include="Testing.h" />
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
