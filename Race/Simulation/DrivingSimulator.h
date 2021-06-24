@@ -37,7 +37,7 @@ namespace Simulation {
 
 		/// <summary>
 		///Interpolationlevel can be set to increase the number of nodes by interpolating linearily
-		///This is not needed if distancetonext <= 1m
+		///This is not needed if distancetonext < 5m
 		/// </summary>
 		/// <param name="level">Number of interpolation points</param>
 		void setInterpolationLevel(unsigned int level);
@@ -46,6 +46,10 @@ namespace Simulation {
 
 		/// <summary>
 		///Create a modified track which contains the simulationNodes
+		///The modified track has two purposes:
+		///1. Use simulationnodes instead of nodes because they can hold extra information
+		///2. Use extra points via linear interpolation if it wanted via InterpolationLevel. The interpolation however is
+		///	  not as precise as e.g. a spline interpolation regarding corners.
 		/// </summary>
 		void createModifiedTrack();
 
