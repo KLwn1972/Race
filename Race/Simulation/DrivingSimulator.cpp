@@ -103,12 +103,13 @@ void Simulation::DrivingSimulator::mapModifiedToRaw()
 void Simulation::DrivingSimulator::calcNewSpeedLimit()
 {
 	for (size_t i = this->modifiedtrack.size() - 1; i > 0; i--) {   //calculate the new limit according to the max Brake from last point;
-		node& currentPos = this->modifiedtrack.at(i);
-		node& previousPos = this->modifiedtrack.at(i - 1);
+		SimulationNode& currentPos = this->modifiedtrack.at(i);
+		SimulationNode& previousPos = this->modifiedtrack.at(i - 1);
 		if (previousPos.speedLimit > currentPos.speedLimit) {   //calculate the brake velocity wenn decceleration
 			double BrakeDecceleration = this->accelerationcalc->calcDecceleration(currentPos.speedLimit, previousPos, currentPos);   //get max decceleration at current point
 			double localDistance = previousPos.distanceToNext;                        //get Distance between local point and previous point
-			double BrakeSpeed = sqrt((currentPos.speedLimit) * (currentPos.speedLimit) - 2 * BrakeDecceleration * localDistance); //calculate the brake Velocity
+			double BrakeSpeedSquared = (currentPos.speedLimit) * (currentPos.speedLimit) - 2 * BrakeDecceleration * localDistance;
+			double BrakeSpeed = sqrt(BrakeSpeedSquared); //calculate the brake Velocity
 			previousPos.speedLimit = min(BrakeSpeed, previousPos.speedLimit);                                                         //get new limit
 		}
 	}
@@ -127,7 +128,11 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 		if (nextPos.speedLimit >= currentPos.speedIs) {
 			double MaxLocalAcceleration = this->accelerationcalc->calcAcceleration(currentPos.speedIs, currentPos, nextPos);                //get amax
 			currentPos.MaxAcceleration = MaxLocalAcceleration;
-			double speed_temp = sqrt((currentPos.speedIs) * (currentPos.speedIs) + 2 * MaxLocalAcceleration * localDistance);               //calculate the velocity at next point with maximal acceleration
+			double speed_tempSquared = (currentPos.speedIs) * (currentPos.speedIs) + 2 * MaxLocalAcceleration * localDistance;
+			if (speed_tempSquared <= 0)
+				break; //Abbruch wenn das Fahrzeug anhält
+			double speed_temp = sqrt(speed_tempSquared);               //calculate the velocity at next point with maximal acceleration
+
 			 // determine the Is-speed and raceTime according to different situation
 			if (speed_temp > nextPos.speedLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
 				nextPos.speedIs = nextPos.speedLimit;

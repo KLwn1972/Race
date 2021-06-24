@@ -5,17 +5,31 @@ Simulation::AccelerationCalculator::AccelerationCalculator(Vehicle* vehicle, Sim
 {
 }
 
-double Simulation::AccelerationCalculator::calcAcceleration(double velocity, node TrackPoint, node NextPoint)
+double Simulation::AccelerationCalculator::calcAcceleration(double velocity, SimulationNode& TrackPoint, SimulationNode& NextPoint)
 {
 	this->vehicledirection = calcVehicledirection(TrackPoint, NextPoint);
 	double TotalInertia = this->vehicle->EngineInertia + this->vehicle->AxleInertia + this->vehicle->WheelInertia;
+	//FOr debug purposes
+	double AirResistance = calcAirResistance(velocity, TrackPoint.elevation);
+	double RollingResistance = calcRollingResistance(TrackPoint.gradient);
+	double GradientResistance = calcGradientResistance(TrackPoint.gradient);
+	TrackPoint.AirResistance = AirResistance;
+	TrackPoint.RollingResistance = RollingResistance;
+	TrackPoint.GradientResistance = GradientResistance;
+
 	return calcEffectiveWheelForceLong(TrackPoint.gradient, velocity, TrackPoint.elevation) / (this->vehicle->Mass + TotalInertia / this->vehicle->calcDynamicWheelRadius());
 }
 
-double Simulation::AccelerationCalculator::calcDecceleration(double velocity, node TrackPoint, node NextPoint)
+double Simulation::AccelerationCalculator::calcDecceleration(double velocity, SimulationNode& TrackPoint, SimulationNode& NextPoint)
 {
 	this->vehicledirection = calcVehicledirection(TrackPoint, NextPoint);
-	double SumResistance = calcAirResistance(velocity, TrackPoint.elevation) + calcRollingResistance(TrackPoint.gradient) + calcGradientResistance(TrackPoint.gradient);
+	double AirResistance = calcAirResistance(velocity, TrackPoint.elevation);
+	double RollingResistance = calcRollingResistance(TrackPoint.gradient);
+	double GradientResistance = calcGradientResistance(TrackPoint.gradient);
+	TrackPoint.AirResistance = AirResistance;
+	TrackPoint.RollingResistance = RollingResistance;
+	TrackPoint.GradientResistance = GradientResistance;
+	double SumResistance = AirResistance + RollingResistance + GradientResistance;
 	double effectDeccelerationForce = -SumResistance - this->vehicle->DeccelerationMax * this->vehicle->Mass;
 	double decceleration = effectDeccelerationForce / (this->vehicle->Mass + (this->vehicle->EngineInertia + this->vehicle->AxleInertia + this->vehicle->WheelInertia) / this->vehicle->calcDynamicWheelRadius());
 	return decceleration;

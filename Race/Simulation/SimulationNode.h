@@ -15,6 +15,10 @@ namespace Simulation
 	class SimulationNode :public node {
 	public:
 		double MaxAcceleration = nan("");
+		double AirResistance = nan("");
+		double GradientResistance = nan("");
+		double RollingResistance = nan("");
+
 		size_t PositionInStartVector = INT32_MAX;
 		SimulationNode();
 		SimulationNode(node input);
