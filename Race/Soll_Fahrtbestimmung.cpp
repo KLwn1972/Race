@@ -1,3 +1,9 @@
+/************************************************************************************************
+Projekt 2
+Aufgabe 5: Soll_Fahrtbestimmung
+Francesco Fusiello, Verena Fuchs und Daniel Kucher
+************************************************************************************************/
+
 #include "Soll_Fahrtbestimmung.h"
 #include <map>
 #include <string>

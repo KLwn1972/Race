@@ -1,3 +1,9 @@
+/************************************************************************************************
+Projekt 2
+Aufgabe 5: Soll_Fahrtbestimmung
+Francesco Fusiello, Verena Fuchs und Daniel Kucher
+************************************************************************************************/
+
 #pragma once
 #include <vector>
 #include <map>
