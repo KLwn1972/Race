@@ -59,7 +59,7 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 		if (i > 0 && this->InterpolationLevel > 0)
 		{
 			double DistanceOldNew = oldStepSimNode.distanceToNext;
-			double DistanceBetweenPoints = DistanceOldNew / (this->InterpolationLevel + 1);
+			double DistanceBetweenPoints = DistanceOldNew / (this->InterpolationLevel + 1.0);
 			newTrack.at(i - 1).distanceToNext = DistanceBetweenPoints;
 			for (unsigned int j = 1; j <= this->InterpolationLevel; j++)
 			{
@@ -134,14 +134,8 @@ void Simulation::DrivingSimulator::calcIsSpeedandTime()
 			double speed_temp = sqrt(speed_tempSquared);               //calculate the velocity at next point with maximal acceleration
 
 			 // determine the Is-speed and raceTime according to different situation
-			if (speed_temp > nextPos.speedLimit) {                                         // Velocity with max acceleration larger than the SpeedLimit: IsSpeed korrigieren
-				nextPos.speedIs = nextPos.speedLimit;
-				nextPos.raceTime = currentPos.raceTime + calcRaceTimeBetweenTwoPointsWithDifferentAccleration(MaxLocalAcceleration, currentPos.speedIs, nextPos.speedIs, localDistance);
-			}
-			else {                                                                                             //Velocity with max acceleration <= the SpeedLimit: IsSpeed = Velocity with max acceleration
-				nextPos.speedIs = speed_temp;
-				nextPos.raceTime = currentPos.raceTime + 2 * localDistance / (currentPos.speedIs + nextPos.speedIs);
-			}
+			nextPos.speedIs = min(speed_temp, nextPos.speedLimit);
+			nextPos.raceTime = currentPos.raceTime + 2 * localDistance / (currentPos.speedIs + nextPos.speedIs);
 		}
 		//decceleration
 		else {
