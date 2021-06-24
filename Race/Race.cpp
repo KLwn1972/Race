@@ -105,15 +105,6 @@ int main()
 	SollFahrt->setEnvironment(SimulationConfig->getEnvironment());
 	SollFahrt->SpeedLimit_route(nodes);
 
-	/*vector<node> testnodes;
-	for (double itest = 0; itest < 11;itest++) {
-		node testnodes2add;
-		testnodes2add.speedLimit = 5;
-		testnodes2add.speedIs = itest;
-		testnodes.push_back(testnodes2add);
-		cout << testnodes[itest].speedIs;
-	}*/
-
 	elog.TestSollfahrtbestimmung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////

@@ -39,7 +39,7 @@ void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 	Test2add.Ergebnisse = "Passed";
 	size_t Sizevektor = nodes.size();
 	while (index < Sizevektor - 1) {
-		if (nodes[index].gradient > NeunzigGradSteigung) { //89° in %
+	if (nodes[index].gradient > NeunzigGradSteigung) { //89° in %
 			Test2add.Ergebnisse = "Failed";
 		}
 		index++;
@@ -127,8 +127,21 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 	Test2add.Aufgabe = "Fahrphysik";
 	Test2add.Testname = "GeschwindigkeitStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	if (nodes[1].speedIs != 0) { //
+	if (nodes[1].speedIs != 0) { 
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
+	/*int index = 0;
+	Testing Test2add;
+	Test2add.Aufgabe = "Fahrphysik";
+	Test2add.Testname = "KeinNaNmehr";
+	Test2add.Ergebnisse = "Passed";
+	size_t Sizevektor = nodes.size();
+	while (index < Sizevektor - 1) {
+		if (nodes[index].speedIs > nodes[index].speedLimit) {
+			Test2add.Ergebnisse = "Failed";
+		}
+		index++;
+	}
+	Testvektor.push_back(Test2add);*/
 }
