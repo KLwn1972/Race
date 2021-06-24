@@ -41,6 +41,10 @@ double Simulation::Vehicle::calcDynamicWheelRadius()
 	return ((calcStaticWheelDiameter()) * 0.97 / (2));
 }
 
+double Simulation::Vehicle::calcWheelspeed(double EngineSpeed) {
+	return ((EngineSpeed * 2 * PI * calcDynamicWheelRadius()) / (this->FinalDriveRatio)); //For ICE additional current GearRatio have to be divided
+}
+
 Vehicle* Simulation::ExampleElectricVehicle()
 {
 	Vehicle* result = new Vehicle();

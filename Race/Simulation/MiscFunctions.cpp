@@ -13,6 +13,7 @@ void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 	else {
 		exportFile.imbue(std::locale("de")); //Set the locale to get commas in the exportfile
 		exportFile << "lat;" << "long;" << "elevation;" << "gradient;" << "distance;" << "racetime;" << "speedIs;" << "speedLimit;" << "MaxAcceleration;";
+		exportFile << "AirResistance;" << "RollingResistance;" << "GradientResistance;";
 		exportFile << "\n";
 		double distance = 0 - input.at(0).distanceToNext;
 		for (auto& currentnode : input) {
@@ -26,6 +27,10 @@ void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 			exportFile << currentnode.speedIs * MS2KMH << ";";
 			exportFile << currentnode.speedLimit * MS2KMH << ";";
 			exportFile << currentnode.MaxAcceleration << ";";
+			exportFile << currentnode.AirResistance << ";";
+			exportFile << currentnode.RollingResistance << ";";
+			exportFile << currentnode.GradientResistance << ";";
+
 			exportFile << "\n";
 		}
 		exportFile.close();

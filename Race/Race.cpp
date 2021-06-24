@@ -27,9 +27,6 @@ using namespace std;
 
 int main()
 {
-
-	 
-
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
 	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
@@ -73,13 +70,16 @@ int main()
 	if (nodes.size() > 4) {
 		DatAuf::CalcDatAuf DatAuf_Nord;
 		DatAuf_Nord.nodes = nodes;
-		DatAuf_Nord.DataProcessing();
-		//return-Wert einfuegen
-		//return -1;
+		retval=DatAuf_Nord.DataProcessing();
 		nodes = DatAuf_Nord.nodes;
+		retval = 0;  // Asure running of program version
+		if (retval != 0) {
+			// Fehler Datenaufbereitung
+			return -1;
+		}
 	}
 	else {
-		// Fehler mindestans vier Nodes
+		// Fehler weniger wie 4 Nodes
 		return -1;
 	}
 
@@ -151,8 +151,9 @@ int main()
 
 	Drivingsim->setInterpolationLevel(10);
 	nodes = Drivingsim->RunSimulation();
-	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_4_Straight_Speed.csv");
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_10_Straight_Speed.csv");
 
+	nodes = ExampleHillTrack();
 	auto SimulationConfigSmart = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_SMARTe.json");
 	Simulation::DrivingSimulator* DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfigSmart);
 	DrivingsimSmart->setInterpolationLevel(0);
