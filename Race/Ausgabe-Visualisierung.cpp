@@ -162,10 +162,10 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
         coordinates += to_string(it->longitude) + ","
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
-        it++;
-        while (!is_main_node(it->id)&&reduced_resolution) {
+        do
+        {
             it++;
-        }
+        } while (!is_main_node(it->id) && reduced_resolution);
         coordinates += to_string(it->longitude) + ","
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
