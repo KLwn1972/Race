@@ -3,6 +3,34 @@
 #include <string>
 #include <vector>
 
+//Parameter Nordschleife
+
+double MinRadiusTest = 33; //[m]
+double MinGradientTest = -11; //[%]
+double MaxGradientTest = 18; //[%]
+double NeunzigGradSteigung = 5728; //[%] 89° da 90° undefiniert
+string IDStartpunkt = "6535972824";
+double LatitudeStartPunkt = 50.3451467;
+double LongitudeStartPunkt = 6.9264464;
+
+void ErrorLog::TestDatenbeschaffung(vector<node>& nodes) {
+	Testing Test2add;
+	Test2add.Aufgabe = "Datenbeschaffung";
+	Test2add.Testname = "IdStartPunkt";
+	Test2add.Ergebnisse = "Passed";
+		if (nodes[1].id != IDStartpunkt) { //
+			Test2add.Ergebnisse = "Failed";
+		}
+	Testvektor.push_back(Test2add);
+	Test2add.Aufgabe = "Datenbeschaffung";
+	Test2add.Testname = "KoordinatenStartPunkt";
+	Test2add.Ergebnisse = "Passed";
+	if (nodes[1].latitude != LatitudeStartPunkt || nodes[1].longitude != LongitudeStartPunkt) { 
+		Test2add.Ergebnisse = "Failed";
+	}
+	Testvektor.push_back(Test2add);
+}
+
 void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 	int index = 0;
 	Testing Test2add;
@@ -11,7 +39,7 @@ void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 	Test2add.Ergebnisse = "Passed";
 	size_t Sizevektor = nodes.size();
 	while (index < Sizevektor - 1) {
-		if (nodes[index].gradient > 90) {
+		if (nodes[index].gradient > NeunzigGradSteigung) { //89° in %
 			Test2add.Ergebnisse = "Failed";
 		}
 		index++;
@@ -22,7 +50,7 @@ void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 	Test2add.Ergebnisse = "Passed";
 	index = 0;
 	while (index < Sizevektor - 1) {
-		if (nodes[index].gradient > 18 || nodes[index].gradient < -11) {
+		if (nodes[index].gradient > MaxGradientTest || nodes[index].gradient < MinGradientTest) { //Werte für Nordschleife
 			Test2add.Ergebnisse = "Failed";
 		}
 		index++;
@@ -33,7 +61,7 @@ void ErrorLog::TestDatenAufbereitung(vector<node>& nodes) {
 	Test2add.Ergebnisse = "Passed";
 	index = 0;
 	while (index < Sizevektor - 1) {
-		if (nodes[index].horizontalCurveRadius < 1) {
+		if (nodes[index].horizontalCurveRadius < MinRadiusTest) {  //Angabe für Nordschleife ist >=33m
 			Test2add.Ergebnisse = "Failed";
 		}
 		index++;
@@ -77,16 +105,30 @@ void ErrorLog::TestSollfahrtbestimmung(vector<node>& nodes) {
 		index++;
 	}
 	Testvektor.push_back(Test2add);
-	index = 0;
-	/*Testing Test2add;
-	Test2add.Aufgabe = "Sollfahrtbestimmung";
-	Test2add.Testname = "alle NaN Ersetzt";
+}
+
+void ErrorLog::TestFahrphysik(vector<node>& nodes) {
+	Testing Test2add;
+	Test2add.Aufgabe = "Fahrphysik";
+	Test2add.Testname = "IdStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	while (index < Sizevektor - 1) {
-		if (nodes[index].speedIs==nan ) {
-			Test2add.Ergebnisse = "Failed";
-		}
-		index++;
+	if (nodes[1].id != IDStartpunkt) { //
+		Test2add.Ergebnisse = "Failed";
 	}
-	Testvektor.push_back(Test2add);*/
+	Testvektor.push_back(Test2add);
+	Test2add.Aufgabe = "Fahrphysik";
+	Test2add.Testname = "KoordinatenStartPunkt";
+	Test2add.Ergebnisse = "Passed";
+	if (nodes[1].latitude != LatitudeStartPunkt || nodes[1].longitude != LongitudeStartPunkt) {
+		Test2add.Ergebnisse = "Failed";
+	}
+	Testvektor.push_back(Test2add);
+	Testing Test2add;
+	Test2add.Aufgabe = "Fahrphysik";
+	Test2add.Testname = "GeschwindigkeitStartPunkt";
+	Test2add.Ergebnisse = "Passed";
+	if (nodes[1].speedIs != 0) { //
+		Test2add.Ergebnisse = "Failed";
+	}
+	Testvektor.push_back(Test2add);
 }

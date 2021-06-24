@@ -73,6 +73,7 @@ int main()
 		// Fehler download
 		return -1;
 	}
+	elog.TestDatenbeschaffung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	// DATENAUFBEREITUNG
@@ -93,7 +94,7 @@ int main()
 	}
 
 	elog.TestDatenAufbereitung(nodes);
-
+	
 	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
 	auto SimulationConfig = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
 
@@ -104,6 +105,15 @@ int main()
 	SollFahrt->setEnvironment(SimulationConfig->getEnvironment());
 	SollFahrt->SpeedLimit_route(nodes);
 
+	/*vector<node> testnodes;
+	for (double itest = 0; itest < 11;itest++) {
+		node testnodes2add;
+		testnodes2add.speedLimit = 5;
+		testnodes2add.speedIs = itest;
+		testnodes.push_back(testnodes2add);
+		cout << testnodes[itest].speedIs;
+	}*/
+
 	elog.TestSollfahrtbestimmung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
@@ -113,14 +123,21 @@ int main()
 	nodes = Drivingsim->RunSimulation();
 	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresult.csv");
 
+	elog.TestFahrphysik(nodes);
+
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
 	ausgabe_visualisierung(nodes, "Nordschleife");
 
-	ofstream outputfile("ErrorLog.txt");
-	for (int i = 0; i < 10; i++) {
-		outputfile << elog.Testvektor[i].Aufgabe << elog.Testvektor[i].Testname << elog.Testvektor[i].Ergebnisse << "\n";
+	//Ausgabe Testlog
+	size_t Sizetestvektor = elog.Testvektor.size();
+	ofstream outputfile;
+	outputfile.open("ErrorLog.txt");
+	for (int i = 0; i < Sizetestvektor; i++) {
+		outputfile << elog.Testvektor[i].Aufgabe << "," << "\t" << elog.Testvektor[i].Testname << "," << "\t" << elog.Testvektor[i].Ergebnisse << "\n";
 	}
+	outputfile.close();
+
 
 #endif
 
