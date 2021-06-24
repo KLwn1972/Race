@@ -1,3 +1,10 @@
+/*
+* Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
+* Zweck der Datei: Implementierung der Umrechnungsroutinenen für Koordinaten.
+* Funktionen werden in den Download- /Auslese-Routinen verwendet --> Dateiname und Position des Datensatzes.
+*/
+
+
 #include "NASA_GeoCoordConversion.h"
 #include "NASA_constants.h"
 #include"../Race.h"

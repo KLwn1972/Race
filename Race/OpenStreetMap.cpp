@@ -60,10 +60,8 @@ int OpenStreetMap::GetNodesFromOSM(){
 				node2add.id = node_id;
 				node2add.latitude = coordinates[0];
 				node2add.longitude = coordinates[1];
-				//ElevationCalculator EvalCalc;
-				//node2add.elevation = EvalCalc.getElevationFromSRTM_SIRCdata(coordinates[0], coordinates[1]);
-				//Nutzung als Klassenfunktion und in Aufruf Longitude / Latitude vertauscht --> Richtige Koordinatenreihen in OSM prüfen
-				node2add.elevation =  HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(coordinates[1], coordinates[0]);
+				// Get elevation
+				node2add.elevation =  HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(node2add.longitude, node2add.latitude);
 				this->nodes.push_back(node2add);
 				lastNode = node_id;
 			}
@@ -111,7 +109,7 @@ vector<double> OpenStreetMap::GetCoordinates(string FileName) {
 	vector<double> coordinates;
 	cJSON* json_struct_complete = this->JSON_ReadFileToStructur(FileName);
 	if (json_struct_complete != NULL) {
-		cJSON* elements = cJSON_GetObjectItemCaseSensitive(json_struct_complete, "elements"); //elements: Array elements
+		cJSON* elements = cJSON_GetObjectItemCaseSensitive(json_struct_complete, "elements");
 		cJSON* jsonobject = elements->child;
 		cJSON* latitude = cJSON_GetObjectItemCaseSensitive(jsonobject, "lat");
 		cJSON* longitude = cJSON_GetObjectItemCaseSensitive(jsonobject, "lon");

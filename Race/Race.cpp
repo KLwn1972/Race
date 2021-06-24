@@ -15,7 +15,7 @@
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
 #include "Testing.h"
-
+#include <fstream>
 #include "Soll_Fahrtbestimmung.h"
 
 #include "DatAuf.h"
@@ -28,15 +28,14 @@ using namespace std;
 
 int main()
 {
+#if 0	
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
-	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
-	//		string nasa_download_zielpfad
-	//		string nasa_download_zielpfad_win
+	// 	   Beschreibung in NASA_constants.h lesen.
 	///////////////////////////////////////////////////////////////////////
-#if 0
+
 	// Herunterladen aller HGT für Deutschland
-	//NASA::NASADataFileHandler filehandle;
+	//NASADataFileHandler filehandle;
 	//filehandle.downloadElevationDataofGermany_NASA_SIRC();
 
 	//Einfaches Auslesen von Hoeheninformation zu Longitude / Latitude
@@ -49,25 +48,41 @@ int main()
 	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;
 #endif
 
+
 #if 1
 	//////////////////////////////////////////////////////////////////////////
 	//Initialisierung Testing Log
 	ErrorLog elog = ErrorLog();
+	Testing Inittest;
+	Inittest.Aufgabe = "Aufgabe";
+	Inittest.Testname = "Testname";
+	Inittest.Ergebnisse = "Ergebnisse";
+	elog.Testvektor.push_back(Inittest);
 
-	// Datenbeschaffungsteam
-	// Sued: route = "38567";
-
-	vector<node> nodes;
-	string route = "38566"; // Nord
+	//////////////////////////////////////////////////////////////////////////
+	/* Datenbeschaffung OpenStreetMap
+		Route: Eine beliebige Route
+		Nord: route = "38566" -> waysOffset = 3
+		Sued: route = "38567"
+		Gesamt: route = "Nuerburgring_nord_sued" -> Einfach die Datei in %temp% kopieren
+	*/
+	vector<node> nodes; // Alle Knoten von Route
+	string route = "38566"; // Nord Ring
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
-	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
+	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrassen): Nur fuer die route "38566".
+	std::cout << "Start Download the route " << route << ": " << endl;
 	int retval = OSM_Nord->GetNodesFromOSM();
-	nodes = OSM_Nord->nodes;
-	delete OSM_Nord;
 	if (retval != 0) {
-		// Fehler download
+		std::cout << endl << "#####ERROR: The download failed!!!" << endl;
 		return -1;
 	}
+
+	std::cout << endl << "The download was successful." << endl;
+	nodes = OSM_Nord->nodes;
+	delete OSM_Nord;
+	OSM_Nord = nullptr;
+  
+  elog.TestDatenbeschaffung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	// DATENAUFBEREITUNG
@@ -84,6 +99,8 @@ int main()
 		return -1;    // Fehler weniger wie 4 Nodes
 	}
 
+	elog.TestDatenAufbereitung(nodes);
+	
 	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
 	auto SimulationConfig = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
 
@@ -103,9 +120,21 @@ int main()
 	nodes = Drivingsim->RunSimulation();
 	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresult.csv");
 
+	elog.TestFahrphysik(nodes);
+
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
 	ausgabe_visualisierung(nodes, "Nordschleife");
+
+	//Ausgabe Testlog
+	size_t Sizetestvektor = elog.Testvektor.size();
+	ofstream outputfile;
+	outputfile.open("ErrorLog.txt");
+	for (int i = 0; i < Sizetestvektor; i++) {
+		outputfile << elog.Testvektor[i].Aufgabe << "," << "\t" << elog.Testvektor[i].Testname << "," << "\t" << elog.Testvektor[i].Ergebnisse << "\n";
+	}
+	outputfile.close();
+
 
 #endif
 
@@ -177,7 +206,7 @@ int main()
 	nodes.at(nodes.size() / 2).speedLimit = 1;
 	nodes.at(nodes.size() / 3).speedLimit = 1;
 
-	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfigSmart);
 	nodes = DrivingsimSmart->RunSimulation();
 	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_0_Straight_Speed.csv");
 
