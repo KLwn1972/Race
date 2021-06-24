@@ -2,6 +2,7 @@
 //
 
 #include<stdio.h>
+#include <string>
 #include "Race.h"
 #include "OpenStreetMap.h"
 #include "Ausgabe-Visualisierung.h"
@@ -26,6 +27,9 @@ using namespace std;
 
 int main()
 {
+
+	 
+
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
 	// 	   Vor Nutzung in NASA_constants.h anpassen: Pfade fuer Download
@@ -44,12 +48,8 @@ int main()
 
 	double long_nuerburgringstart = 6.966279;
 	double lat_nuerburgringstart = 50.346094;
-	//cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
+	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl ;
 #endif
-
-
-
-
 
 
 #if 1
