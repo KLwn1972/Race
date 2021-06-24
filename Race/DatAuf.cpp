@@ -10,20 +10,19 @@ using namespace std;
 
 
 
-int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
+int DatAuf::CalcDatAuf::DataProcessing() {
 	//GetTestData();
 	// Check and insert additional knots if necessary
 	cout << "DatAuf: Insert nodes..." << endl;
 	this->InsertAdditionalNodes();
-	cout << "DatAuf: Done.." << endl;
-	cout << "DatAuf: Calculation of vertical and horizontal radius and gradient..." << endl;
+	cout << "DatAuf: Done." << endl;
 	// Calculate Data for SOLL-Fahrtbestimmmung 
+	cout << "DatAuf: Calculation of vertical and horizontal radius and gradient..." << endl;
 	this->CalcRadiusGradientData();
 	cout << "DatAuf: Done." << endl;
 
 	return this->retval;
 	}
-
 
 	void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
 		//cout << "DatAuf: InsertAdditionalNodes aufgerufen" << endl;
@@ -46,15 +45,12 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		InsertMode = 1;
 
 		while (NodeItem < MaxNumberNodes - 1) {
-
 			//Fix points for Spline interpolation in this refinement segment
 			//cout << "NodeItem = " << NodeItem << endl;
 			CopyNodesToSplineKnots(NodeItem);
 
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(nodes[NodeItem], nodes[NodeItem + 1]);
-
-			if (nodes[NodeItem].distanceToNext > 1.0) {
-				
+			if (nodes[NodeItem].distanceToNext > 1.0) {				
 				switch (InsertMode) {
 				case 0:
 					NumberAdditionalNodes = int(nodes[NodeItem].distanceToNext);
@@ -70,9 +66,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 										
 					// Zaehler mit eingefuegten Punkten ergaenzen, "-1", da ohne einfuegen der Zaehler automatisch um 1 erhoeht wird
 					NodeItem += NumberAdditionalNodes-1;
-
 					break;
-
 				case 1:
 					Delta_t = 1.0 / int(nodes[NodeItem].distanceToNext);
 
@@ -90,13 +84,11 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 						DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
 
 						if (DistanceTwoNodes > 1.0) {
-							//Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
-							Delta_t = Delta_t * 0.9;
+							Delta_t = Delta_t *0.9;
 							t_current = t_previous + Delta_t;
 						}
 						else if (DistanceTwoNodes < 0.98){
-							//Delta_t = Delta_t / (DistanceTwoNodes * 1.01);
-							Delta_t = Delta_t * 1.05;
+							Delta_t = Delta_t *1.05;
 							t_current = t_previous + Delta_t;
 						}
 						else {
@@ -118,9 +110,9 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 								if (DistanceTwoNodes > 1.0) {
 									//cout << "Warnung:  InsertAdditionalNode insert last node....." << endl;										// Error Handling: offen
 									t_current = 0.5 * (1.0 + t_previous);
-#ifdef DEBUG
+
 									RefinementIterator += 1;
-#endif
+
 									SplineSegment.CalcInterpolKnot(t_current);
 									NewNode = GetInterpolKnot();
 									DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
@@ -142,6 +134,9 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		}
 		//cout << "Iteratorwert = " << RefinementIterator << endl;
 		CalcDistanceToAllNextNode();
+		if (this->retval==-1) {
+			 cout<< "Fehler: Distance larger than 1 meter." << endl;
+		}
 	}
 
 
@@ -205,7 +200,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 				SplineSegment.SplineKnots[i][2] = this->nodes[NodeItem - 1 + i].elevation;
 			}
 		}
-		return;
 	}
 
 
@@ -223,14 +217,12 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		std::vector<node>::iterator NewNodeItemInsert = this->nodes.begin() + NodeItem + NumberAdditionalNodes;
 		this->nodes.insert(NewNodeItemInsert, NewNode);
 		this->UpdateNodeIDProperty(NodeItem, NumberAdditionalNodes);
-		return;
 	}
 
 	void DatAuf::CalcDatAuf::UpdateNodeIDProperty(size_t NodeItem, size_t NumberAdditionalNodes) {
 		this->nodes[NodeItem + NumberAdditionalNodes].id = this->nodes[NodeItem].id;
 		this->nodes[NodeItem + NumberAdditionalNodes].id += "_";
 		this->nodes[NodeItem + NumberAdditionalNodes].id += to_string(NumberAdditionalNodes);
-		return;
 	}
 
 	void DatAuf::CalcDatAuf::CalcDistanceToAllNextNode() {
@@ -239,7 +231,8 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		for (NodeItem = 0;NodeItem < MaxNumberNodes - 1;NodeItem++) {
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(this->nodes[NodeItem], this->nodes[NodeItem + 1]);
 			if (nodes[NodeItem].distanceToNext >= 1.0) {
-				this->retval = -1;
+				// Commented out to asure running version until insertion is solved.
+				//this->retval = -1;
 #ifdef DEBUG
 				cout << "NodeItem: " << NodeItem << " distance bigger than 1m." << endl;
 #endif
@@ -252,48 +245,25 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		else {
 			nodes.back().distanceToNext = 0.0;
 		}
-
-		return;
 	}
 
 	void DatAuf::CalcDatAuf::CalcRadiusGradientData() {
-
 		size_t MaxNumberNodes = this->nodes.size();
-
 		for (int index = 0; index < MaxNumberNodes; index++) {
-
 			this->CalcHorizontalCurveRad(index);
 			this->CalcVerticalCurveRad(index);
 			this->CalcGradientPercentage(index);
-
 		}
-
-		//cout << "DatAuf: CalcRadiusGradientData-Funktion wurde aufgerufen." << endl;
-
-		return;
 	}
-
-	
-	double DatAuf::CalcDatAuf::Get1Coordinate(int index) {		//entfernen?
-		// Dummy-Funktion
-		vector<double> oneNode;
-		oneNode.push_back(nodes[index].longitude);
-		oneNode.push_back(nodes[index].latitude);
-		oneNode.push_back(nodes[index].elevation);
-		cout << "DatAuf: GetCoordinates-Funktion wurde aufgerufen." << endl;
-		return 2;
-	}
-
 
 	double DatAuf::CalcDatAuf::GetDistanceMeters2D(node node1, node node2) {
 		double distance2D;
 		if (node1.latitude == node2.latitude && node1.longitude == node2.longitude) {
 			distance2D = 0;
 		}
-		else {
-			
+		else {			
 			double earth_flattening = 1 / 298.257223563;
-			double equatorial_radius_km = 6378.137;		//  get Hoehe von erstem Knoten:+ nodes[0].elevation: Hoehen-Levelkorrektur?
+			double equatorial_radius_km = 6378.137;
 
 			// intermediary values: 
 			double F = deg2rad((node1.latitude + node2.latitude) / 2);
@@ -321,7 +291,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		else {
 		CalcDatAuf TwoNodes;
 		double distance2D = TwoNodes.GetDistanceMeters2D(node1, node2);
-		double DiffElevation = (node2.elevation - node1.elevation);
+		double DiffElevation = floor((node2.elevation - node1.elevation) * 10E6 + .5) / 10E6;
 		distance3D = sqrt(distance2D * distance2D + DiffElevation * DiffElevation);
 		}
 		return distance3D;
@@ -330,22 +300,23 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(size_t index) {
 		double radiusIndex = 0;
-		double maxRadius = 10E9;
+		double maxRadius = 10E6;
 		double minRadius = 10E-6;
 		
-		// define Index for 3 points																	// Prüfen was an Rändern passiert
+		// define Index for 3 points														// Prüfen was an Rändern passiert
 		size_t MaxIndexNodes = this->nodes.size() - 1;
 		size_t preIndex = index - 1;
 		size_t postIndex = index + 1;
 
 		bool loop = this->isLoop();
 
-		if (loop) {																			// Bedingung: Letzter Knoten ist gleich erster Knoten -> ueberpruefen im OSM_Nord!
-			if (index == 0) { preIndex = MaxIndexNodes - 1; }
-			if (index == MaxIndexNodes) { postIndex = 1; }
-		}																					// else nach if?
-
-		if (!loop && (index == 0 || index == MaxIndexNodes)) { // no loop & starting condition
+		if (loop && (index == 0)) {
+			 preIndex = MaxIndexNodes - 1; 
+		}
+		else if(loop && (index == MaxIndexNodes)){
+			postIndex = 1;
+		}																		
+		else if (!loop && (index == 0 || index == MaxIndexNodes)) { 
 			radiusIndex = maxRadius;
 		}
 		else {
@@ -372,19 +343,24 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 			double alpha = alpha1 + alpha2;
 			double MulPrePost = dis_PrePoint * dis_PostPoint * cos(alpha);
 
-			double denominator = (dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost);
-			if (denominator > 0 || denominator < 0) {
+			double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;
+			double nominator = floor((dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;
+			if ((denominator > 0 && nominator > 0) || (denominator < 0 && nominator < 0)) {
 				// radius at Index
-				radiusIndex = 0.5 * sqrt(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / (dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost));
+				radiusIndex = 0.5 * sqrt(nominator / denominator);
 
 				// limitations
 				if (radiusIndex < minRadius) {
 					this->nodes[index].horizontalCurveRadius = minRadius;
-					cout << "Warning: horizontal radius is smaller than "<< minRadius <<". Node: " << index << endl;										// Error Handling: offen
+					//#ifdef DEBUG
+					cout << "Warning: horizontal radius is smaller than " << minRadius << ". Node: " << index << endl;
+					//#endif
 				}
 				else if (radiusIndex > maxRadius) {
 					this->nodes[index].horizontalCurveRadius = maxRadius;
+					//#ifdef DEBUG
 					cout << "Warning: horizontal radius is larger than " << maxRadius << ". Node: " << index << endl;
+					//#endif
 				}
 				else {
 					this->nodes[index].horizontalCurveRadius = radiusIndex;
@@ -397,6 +373,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 			// error
 			if (this->nodes[index].horizontalCurveRadius == nan("")) {
 				cout << "Error: Calculation of horizontal radius failed. Node: " << index << endl;
+				this->retval = -1;
 			}
 		}
 	}
@@ -404,51 +381,55 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 
 	void DatAuf::CalcDatAuf::CalcVerticalCurveRad(size_t index) {
 		double radiusIndex = 0;
-		double maxRadius = 10E9;
+		double maxRadius = 10E6;
 		double minRadius = 10E-6;
-		// define Index for 3 points														// Prüfen was an Rändern passiert
+		// define Index for 3 points
 		size_t MaxIndexNodes = this->nodes.size() - 1;
-		size_t preIndex = index - 1;//-1
+		size_t preIndex = index - 1;
 		size_t postIndex = index + 1;
 
-		bool loop = this->isLoop();															// bool wird jedes mal aufgerufen?!
-
-		if (loop) {																			// Bedingung: Letzter Knoten ist gleich erster Knoten -> ueberpruefen im OSM_Nord!
-			if (index == 0) { preIndex = MaxIndexNodes - 1; }
-			if (index == MaxIndexNodes) { postIndex = 1; }
+		bool loop = this->isLoop();
+		if (loop && index == 0) {
+			preIndex = MaxIndexNodes - 1; 
 		}
-
-		if (!loop && (index == 0 || index == MaxIndexNodes)) { // no loop & starting condition
+		else if (loop && index == MaxIndexNodes) {
+			postIndex = 1; 
+		}
+		else if (!loop && (index == 0 || index == MaxIndexNodes)) {
 			radiusIndex = maxRadius;
 		}
 		else {
 			// get distances and temporary help values
-			double diff_PrePointX = (0 - nodes[preIndex].distanceToNext);
-			double diff_PrePointY = (nodes[preIndex].elevation - nodes[index].elevation);
+			double diff_PrePointX = floor((0 - nodes[preIndex].distanceToNext) * maxRadius + .5) / maxRadius;
+			double diff_PrePointY = floor((nodes[preIndex].elevation - nodes[index].elevation) * maxRadius + .5) / maxRadius;
 			double dis_PrePointSq = diff_PrePointX * diff_PrePointX + diff_PrePointY * diff_PrePointY;
 
-			double diff_PostPointX = (nodes[preIndex].distanceToNext + nodes[index].distanceToNext) - nodes[preIndex].distanceToNext;
-			double diff_PostPointY = (nodes[postIndex].elevation - nodes[index].elevation);
+			double diff_PostPointX = floor(((nodes[preIndex].distanceToNext + nodes[index].distanceToNext) - nodes[preIndex].distanceToNext)* maxRadius + .5) / maxRadius;
+			double diff_PostPointY = floor((nodes[postIndex].elevation - nodes[index].elevation) * maxRadius + .5) / maxRadius;
 			double dis_PostPointSq = diff_PostPointX * diff_PostPointX + diff_PostPointY * diff_PostPointY;
 
 			double MulPrePost = diff_PrePointX * diff_PostPointX + diff_PrePointY * diff_PostPointY;
 
-			double denominator = (dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost);
-
-			if (denominator > 0 || denominator < 0) {
-				// radius at Index
-				radiusIndex = 0.5 * sqrt(abs(dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost) / denominator));
+			double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;
+			double nominator = floor((dis_PrePointSq * dis_PostPointSq*(dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;
+			if ((denominator > 0 && nominator >0) || (denominator < 0 && nominator < 0)) {
+				// radius at Index	
+				radiusIndex = 0.5 * sqrt((nominator / denominator));
 			
-				// limitations	-> tertiärer Operator?			
+				// limitations	
 				if (radiusIndex < minRadius) {
+					//#ifdef DEBUG
 					cout << "Warning: vertical radius is smaller than " << minRadius << ". Node: " << index << endl;
+					//#endif
 					radiusIndex = minRadius;
-					// Error Handling: offen
 				}
 				else if (radiusIndex > maxRadius) {
+					//#ifdef DEBUG
 					cout << "Warning: vertical radius is larger than " << maxRadius << ". Node: " << index << endl;
+					//#endif
 					radiusIndex = maxRadius;
 				}
+
 				// calculate sign 
 				int sign_cross_ab = (diff_PrePointX * diff_PostPointY - diff_PostPointX - diff_PrePointY)>=0 ? 1 : -1;
 				radiusIndex = sign_cross_ab * radiusIndex;
@@ -463,13 +444,12 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		// error
 		if (this->nodes[index].verticalCurveRadius == nan("")) {
 			cout << "Error: Calculation of vertical radius failed. Node: " << index << endl;
-		}
-		
+			this->retval = -1;
+		}	
 	}
 
 
 	void DatAuf::CalcDatAuf::CalcGradientPercentage(size_t index) {
-		//cout << "DatAuf: CalcGradientPercentage-Funktion wurde aufgerufen." << endl;
 		node NodeCurrent, NodeForward, NodeBackward;
 		size_t MaxNumberNodes = this->nodes.size();
 		if (index == 0) {
@@ -515,7 +495,11 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		double BackwardGradientInMeter = CalcBackwardDerivativeFD(NodeCurrent, NodeBackward);
 		this->nodes[index].gradient = (ForwardGradientInMeter + BackwardGradientInMeter) / 2.0 * 100.0;
 
-		return;
+		// error
+		if (this->nodes[index].gradient == nan("")) {
+			cout << "Error: Calculation of gradient failed. Node: " << index << endl;
+			this->retval = -1;
+		}
 	}
 
 	double DatAuf::CalcDatAuf::CalcForwardDerivativeFD(node NodeCurrent, node NodeForward) {
@@ -537,13 +521,11 @@ int DatAuf::CalcDatAuf::DataProcessing() {			//Ueberpruefung auf nan-Werte?
 		double DistanceTwoNodes = GetDistanceMeters3D(Node1, Node2);
 
 		if (DistanceTwoNodes > 1.0) {
-
 		}
-
 	}
 
 
-	double DatAuf::deg2rad(double grad) {
+	double DatAuf::CalcDatAuf::deg2rad(double grad) {
 		double rad = grad * 3.14159265358979 / 180;
 		return rad;
 	}
