@@ -114,9 +114,6 @@ string timeConversion(double raceTime, time_t startTime) {
 
 //Erstellung KML Ausgabe
 XMLError output_kml(vector<node>& track, string trackName, bool reduced_resolution) {
-    time_t startTime;
-    time(&startTime);
-    string timestr;
     //modeselector - Select Datatype for coloring the track: 0=elevation 1=horizontalCurveRadius 2=speedLimit 3=speedIs
     int mode_selector = 3;
     tinyxml2::XMLDocument xmlDoc;
@@ -127,41 +124,25 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
     XMLElement* Element_Document = xmlDoc.NewElement("Document");
 
     insertElementKML(xmlDoc, Element_Document, "name", trackName);
-    vector<node>::iterator it = track.end() - 1;
     double value_min = get_min_value(track, mode_selector);
     double value_max = get_max_value(track, mode_selector);
     double v_max = get_max_speedIs(track);
+    vector<node>::iterator it = track.end() - 1;
     string description = "race time = " + to_string(it->raceTime)
         + " s\nmax. speed = " + to_string(v_max) + " m/s";
     insertElementKML(xmlDoc, Element_Document, "description", description);
     insertElementKML(xmlDoc, Element_Document, "visibility", "1");
     insertElementKML(xmlDoc, Element_Document, "open", "1");
 
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color0", "ff0000ff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color1", "ff0040ff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color2", "ff0080ff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color3", "ff00bfff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color4", "ff00ffff");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color5", "ffbfff00");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color6", "ff80ff00");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color7", "ff40ff00");
-    //insertColorDefinitionKML(xmlDoc, Element_Document, "color8", "ff00ff00");
-
     it = track.begin();
-    //for (vector<node>::iterator it = track.begin(); it < track.end() - 1; ) {
-    //for (size_t i = 0; i < track.size() - 1; i++) {
     do{
         XMLElement* Element_Placemark = xmlDoc.NewElement("Placemark");
         Element_Document->InsertEndChild(Element_Placemark);
 
         insertElementKML(xmlDoc, Element_Placemark, "visibility", "1");
         insertElementKML(xmlDoc, Element_Placemark, "open", "0");
-        //string color = "#color" + to_string(i % 9);  //Funktionsaufruf generate_color_code
 
-        //string color = generate_color_code(it->speedIs, v_min, v_max);
-        //insertElementKML(xmlDoc, Element_Placemark, "styleUrl", ("#"+color).c_str());
-
-        string colorCode = generate_color_code2(get_act_value(*it, mode_selector), value_min, value_max);
+        string colorCode = generate_color_code(get_act_value(*it, mode_selector), value_min, value_max);
         insertColorDefinitionKML(xmlDoc, Element_Document, it->id, colorCode);
         insertElementKML(xmlDoc, Element_Placemark, "styleUrl", ("#" + it->id).c_str());
 
@@ -216,37 +197,9 @@ void insertColorDefinitionKML(tinyxml2::XMLDocument& xmlDoc, XMLElement* Element
     insertElementKML(xmlDoc, Element_LineStyle, "width", "12");
 }
 
-//Funktion gives back a colorcode
-//string generate_color_code(double act_value, double min_value, double max_value) {
-//    const int number_categories = 9;
-//    int  act_category;
-//    string color_code = "color0";
-//    act_category = (int)((act_value - min_value) / (max_value - min_value) * (number_categories - 1.));
-//    switch (act_category) {
-//    case 0: color_code = "color0";
-//        break;
-//    case 1: color_code = "color1";
-//        break;
-//    case 2: color_code = "color2";
-//        break;
-//    case 3: color_code = "color3";
-//        break;
-//    case 4: color_code = "color4";
-//        break;
-//    case 5: color_code = "color5";
-//        break;
-//    case 6: color_code = "color6";
-//        break;
-//    case 7: color_code = "color7";
-//        break;
-//    case 8: color_code = "color8";
-//        break;
-//    }
-//    return color_code;
-//}
 
 //Funktion gives back a colorcode
-string generate_color_code2(double act_value, double min_value, double max_value) {
+string generate_color_code(double act_value, double min_value, double max_value) {
     long long int relative_value, color_number;
     stringstream stream;
 
