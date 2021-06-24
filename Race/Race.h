@@ -4,7 +4,7 @@
 
 //////////////////////////////
 //Flags aus NASA Projekt --> Siehe Nasa_constant.h fuer Info
-#define CURL_ON  //Uncommend to activate automated CURL download 
+//#define CURL_ON  //Uncommend to activate automated CURL download 
 #define USE_WINDOWS  //Switch für 7zip Nutzung unter Windows oder Linux (Linux ungetestet mangels Testsystem)
 //////////////////////////////
 
