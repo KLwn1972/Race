@@ -231,11 +231,10 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		for (NodeItem = 0;NodeItem < MaxNumberNodes - 1;NodeItem++) {
 			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(this->nodes[NodeItem], this->nodes[NodeItem + 1]);
 			if (nodes[NodeItem].distanceToNext >= 1.0) {
-				// Commented out to asure running version until insertion is solved.
-				//this->retval = -1;
-#ifdef DEBUG
-				cout << "NodeItem: " << NodeItem << " distance bigger than 1m." << endl;
-#endif
+				this->retval = -1;
+//#ifdef DEBUG
+				//cout << "NodeItem: " << NodeItem << " distance bigger than 1m." << endl;
+//#endif
 			}
 		}
 		//Special handling of last vector-element depending on type of circuit
