@@ -5,6 +5,9 @@
 #include <iomanip>
 #include <fstream> 
 #include <sstream>
+#include <codecvt>
+#include <regex>
+#include <windows.h>
 #include "../Race.h"
 
 #ifdef CURL_ON
@@ -207,6 +210,28 @@ using namespace std;
 	string NASADataFileHandler::createDownloadURL(int longitude, int latitude) {
 		return nasa_url_base + createFilenamefromLongLat(longitude, latitude) + nasa_url_addon;
 	}
+
+	///////////////////////////////////////////////////////////////////
+	//Hilfsfunktion für Rückgabe Zielpfad fuer Download
+	///////////////////////////////////////////////////////////////////
+	string NASADataFileHandler::createDownloadZielpfadFromCurrentPath() {
+		TCHAR buffer[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, buffer, MAX_PATH);
+		std::wstring::size_type pos = std::wstring(buffer).find_last_of(L"\\/");
+		using convert_type = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_type, wchar_t> converter;
+		std::string current_dir = converter.to_bytes(std::wstring(buffer).substr(0, pos));
+		std::string download_dir_win = std::regex_replace(current_dir, std::regex("\\Debug"), nasa_relative_download_zielpfad);
+		std::string download_dir_ux = download_dir_win;
+		size_t start_pos = 0;
+		while ((start_pos = download_dir_ux.find("\\", start_pos)) != std::string::npos) {
+			download_dir_ux.replace(start_pos, 1, "/");
+		}
+		return download_dir_ux;
+	}
+
+	
+
 
 	///////////////////////////////////////////////////////////////////
 	//CURL callback Funktion: Realisierung mit c++ Bordmitteln: Filestream

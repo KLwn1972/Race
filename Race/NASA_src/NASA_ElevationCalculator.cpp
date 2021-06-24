@@ -35,7 +35,7 @@ double HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(const double& long
 		string sourcefilename = filehandler.createFilenamefromLongLat(long_deg, lat_deg) + ".hgt";
 
 #ifdef DEBUG
-		cout << "Lese Hoeheninfo [" << longitude << ", " << latitude << "] aus " << nasa_download_zielpfad + sourcefilename << endl;
+		cout << "Lese Hoeheninfo [" << longitude << ", " << latitude << "] aus " << nasa_relative_download_zielpfad + sourcefilename << endl;
 #endif
 		if (!checkIfFileExists(sourcefilename)) {
 			cout << sourcefilename << " not available. Download starting ..." << endl;
