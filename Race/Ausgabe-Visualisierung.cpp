@@ -71,7 +71,7 @@ XMLError output_gpx(vector<node>& track, string trackName, bool reduced_resoluti
 
     //insert Trackpoints to gpx
     for (unsigned int i = 0; i < track.size(); i++) {
-        if (is_main_node(track[i].id)) {
+        if (is_main_node(track[i].id)||!reduced_resolution) {
             add_node_gpx(&xmlDoc, &track[i], pElement2, startTime, Element_trkpt, Element_elevation, Element_time);
         }
     }
@@ -149,7 +149,8 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
 
     it = track.begin();
     //for (vector<node>::iterator it = track.begin(); it < track.end() - 1; ) {
-    for (size_t i = 0; i < track.size() - 1; i++) {
+    //for (size_t i = 0; i < track.size() - 1; i++) {
+    do{
         XMLElement* Element_Placemark = xmlDoc.NewElement("Placemark");
         Element_Document->InsertEndChild(Element_Placemark);
 
@@ -164,7 +165,7 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
         insertColorDefinitionKML(xmlDoc, Element_Document, it->id, colorCode);
         insertElementKML(xmlDoc, Element_Placemark, "styleUrl", ("#" + it->id).c_str());
 
-        string name = "Track no. " + to_string(i);
+        string name = "node id: " + it->id;
         insertElementKML(xmlDoc, Element_Placemark, "name", name.c_str());
         description = createNotesKML(it);
         insertElementKML(xmlDoc, Element_Placemark, "description", description.c_str());
@@ -181,11 +182,14 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
         it++;
+        while (!is_main_node(it->id)&&reduced_resolution) {
+            it++;
+        }
         coordinates += to_string(it->longitude) + ","
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
         insertElementKML(xmlDoc, Element_LineString, "coordinates", coordinates);
-    }
+    } while (it != track.end() - 1);
     pRoot->InsertEndChild(Element_Document);
     xmlDoc.InsertEndChild(pRoot);
 
