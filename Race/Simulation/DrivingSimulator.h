@@ -21,11 +21,16 @@ namespace Simulation {
 	class DrivingSimulator
 	{
 	public:
-		DrivingSimulator(vector<node> input, IImportSimulationConfig& config);
+		DrivingSimulator(vector<node> input, IImportSimulationConfig* config);
 		~DrivingSimulator();
 
 		vector<node> RunSimulation();
 		vector<SimulationNode> ReturnModifiedTrack();
+
+		//Interpolationlevel can be set to increase the number of nodes by interpolating linearily
+		//This is not needed if distancetonext <= 1m
+		void setInterpolationLevel(unsigned int level);
+
 	private:
 		//Create a modified track which contains the simulationNodes
 		void createModifiedTrack();
@@ -47,6 +52,7 @@ namespace Simulation {
 		AccelerationCalculator* accelerationcalc;
 		node TrackPoint;
 		node NextPoint;
+		unsigned int InterpolationLevel = 0;
 	};
 }
 

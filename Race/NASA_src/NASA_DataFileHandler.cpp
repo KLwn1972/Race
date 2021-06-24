@@ -33,11 +33,15 @@ using namespace std;
 	//Klassenfunktion Standalone
 	///////////////////////////////////////////////////////////////////
 	void NASADataFileHandler::downloadAreaElevationInfo_NASA_SIRC_between(int longitude_start, int longitude_end, int latitude_start, int latitude_end) {
+		int error = 0;
 		for (int long_i = longitude_start; long_i < longitude_end; long_i++) {
 			for (int lat_i = latitude_start; lat_i < latitude_end; lat_i++) {
 				cout << "Dowload Longitude: " << long_i << "\t Latitude: " << lat_i << endl;
-				downloadNASAFile(long_i, lat_i);
-				unzipAndDeleteNASAZipfile(long_i, lat_i);
+				error = downloadNASAFile(long_i, lat_i);
+				if (!error) {
+					unzipNASAZipfile(long_i, lat_i);
+				}
+				deleteNASAZipfile(long_i, lat_i);
 			}
 		}
 		return;
@@ -47,7 +51,9 @@ using namespace std;
 	//Basisfunktion für Download 
 	//Nutzt CURL
 	///////////////////////////////////////////////////////////////////
-	void NASADataFileHandler::downloadNASAFile(int longitude, int latitude) {
+	int NASADataFileHandler::downloadNASAFile(int longitude, int latitude) {
+
+		int ret = 0;
 		string targetfile = createFilenamefromLongLat(longitude, latitude) + ".zip";
 		string downloadurl = createDownloadURL(longitude, latitude);
 		string ausgabedatei = nasa_download_zielpfad + targetfile;
@@ -68,8 +74,10 @@ using namespace std;
 
 			if (ptr_curl) {
 				curl_easy_setopt(ptr_curl, CURLOPT_URL, downloadurl.c_str());		//URL setzen
+#ifdef DEBUG
 				//curl_easy_setopt(ptr_curl, CURLOPT_VERBOSE, 1L);					//Verbose Mode
 				curl_easy_setopt(ptr_curl, CURLOPT_NOPROGRESS, 0);					//Activate Progress Meter
+#endif
 				curl_easy_setopt(ptr_curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);			//Login credentials
 				curl_easy_setopt(ptr_curl, CURLOPT_USERPWD, nasa_usr_namepwd.c_str());	//Login credentials
 				curl_easy_setopt(ptr_curl, CURLOPT_FOLLOWLOCATION, 1L);				//Redirects aktivieren
@@ -83,27 +91,32 @@ using namespace std;
 
 				//Error Handling
 				if (curl_result != CURLE_OK) {
-					cerr << "Curl Error in NASADataFileHandler::downloadNASAFile " << endl;
+#ifdef DEBUG
+					cerr << "Curl Error in NASADataFileHandler::downloadNASAFile() " << endl;
+#endif
+					ret = -1;
 				}
 			}
 			curl_easy_cleanup(ptr_curl);		//Aufräumen danach
 #endif //CURL_ON
 #ifndef CURL_ON
 			cerr << "CURL_OFF: " << downloadurl << " cannot be downloaded.\nError in ASADataFileHandler::downloadNASAFile() --> Activate CURL in Race.h" << endl << endl;
+			ret = -1;
 #endif // !CURL_ON
 
 		}
 		else {
 			cerr << "Filestream Error in NASADataFileHandler::downloadNASAFile() " << endl;
+			ret = -1;
 		}
 		ausgabeDateiStream.close();
-
+		return ret;
 	}
 
 	///////////////////////////////////////////////////////////////////
-	//Hilfsfunktion zum Aufräumen
+	//Hilfsfunktion zum Entpacken
 	///////////////////////////////////////////////////////////////////
-	void NASADataFileHandler::unzipAndDeleteNASAZipfile(int longitude, int latitude) {
+	void NASADataFileHandler::unzipNASAZipfile(int longitude, int latitude) {
 #ifdef CURL_ON
 
 		//Entpacken mit sytemcall von 7Zip
@@ -112,29 +125,50 @@ using namespace std;
 		string zipfile = nasa_download_zielpfad + createFilenamefromLongLat(longitude, latitude) + ".zip";
 		string zipcall = nasa_download_zielpfad + "7z.exe e ";
 		string ziptarget = " -aoa -o" + nasa_download_zielpfad +" -y >NUL";
-		string zipfile_del_call = "del \"" + nasa_download_zielpfad_win + createFilenamefromLongLat(longitude, latitude) + ".zip \"";
 #endif //USE_WINDOWS
 
 #ifndef USE_WINDOWS   //Linux System
 		string zipfile = nasa_download_zielpfad + createFilenamefromLongLat(longitude, latitude) + ".zip";
 		string zipcall = " LINUX 7 ZIP CALL!!! "  ; //Auf Linux-System korrigieren / Testen
 		string ziptarget = " -aoa -o" + nasa_download_zielpfad;
-		string zipfile_del_call = "LINUX RM XYZ.ZIP CALL"; //Auf Linux-System korrigieren / Testen
 #endif //!USE_WINDOWS
 		std::cout << "7Zip Extract: \t" << zipfile << std::endl;
 
 #ifdef DEBUG
 		cout << "----------------Unzip----------------------------" << endl;
 		cout << zipcall << zipfile << ziptarget << endl;
-		cout << (zipfile_del_call.c_str()) << endl;
 #endif
 		system((zipcall + zipfile + ziptarget).c_str());
-		system(zipfile_del_call.c_str());
-		cout << "Delete: " << zipfile  << endl << endl;
-
 #endif //CURL_ON
 
+#ifndef CURL_ON
+		cerr << "CURL_OFF: Unnecessary / unintended function call NASADataFileHandler::unzipAndDeleteNASAFile() ";
+#endif // !CURL_ON
 
+
+		return;
+	}
+
+
+///////////////////////////////////////////////////////////////////
+//Hilfsfunktion zum Entpacken
+///////////////////////////////////////////////////////////////////
+	void NASADataFileHandler::deleteNASAZipfile(int longitude, int latitude) {
+#ifdef CURL_ON
+
+		//Entpacken mit sytemcall von 7Zip
+
+#ifdef USE_WINDOWS
+		string zipfile_del_call = "del \"" + nasa_download_zielpfad_win + createFilenamefromLongLat(longitude, latitude) + ".zip \"";
+#endif //USE_WINDOWS
+
+#ifndef USE_WINDOWS   //Linux System
+		string zipfile_del_call = "LINUX RM XYZ.ZIP CALL"; //Auf Linux-System korrigieren / Testen
+#endif //!USE_WINDOWS
+		cout << (zipfile_del_call.c_str()) << endl;
+		system(zipfile_del_call.c_str());
+
+#endif //CURL_ON
 #ifndef CURL_ON
 		cerr << "CURL_OFF: Unnecessary / unintended function call NASADataFileHandler::unzipAndDeleteNASAFile() ";
 #endif // !CURL_ON

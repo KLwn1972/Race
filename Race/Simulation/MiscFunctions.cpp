@@ -29,7 +29,7 @@ void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 			exportFile << "\n";
 		}
 		exportFile.close();
-		cout << "\nExport finished. Please find results here: " << filename << endl;
+		cout << "Export in excel format finished. Please find results here: " << filename << endl;
 		return;
 	}
 }

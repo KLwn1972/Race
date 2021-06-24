@@ -29,8 +29,8 @@ void Simulation::ImportSimulationConfig::saveSimulationConfig(std::string Config
 	cJSON* VehicleData = cJSON_GetObjectItemCaseSensitive(completeConfigFile, "VehicleData");
 	VehicleData = VehicleData->child;
 
-	Vehicle* VehicleObject = getVehicle();
-	SimulationEnvironment* EnvironmentObject = getEnvironment();
+	Vehicle* VehicleObject = new Vehicle();
+	SimulationEnvironment* EnvironmentObject = new SimulationEnvironment();
 
 	//EnvironmentData
 	EnvironmentObject->setAirtemperatureCelsius(getDoubleFromcJSON(Environment, "Airtemperature [C]"));
