@@ -14,7 +14,8 @@
 #include "Simulation/SimulationEnvironment.h"
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
-
+#include "Testing.h"
+#include <fstream>
 #include "Soll_Fahrtbestimmung.h"
 
 #include "DatAuf.h"
@@ -50,8 +51,17 @@ int main()
 
 #if 1
 	//////////////////////////////////////////////////////////////////////////
+	//Initialisierung Testing Log
+	ErrorLog elog = ErrorLog();
+	Testing Inittest;
+	Inittest.Aufgabe = "Aufgabe";
+	Inittest.Testname = "Testname";
+	Inittest.Ergebnisse = "Ergebnisse";
+	elog.Testvektor.push_back(Inittest);
+
 	// Datenbeschaffungsteam
 	// Sued: route = "38567";
+	
 	vector<node> nodes;
 	string route = "38566"; // Nord
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
@@ -82,6 +92,8 @@ int main()
 		return -1;
 	}
 
+	elog.TestDatenAufbereitung(nodes);
+
 	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
 	auto SimulationConfig = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
 
@@ -91,6 +103,8 @@ int main()
 	SollFahrt->setVehicle(SimulationConfig->getVehicle());
 	SollFahrt->setEnvironment(SimulationConfig->getEnvironment());
 	SollFahrt->SpeedLimit_route(nodes);
+
+	elog.TestSollfahrtbestimmung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	//Fahrphysik
@@ -102,6 +116,11 @@ int main()
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
 	ausgabe_visualisierung(nodes, "Nordschleife");
+
+	ofstream outputfile("ErrorLog.txt");
+	for (int i = 0; i < 10; i++) {
+		outputfile << elog.Testvektor[i].Aufgabe << elog.Testvektor[i].Testname << elog.Testvektor[i].Ergebnisse << "\n";
+	}
 
 #endif
 
