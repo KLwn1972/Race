@@ -77,13 +77,11 @@ int main()
 		retval = DatAuf_Nord.DataProcessing();
 		nodes = DatAuf_Nord.nodes;
 		if (retval != 0) {
-			// Fehler Datenaufbereitung
-			return -1;
+			return -1;  // Fehler Datenaufbereitung
 		}
 	}
-	else {
-		// Fehler weniger wie 4 Nodes
-		return -1;
+	else {		
+		return -1;    // Fehler weniger wie 4 Nodes
 	}
 
 	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
