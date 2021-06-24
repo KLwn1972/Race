@@ -203,7 +203,7 @@ string generate_color_code(double act_value, double min_value, double max_value)
     long long int relative_value, color_number;
     stringstream stream;
 
-    relative_value = (long long int)(act_value / (max_value - min_value) * 510);
+    relative_value = (long long int)((act_value - min_value) / (max_value - min_value) * 510);
 
     if (relative_value < 256) color_number = 4278255615 - (255 - relative_value) * 256;
     else                      color_number = 4278255615 - (relative_value - 255);
