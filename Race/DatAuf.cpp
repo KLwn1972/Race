@@ -1,4 +1,8 @@
-﻿#pragma once
+﻿// /////////////////////////////////////////////////////////////////////////
+// Team Datenaufberitung: Andreas Jakobi, Andreas Maier, Kathrin Gerhard  //
+// ///////////////////////////////////////////////////////////////////////// 
+
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -239,7 +243,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 	void DatAuf::CalcDatAuf::CalcRadiusGradientData() {
 		size_t MaxNumberNodes = this->nodes.size();
 		for (int index = 0; index < MaxNumberNodes; index++) {
-			this->CalcHorizontalCurveRad(index);
+			this->CalcHorizontalCurveRad_viaXYcoordinates(index);  // alternative: CalcHorizontalCurveRad_viaDistance // CalcHorizontalCurveRad_viaXYcoordinates
 			this->CalcVerticalCurveRad(index);
 			this->CalcGradientPercentage(index);
 		}
@@ -287,10 +291,11 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 	}
 
 
-	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad(size_t index) {
-		double radiusIndex = 0;
+	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad_viaXYcoordinates(size_t index) {
+		double radiusIndex = 1;
 		double maxRadius = 10E6;
 		double minRadius = 10E-6;		
+
 		// define Index for 3 points
 		size_t MaxIndexNodes = this->nodes.size() - 1;
 		size_t preIndex = index - 1;
@@ -307,61 +312,142 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		else if (!loop && (index == 0 || index == MaxIndexNodes)) { 
 			radiusIndex = maxRadius;
 		}
+		else {}
+
+		// Calculation of radius in x,y coordinate-system after simplified transformation
+	
+		double earthRadiusMeter = 6378137;
+		double latitudeReference = deg2rad(nodes[index].latitude);
+
+		// Calculation of X (as longitude),Y (as latitude) coordinates
+		double prePoint_X = earthRadiusMeter * deg2rad(nodes[preIndex].longitude) * cos(latitudeReference);
+		double point_X = earthRadiusMeter * deg2rad(nodes[index].longitude) * cos(latitudeReference);
+		double postPoint_X = earthRadiusMeter * deg2rad(nodes[postIndex].longitude) * cos(latitudeReference);
+
+		double prePoint_Y = earthRadiusMeter * deg2rad(nodes[preIndex].latitude);
+		double point_Y = earthRadiusMeter * deg2rad(nodes[index].latitude);
+		double postPoint_Y = earthRadiusMeter * deg2rad(nodes[postIndex].latitude);
+
+		// Calulation vectors and distances
+		double diff_PrePointX = floor((prePoint_X - point_X) * maxRadius + .5) / maxRadius;
+		double diff_PrePointY = floor((prePoint_Y - point_Y) * maxRadius + .5) / maxRadius;
+		double dis_PrePointSq = diff_PrePointX * diff_PrePointX + diff_PrePointY * diff_PrePointY;
+
+		double diff_PostPointX = floor((postPoint_X - point_X) * maxRadius + .5) / maxRadius;
+		double diff_PostPointY = floor((postPoint_Y-point_Y) * maxRadius + .5) / maxRadius;
+		double dis_PostPointSq = diff_PostPointX * diff_PostPointX + diff_PostPointY * diff_PostPointY;
+		double MulPrePost = diff_PrePointX * diff_PostPointX + diff_PrePointY * diff_PostPointY;
+
+		double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;
+		double nominator = floor((dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;
+		if ((denominator > 0 && nominator > 0) || (denominator < 0 && nominator < 0)) {
+			// radius at Index
+			radiusIndex = 0.5 * sqrt(nominator / denominator);
+			// limitations
+			if (radiusIndex < minRadius) {
+				this->nodes[index].horizontalCurveRadius = minRadius;
+#ifdef DEBUG
+				cout << "Warning: horizontal radius is smaller than " << minRadius << ". Node: " << index << endl;
+#endif
+			}
+			else if (radiusIndex > maxRadius) {
+				this->nodes[index].horizontalCurveRadius = maxRadius;					
+#ifdef DEBUG
+				cout << "Warning: horizontal radius is larger than " << maxRadius << ". Node: " << index << endl;					
+#endif
+				}
+			else {
+				this->nodes[index].horizontalCurveRadius = radiusIndex;
+			}
+		}
 		else {
-			// get distances and temporary help values
-			double dis_PrePoint = this->GetDistanceMeters2D(nodes[preIndex], nodes[index]);
-			double dis_PostPoint = this->GetDistanceMeters2D(nodes[index], nodes[postIndex]);
-			double dis_PrePointSq = dis_PrePoint * dis_PrePoint;
-			double dis_PostPointSq = dis_PostPoint * dis_PostPoint;
+			this->nodes[index].horizontalCurveRadius = 10E6;
+		}
 
-			// calculation of temporary nodes S1, S2
-			node* P1_temp = new node;
-			P1_temp->longitude = nodes[index].longitude;
-			P1_temp->latitude = nodes[preIndex].latitude;
-			node* P2_temp = new node;
-			P2_temp->longitude = nodes[index].longitude;
-			P2_temp->latitude = nodes[postIndex].latitude;
+		// error
+		if (this->nodes[index].horizontalCurveRadius == nan("")) {
+			cout << "Error: Calculation of horizontal radius failed. Node: " << index << endl;
+			this->retval = -1;
+		}
+	}
 
-			double dis_P1temp = this->GetDistanceMeters2D(nodes[index], *P1_temp);
-			double dis_P2temp = this->GetDistanceMeters2D(nodes[index], *P2_temp);
-			delete P1_temp, P2_temp;
 
-			double alpha1 = acos(dis_P1temp / dis_PrePoint);
-			double alpha2 = acos(dis_P2temp / dis_PostPoint);
-			double alpha = alpha1 + alpha2;
-			double MulPrePost = dis_PrePoint * dis_PostPoint * cos(alpha);
+	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad_viaDistance(size_t index) {
+		double radiusIndex = 1;
+		double maxRadius = 10E6;
+		double minRadius = 10E-6;
 
-			double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;
-			double nominator = floor((dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;
-			if ((denominator > 0 && nominator > 0) || (denominator < 0 && nominator < 0)) {
-				// radius at Index
-				radiusIndex = 0.5 * sqrt(nominator / denominator);
-				// limitations
-				if (radiusIndex < minRadius) {
-					this->nodes[index].horizontalCurveRadius = minRadius;
+		// define Index for 3 points
+		size_t MaxIndexNodes = this->nodes.size() - 1;
+		size_t preIndex = index - 1;
+		size_t postIndex = index + 1;
+
+		bool loop = this->isLoop();
+
+		if (loop && (index == 0)) {
+			preIndex = MaxIndexNodes - 1;
+		}
+		else if (loop && (index == MaxIndexNodes)) {
+			postIndex = 1;
+		}
+		else if (!loop && (index == 0 || index == MaxIndexNodes)) {
+			radiusIndex = maxRadius;
+		}
+		else {}
+
+		// get distances and temporary help values
+		double dis_PrePoint = this->GetDistanceMeters2D(nodes[preIndex], nodes[index]);
+		double dis_PostPoint = this->GetDistanceMeters2D(nodes[index], nodes[postIndex]);
+		double dis_PrePointSq = dis_PrePoint * dis_PrePoint;
+		double dis_PostPointSq = dis_PostPoint * dis_PostPoint;
+
+		// calculation of temporary nodes S1, S2
+		node* P1_temp = new node;
+		node* P2_temp = new node;
+		P1_temp->longitude = nodes[index].longitude;
+		P1_temp->latitude = nodes[preIndex].latitude;
+		P2_temp->longitude = nodes[index].longitude;
+		P2_temp->latitude = nodes[postIndex].latitude;
+
+		double dis_P1temp = this->GetDistanceMeters2D(nodes[index], *P1_temp);
+		double dis_P2temp = this->GetDistanceMeters2D(nodes[index], *P2_temp);
+		delete P1_temp, P2_temp;
+
+		double alpha1 = acos(dis_P1temp / dis_PrePoint);
+		double alpha2 = acos(dis_P2temp / dis_PostPoint);
+		double alpha = alpha1 + alpha2;
+		double MulPrePost = dis_PrePoint * dis_PostPoint * cos(alpha);
+
+		double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;
+		double nominator = floor((dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;
+		if ((denominator > 0 && nominator > 0) || (denominator < 0 && nominator < 0)) {
+			// radius at Index
+			radiusIndex = 0.5 * sqrt(nominator / denominator);
+			// limitations
+			if (radiusIndex < minRadius) {
+				this->nodes[index].horizontalCurveRadius = minRadius;
 #ifdef DEBUG
-					cout << "Warning: horizontal radius is smaller than " << minRadius << ". Node: " << index << endl;
+				cout << "Warning: horizontal radius is smaller than " << minRadius << ". Node: " << index << endl;
 #endif
-				}
-				else if (radiusIndex > maxRadius) {
-					this->nodes[index].horizontalCurveRadius = maxRadius;					
+			}
+			else if (radiusIndex > maxRadius) {
+				this->nodes[index].horizontalCurveRadius = maxRadius;
 #ifdef DEBUG
-					cout << "Warning: horizontal radius is larger than " << maxRadius << ". Node: " << index << endl;					
+				cout << "Warning: horizontal radius is larger than " << maxRadius << ". Node: " << index << endl;
 #endif
-				}
-				else {
-					this->nodes[index].horizontalCurveRadius = radiusIndex;
-				}
 			}
 			else {
-				this->nodes[index].horizontalCurveRadius = 10E6;
+				this->nodes[index].horizontalCurveRadius = radiusIndex;
 			}
+		}
+		else {
+			this->nodes[index].horizontalCurveRadius = 10E6;
+		}
 
-			// error
-			if (this->nodes[index].horizontalCurveRadius == nan("")) {
-				cout << "Error: Calculation of horizontal radius failed. Node: " << index << endl;
-				this->retval = -1;
-			}
+		// error
+		if (this->nodes[index].horizontalCurveRadius == nan("")) {
+			cout << "Error: Calculation of horizontal radius failed. Node: " << index << endl;
+			this->retval = -1;
 		}
 	}
 
@@ -385,7 +471,8 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		else if (!loop && (index == 0 || index == MaxIndexNodes)) {
 			radiusIndex = maxRadius;
 		}
-		else {
+		else {}
+
 			// get distances and temporary help values
 			double diff_PrePointX = floor((0 - nodes[preIndex].distanceToNext) * maxRadius + .5) / maxRadius;
 			double diff_PrePointY = floor((nodes[preIndex].elevation - nodes[index].elevation) * maxRadius + .5) / maxRadius;
@@ -424,7 +511,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 			else {
 				radiusIndex = maxRadius;
 			}
-		}
 	
 		this->nodes[index].verticalCurveRadius = radiusIndex;
 
