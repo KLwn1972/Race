@@ -1,5 +1,5 @@
 // /////////////////////////////////////////////////////////////////////////
-// Team Datenaufberitung: Andreas Jakobi, Andreas Maier, Kathrin Gerhard  //
+// Team Datenaufbereitung: Andreas Jakobi, Andreas Maier, Kathrin Gerhard //
 // ///////////////////////////////////////////////////////////////////////// 
 
 #pragma once
@@ -28,7 +28,6 @@ namespace DatAuf {
 		node GetInterpolKnot();
 		node GetNode(size_t NodeItem);
 		void InsertAdditionalNodes();
-		void InsertAdditionalNodes2();
 		void CopyNodesToSplineKnots(size_t NodeItem);
 		void InsertOneAdditionalNode(size_t NodeItem, size_t NumberAdditionalNodes, node NewNode);
 		void UpdateNodeIDProperty(size_t NodeItem, size_t NumberAdditionalNodes);
@@ -38,8 +37,7 @@ namespace DatAuf {
 
 		//Caluclation street characteristica
 		void CalcRadiusGradientData();
-		void CalcHorizontalCurveRad_viaXYcoordinates(size_t index);
-		void CalcHorizontalCurveRad_viaDistance(size_t index);
+		void CalcHorizontalCurveRadviaXYcoordinates(size_t index);
 		void CalcVerticalCurveRad(size_t index);		
 		void CalcGradientPercentage(size_t index);
 		double deg2rad(double grad);

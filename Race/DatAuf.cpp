@@ -1,5 +1,5 @@
 ﻿// /////////////////////////////////////////////////////////////////////////
-// Team Datenaufberitung: Andreas Jakobi, Andreas Maier, Kathrin Gerhard  //
+// Team Datenaufbereitung: Andreas Jakobi, Andreas Maier, Kathrin Gerhard //
 // ///////////////////////////////////////////////////////////////////////// 
 
 #pragma once
@@ -12,18 +12,9 @@
 using namespace std;
 
 int DatAuf::CalcDatAuf::DataProcessing() {
-	int InsertNodesMethod=0;
 	// Check and insert additional knots if necessary
 	cout << "DatAuf: Insert nodes..." << endl;
-	InsertNodesMethod = 2;
-	switch (InsertNodesMethod) {
-	case 1:
-		this->InsertAdditionalNodes();
-		break;
-	case 2:
-		this->InsertAdditionalNodes2();
-		break;
-	}
+	this->InsertAdditionalNodes();
 	cout << "DatAuf: Done." << endl;
 
 	// Calculate Data for SOLL-Fahrtbestimmmung 
@@ -32,110 +23,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 	cout << "DatAuf: Done." << endl;
 
 	return this->retval;
-	}
-
-	void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
-		node NewNode, PrevNode;
-		std::vector<node>::iterator NewNodeItemInsert;
-		size_t NodeItem = 0;
-		size_t NodeItemInsert=0;
-		size_t MaxNumberNodes = this->nodes.size();
-		size_t NumberAdditionalNodes;
-		size_t InsertMode = 0;
-		int RefinementIterator = 0;
-		double DistanceTwoNodes = 0.0;
-		double Delta_t, t_previous, t_current;
-
-		// Set Insertmode for Node insertion:
-		//  Case 0: Equidistant in parameter t of the Spline
-		//  Case 1: Adaptation of t depending on calculated distance, target distance: <1.0 
-		InsertMode = 1;
-
-		while (NodeItem < MaxNumberNodes - 1) {
-			CopyNodesToSplineKnots(NodeItem);
-
-			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(nodes[NodeItem], nodes[NodeItem + 1]);
-			if (nodes[NodeItem].distanceToNext > 1.0) {				
-				switch (InsertMode) {
-				case 0:
-					NumberAdditionalNodes = int(nodes[NodeItem].distanceToNext);					
-					Delta_t = 1.0 / NumberAdditionalNodes;
-					for (int i = 1;i < NumberAdditionalNodes;i++) {
-						SplineSegment.CalcInterpolKnot(i * Delta_t);
-						NewNode = GetInterpolKnot();
-						InsertOneAdditionalNode(NodeItem, i, NewNode);
-					}										
-					// Zaehler mit eingefuegten Punkten ergaenzen, "-1", da ohne einfuegen der Zaehler automatisch um 1 erhoeht wird
-					NodeItem += NumberAdditionalNodes-1;
-
-					break;
-				case 1:
-					Delta_t = 1.0 / int(nodes[NodeItem].distanceToNext);
-					NumberAdditionalNodes = 0;
-					PrevNode = nodes[NodeItem];
-					t_previous = 0.0;
-					t_current = t_previous + Delta_t;
-
-					while (t_current <= 1.0) {
-						RefinementIterator += 1;
-
-						SplineSegment.CalcInterpolKnot(t_current);
-						NewNode = GetInterpolKnot();
-						DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
-						if (DistanceTwoNodes > 1.0) {
-							Delta_t = Delta_t *0.9;
-							t_current = t_previous + Delta_t;
-						}
-						else if (DistanceTwoNodes < 0.98){
-							Delta_t = Delta_t *1.05;
-							t_current = t_previous + Delta_t;
-						}
-						else {
-							//Insert Additional Node
-							NumberAdditionalNodes += 1;
-							InsertOneAdditionalNode(NodeItem, NumberAdditionalNodes, NewNode);							
-							//Preparation next iteration step
-							PrevNode = NewNode;
-							t_previous = t_current;
-							t_current = t_current + Delta_t;
-							if (t_current >= 1.0) {
-#ifdef DEBUG								
-								cout << "Grenzfall t_current ist aufgetreten, Iteration: " << RefinementIterator << " NodeItem: "<< NodeItem+NumberAdditionalNodes << endl;
-#endif
-								SplineSegment.CalcInterpolKnot(1.0);
-								NewNode = GetInterpolKnot();
-								DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
-								if (DistanceTwoNodes > 1.0) {
-#ifdef DEBUG								
-									cout << "Warnung:  InsertAdditionalNode insert last node....." << endl;	
-#endif
-									t_current = 0.5 * (1.0 + t_previous);
-									RefinementIterator += 1;
-									SplineSegment.CalcInterpolKnot(t_current);
-									NewNode = GetInterpolKnot();
-									DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
-									NumberAdditionalNodes += 1;
-									InsertOneAdditionalNode(NodeItem, NumberAdditionalNodes, NewNode);
-
-									break;
-								}
-							}
-						}
-					}
-					NodeItem += NumberAdditionalNodes;
-
-					break;
-				}
-			}
-			//Increment NodeItem
-			NodeItem += 1;
-			// Update MaxNumberNodes after insertion
-			MaxNumberNodes = this->nodes.size();
-		}
-#ifdef DEBUG
-		cout << "Iteratorwert = " << RefinementIterator << endl;
-#endif
-		CalcDistanceToAllNextNode();
 	}
 
 	void DatAuf::CalcDatAuf::CopyNodesToSplineKnots(size_t NodeItem) {
@@ -242,8 +129,8 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 
 	void DatAuf::CalcDatAuf::CalcRadiusGradientData() {
 		size_t MaxNumberNodes = this->nodes.size();
-		for (int index = 0; index < MaxNumberNodes; index++) {
-			this->CalcHorizontalCurveRad_viaXYcoordinates(index);  // alternative: CalcHorizontalCurveRad_viaDistance // CalcHorizontalCurveRad_viaXYcoordinates
+		for (unsigned int index = 0; index < MaxNumberNodes; index++) {
+			this->CalcHorizontalCurveRadviaXYcoordinates(index);
 			this->CalcVerticalCurveRad(index);
 			this->CalcGradientPercentage(index);
 		}
@@ -275,7 +162,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		return distance2D;
 	}
 
-
 	double DatAuf::GetDistanceMeters3D(node node1, node node2) {
 		double distance3D;
 		if (node1.latitude == node2.latitude && node1.longitude == node2.longitude && node1.elevation == node2.elevation) {
@@ -290,8 +176,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		return distance3D;
 	}
 
-
-	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad_viaXYcoordinates(size_t index) {
+	void DatAuf::CalcDatAuf::CalcHorizontalCurveRadviaXYcoordinates(size_t index) {
 		double radiusIndex = 1;
 		double maxRadius = 10E6;
 		double minRadius = 10E-6;		
@@ -314,8 +199,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		}
 		else {}
 
-		// Calculation of radius in x,y coordinate-system after simplified transformation
-	
+		// Calculation of radius in x,y coordinate-system after simplified transformation	
 		double earthRadiusMeter = 6378137;
 		double latitudeReference = deg2rad(nodes[index].latitude);
 
@@ -340,6 +224,7 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 
 		double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;
 		double nominator = floor((dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;
+		
 		if ((denominator > 0 && nominator > 0) || (denominator < 0 && nominator < 0)) {
 			// radius at Index
 			radiusIndex = 0.5 * sqrt(nominator / denominator);
@@ -371,87 +256,6 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		}
 	}
 
-
-	void DatAuf::CalcDatAuf::CalcHorizontalCurveRad_viaDistance(size_t index) {
-		double radiusIndex = 1;
-		double maxRadius = 10E6;
-		double minRadius = 10E-6;
-
-		// define Index for 3 points
-		size_t MaxIndexNodes = this->nodes.size() - 1;
-		size_t preIndex = index - 1;
-		size_t postIndex = index + 1;
-
-		bool loop = this->isLoop();
-
-		if (loop && (index == 0)) {
-			preIndex = MaxIndexNodes - 1;
-		}
-		else if (loop && (index == MaxIndexNodes)) {
-			postIndex = 1;
-		}
-		else if (!loop && (index == 0 || index == MaxIndexNodes)) {
-			radiusIndex = maxRadius;
-		}
-		else {}
-
-		// get distances and temporary help values
-		double dis_PrePoint = this->GetDistanceMeters2D(nodes[preIndex], nodes[index]);
-		double dis_PostPoint = this->GetDistanceMeters2D(nodes[index], nodes[postIndex]);
-		double dis_PrePointSq = dis_PrePoint * dis_PrePoint;
-		double dis_PostPointSq = dis_PostPoint * dis_PostPoint;
-
-		// calculation of temporary nodes S1, S2
-		node* P1_temp = new node;
-		node* P2_temp = new node;
-		P1_temp->longitude = nodes[index].longitude;
-		P1_temp->latitude = nodes[preIndex].latitude;
-		P2_temp->longitude = nodes[index].longitude;
-		P2_temp->latitude = nodes[postIndex].latitude;
-
-		double dis_P1temp = this->GetDistanceMeters2D(nodes[index], *P1_temp);
-		double dis_P2temp = this->GetDistanceMeters2D(nodes[index], *P2_temp);
-		delete P1_temp, P2_temp;
-
-		double alpha1 = acos(dis_P1temp / dis_PrePoint);
-		double alpha2 = acos(dis_P2temp / dis_PostPoint);
-		double alpha = alpha1 + alpha2;
-		double MulPrePost = dis_PrePoint * dis_PostPoint * cos(alpha);
-
-		double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;
-		double nominator = floor((dis_PrePointSq * dis_PostPointSq * (dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;
-		if ((denominator > 0 && nominator > 0) || (denominator < 0 && nominator < 0)) {
-			// radius at Index
-			radiusIndex = 0.5 * sqrt(nominator / denominator);
-			// limitations
-			if (radiusIndex < minRadius) {
-				this->nodes[index].horizontalCurveRadius = minRadius;
-#ifdef DEBUG
-				cout << "Warning: horizontal radius is smaller than " << minRadius << ". Node: " << index << endl;
-#endif
-			}
-			else if (radiusIndex > maxRadius) {
-				this->nodes[index].horizontalCurveRadius = maxRadius;
-#ifdef DEBUG
-				cout << "Warning: horizontal radius is larger than " << maxRadius << ". Node: " << index << endl;
-#endif
-			}
-			else {
-				this->nodes[index].horizontalCurveRadius = radiusIndex;
-			}
-		}
-		else {
-			this->nodes[index].horizontalCurveRadius = 10E6;
-		}
-
-		// error
-		if (this->nodes[index].horizontalCurveRadius == nan("")) {
-			cout << "Error: Calculation of horizontal radius failed. Node: " << index << endl;
-			this->retval = -1;
-		}
-	}
-
-
 	void DatAuf::CalcDatAuf::CalcVerticalCurveRad(size_t index) {
 		double radiusIndex = 0;
 		double maxRadius = 10E6;
@@ -472,55 +276,51 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 			radiusIndex = maxRadius;
 		}
 		else {}
-
-			// get distances and temporary help values
-			double diff_PrePointX = floor((0 - nodes[preIndex].distanceToNext) * maxRadius + .5) / maxRadius;
-			double diff_PrePointY = floor((nodes[preIndex].elevation - nodes[index].elevation) * maxRadius + .5) / maxRadius;
-			double dis_PrePointSq = diff_PrePointX * diff_PrePointX + diff_PrePointY * diff_PrePointY;
-
-			double diff_PostPointX = floor(((nodes[preIndex].distanceToNext + nodes[index].distanceToNext) - nodes[preIndex].distanceToNext)* maxRadius + .5) / maxRadius;
-			double diff_PostPointY = floor((nodes[postIndex].elevation - nodes[index].elevation) * maxRadius + .5) / maxRadius;
-			double dis_PostPointSq = diff_PostPointX * diff_PostPointX + diff_PostPointY * diff_PostPointY;
-
-			double MulPrePost = diff_PrePointX * diff_PostPointX + diff_PrePointY * diff_PostPointY;
-
-			double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;
-			double nominator = floor((dis_PrePointSq * dis_PostPointSq*(dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;
-			if ((denominator > 0 && nominator >0) || (denominator < 0 && nominator < 0)) {
-				// radius at Index	
-				radiusIndex = 0.5 * sqrt((nominator / denominator));
+					
+		// get distances and temporary help values			
+		double diff_PrePointX = floor((0 - nodes[preIndex].distanceToNext) * maxRadius + .5) / maxRadius;			
+		double diff_PrePointY = floor((nodes[preIndex].elevation - nodes[index].elevation) * maxRadius + .5) / maxRadius;			
+		double dis_PrePointSq = diff_PrePointX * diff_PrePointX + diff_PrePointY * diff_PrePointY;			
+		double diff_PostPointX = floor(((nodes[preIndex].distanceToNext + nodes[index].distanceToNext) - nodes[preIndex].distanceToNext)* maxRadius + .5) / maxRadius;			
+		double diff_PostPointY = floor((nodes[postIndex].elevation - nodes[index].elevation) * maxRadius + .5) / maxRadius;			
+		double dis_PostPointSq = diff_PostPointX * diff_PostPointX + diff_PostPointY * diff_PostPointY;
 			
-				// limitations	
-				if (radiusIndex < minRadius) {					
-#ifdef DEBUG
-					cout << "Warning: vertical radius is smaller than " << minRadius << ". Node: " << index << endl;					
-#endif
-					radiusIndex = minRadius;
-				}
-				else if (radiusIndex > maxRadius) {					
-#ifdef DEBUG
-					cout << "Warning: vertical radius is larger than " << maxRadius << ". Node: " << index << endl;					
-#endif
-					radiusIndex = maxRadius;
-				}
-
-				// calculate sign 
-				int sign_cross_ab = (diff_PrePointX * diff_PostPointY - diff_PostPointX - diff_PrePointY)>=0 ? 1 : -1;
-				radiusIndex = sign_cross_ab * radiusIndex;
-			}
-			else {
-				radiusIndex = maxRadius;
-			}
-	
+		double MulPrePost = diff_PrePointX * diff_PostPointX + diff_PrePointY * diff_PostPointY;			
+		double denominator = floor((dis_PrePointSq * dis_PostPointSq - MulPrePost * MulPrePost) * maxRadius + .5) / maxRadius;			
+		double nominator = floor((dis_PrePointSq * dis_PostPointSq*(dis_PrePointSq + dis_PostPointSq - 2 * MulPrePost)) * maxRadius + .5) / maxRadius;			
+		
+		if ((denominator > 0 && nominator >0) || (denominator < 0 && nominator < 0)) {			
+			// radius at Index				
+			radiusIndex = 0.5 * sqrt((nominator / denominator));				
+			// limitations				
+			if (radiusIndex < minRadius) {					
+#ifdef DEBUG				
+				cout << "Warning: vertical radius is smaller than " << minRadius << ". Node: " << index << endl;					
+#endif				
+				radiusIndex = minRadius;			
+		}			
+			else if (radiusIndex > maxRadius) {					
+#ifdef DEBUG			
+				cout << "Warning: vertical radius is larger than " << maxRadius << ". Node: " << index << endl;					
+#endif			
+				radiusIndex = maxRadius;			
+			}			
+			// calculate sign 			
+			int sign_cross_ab = (diff_PrePointX * diff_PostPointY - diff_PostPointX - diff_PrePointY)>=0 ? 1 : -1;			
+			radiusIndex = sign_cross_ab * radiusIndex;			
+	}		
+		else {				
+			radiusIndex = maxRadius;		
+		}	
+		
 		this->nodes[index].verticalCurveRadius = radiusIndex;
-
+		
 		// error
 		if (this->nodes[index].verticalCurveRadius == nan("")) {
 			cout << "Error: Calculation of vertical radius failed. Node: " << index << endl;
 			this->retval = -1;
 		}	
 	}
-
 
 	void DatAuf::CalcDatAuf::CalcGradientPercentage(size_t index) {
 		node NodeCurrent, NodeForward, NodeBackward;
@@ -602,15 +402,15 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		return this->nodes[NodeItem];
 	}
 
-	void DatAuf::CalcDatAuf::InsertAdditionalNodes2() {
+	void DatAuf::CalcDatAuf::InsertAdditionalNodes() {
 		node NewNode, PrevNode;
 		vector<node> nodes_refined;
 		size_t NodeItem;
+		size_t NumberAdditionalNodes;
 		double Delta_t;
 		double DistanceTwoNodes;
 		double t_current = 0.0;
 		double t_previous = 0.0;
-		size_t NumberAdditionalNodes;
 
 		for (NodeItem = 0;NodeItem < this->nodes.size()-1;NodeItem++) {
 			PrevNode = nodes[NodeItem];
@@ -680,6 +480,4 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 		nodes_refined.push_back(PrevNode);
 		this->nodes = nodes_refined;
 		CalcDistanceToAllNextNode();
-
-		cout << "InsertNodes2: done..." << endl;
 	}
