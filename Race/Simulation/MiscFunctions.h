@@ -5,6 +5,8 @@ Miscellanious static functions to provide extra utility.
 */
 
 #pragma once
+#ifndef MISCFUNCTIONDEF
+#define MISCFUNCTIONDEF
 #include "../Race.h"
 #include <vector>
 #include "SimulationNode.h"
@@ -23,3 +25,5 @@ namespace Simulation
 	/// <returns></returns>
 	double angleRadFromGradient(double gradient);
 };
+
+#endif

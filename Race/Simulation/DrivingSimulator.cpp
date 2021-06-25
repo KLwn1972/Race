@@ -60,7 +60,7 @@ void Simulation::DrivingSimulator::createModifiedTrack()
 		{
 			double DistanceOldNew = oldStepSimNode.distanceToNext;
 			double DistanceBetweenPoints = DistanceOldNew / (this->InterpolationLevel + 1.0);
-			newTrack.at(i - 1).distanceToNext = DistanceBetweenPoints;
+			newTrack.at(newTrack.size()-1).distanceToNext = DistanceBetweenPoints;
 			for (unsigned int j = 1; j <= this->InterpolationLevel; j++)
 			{
 				double DistanceToCheck = j * DistanceBetweenPoints;

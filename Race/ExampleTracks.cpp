@@ -27,7 +27,7 @@ std::vector<node> ExampleStraightTrack()
 	double distance = 3245.0;
 
 	auto result = vector<node>();
-	double numberOfSteps = 1000;
+	double numberOfSteps = 50;
 	double stepWidth = distance / numberOfSteps;
 	for (int i = 0; i <= numberOfSteps; i++)
 	{
