@@ -59,20 +59,30 @@ int main()
 	Inittest.Ergebnisse = "Ergebnisse";
 	elog.Testvektor.push_back(Inittest);
 
-	// Datenbeschaffungsteam
-	// Sued: route = "38567";
-	vector<node> nodes;
-	string route = "38566"; // Nord
+	//////////////////////////////////////////////////////////////////////////
+	/* Datenbeschaffung OpenStreetMap
+		Route: Eine beliebige Route
+		Nord: route = "38566" -> waysOffset = 3
+		Sued: route = "38567"
+		Gesamt: route = "Nuerburgring_nord_sued" -> Einfach die Datei in %temp% kopieren
+	*/
+	vector<node> nodes; // Alle Knoten von Route
+	string route = "38566"; // Nord Ring
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
-	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
+	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrassen): Nur fuer die route "38566".
+	std::cout << "Start Download the route " << route << ": " << endl;
 	int retval = OSM_Nord->GetNodesFromOSM();
-	nodes = OSM_Nord->nodes;
-	delete OSM_Nord;
 	if (retval != 0) {
-		// Fehler download
+		std::cout << endl << "#####ERROR: The download failed!!!" << endl;
 		return -1;
 	}
-	elog.TestDatenbeschaffung(nodes);
+
+	std::cout << endl << "The download was successful." << endl;
+	nodes = OSM_Nord->nodes;
+	delete OSM_Nord;
+	OSM_Nord = nullptr;
+  
+  elog.TestDatenbeschaffung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	// DATENAUFBEREITUNG
