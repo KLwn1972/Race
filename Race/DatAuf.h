@@ -18,6 +18,7 @@ namespace DatAuf {
 		int retval = 0;
 		int DataProcessing();
 		void InsertAdditionalNodes();
+		void InsertAdditionalNodes2();
 		void CopyNodesToSplineKnots(size_t NodeItem);
 		void InsertOneAdditionalNode(size_t NodeItem, size_t NumberAdditionalNodes, node NewNode);
 		void UpdateNodeIDProperty(size_t NodeItem, size_t NumberAdditionalNodes);

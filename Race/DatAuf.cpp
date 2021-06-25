@@ -8,9 +8,18 @@
 using namespace std;
 
 int DatAuf::CalcDatAuf::DataProcessing() {
+	int InsertNodesMethod=0;
 	// Check and insert additional knots if necessary
 	cout << "DatAuf: Insert nodes..." << endl;
-	this->InsertAdditionalNodes();
+	InsertNodesMethod = 2;
+	switch (InsertNodesMethod) {
+	case 1:
+		this->InsertAdditionalNodes();
+		break;
+	case 2:
+		this->InsertAdditionalNodes2();
+		break;
+	}
 	cout << "DatAuf: Done." << endl;
 
 	// Calculate Data for SOLL-Fahrtbestimmmung 
@@ -505,4 +514,86 @@ int DatAuf::CalcDatAuf::DataProcessing() {
 
 	node DatAuf::CalcDatAuf::GetNode(size_t NodeItem) {
 		return this->nodes[NodeItem];
+	}
+
+	void DatAuf::CalcDatAuf::InsertAdditionalNodes2() {
+		node NewNode, PrevNode;
+		vector<node> nodes_refined;
+		size_t NodeItem;
+		double Delta_t;
+		double DistanceTwoNodes;
+		double t_current = 0.0;
+		double t_previous = 0.0;
+		size_t NumberAdditionalNodes;
+
+		for (NodeItem = 0;NodeItem < this->nodes.size()-1;NodeItem++) {
+			PrevNode = nodes[NodeItem];
+			nodes_refined.push_back(PrevNode);
+			CopyNodesToSplineKnots(NodeItem);
+			nodes[NodeItem].distanceToNext = GetDistanceMeters3D(nodes[NodeItem], nodes[NodeItem + 1]);
+			Delta_t = 1.0 / int(nodes[NodeItem].distanceToNext);
+			NumberAdditionalNodes = 0;
+			t_previous = 0.0;
+			t_current = t_previous + Delta_t;
+			if (nodes[NodeItem].distanceToNext > 1.0) {
+				while (t_current <= 1.0) {
+					SplineSegment.CalcInterpolKnot(t_current);
+					NewNode = GetInterpolKnot();
+					DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
+					if (DistanceTwoNodes > 1.0) {
+						Delta_t = Delta_t * 0.9;
+						t_current = t_previous + Delta_t;
+					}
+					else if (DistanceTwoNodes < 0.98) {
+						Delta_t = Delta_t * 1.05;
+						t_current = t_previous + Delta_t;
+					}
+					else {
+						//Insert Additional Node
+						NumberAdditionalNodes += 1;
+						nodes_refined.push_back(NewNode);
+						nodes_refined.back().id = this->nodes[NodeItem].id;
+						nodes_refined.back().id += "_";
+						nodes_refined.back().id += to_string(NumberAdditionalNodes);
+
+						//Preparation next iteration step
+						PrevNode = NewNode;
+						t_previous = t_current;
+						t_current = t_current + Delta_t;
+						if (t_current >= 1.0) {
+#ifdef DEBUG								
+							cout << "Grenzfall t_current ist aufgetreten, Iteration: " << RefinementIterator << " NodeItem: " << NodeItem + NumberAdditionalNodes << endl;
+#endif
+							SplineSegment.CalcInterpolKnot(1.0);
+							NewNode = GetInterpolKnot();
+							DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
+							if (DistanceTwoNodes > 1.0) {
+#ifdef DEBUG								
+								cout << "Warnung:  InsertAdditionalNode insert last node....." << endl;
+#endif
+								t_current = 0.5 * (1.0 + t_previous);
+								SplineSegment.CalcInterpolKnot(t_current);
+								NewNode = GetInterpolKnot();
+								DistanceTwoNodes = GetDistanceMeters3D(PrevNode, NewNode);
+								NumberAdditionalNodes += 1;
+								nodes_refined.push_back(NewNode);
+								nodes_refined.back().id = this->nodes[NodeItem].id;
+								nodes_refined.back().id += "_";
+								nodes_refined.back().id += to_string(NumberAdditionalNodes);
+
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		NodeItem = this->nodes.size()-1;
+		PrevNode = nodes[NodeItem];
+		nodes_refined.push_back(PrevNode);
+		this->nodes = nodes_refined;
+		CalcDistanceToAllNextNode();
+
+		cout << "InsertNodes2: done..." << endl;
 	}
