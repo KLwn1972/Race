@@ -1,6 +1,8 @@
 // Race.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
 //
 
+// Debug auf X86 einstellen, da sonst Pfad zur NASA-Datei falsch.
+
 #include<stdio.h>
 #include <string>
 #include "Race.h"
