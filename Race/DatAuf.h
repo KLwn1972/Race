@@ -1,3 +1,7 @@
+// /////////////////////////////////////////////////////////////////////////
+// Team Datenaufbereitung: Andreas Jakobi, Andreas Maier, Kathrin Gerhard //
+// ///////////////////////////////////////////////////////////////////////// 
+
 #pragma once
 
 #include <iostream>
@@ -13,26 +17,31 @@ namespace DatAuf {
 	public:
 		vector<node> nodes;
 		SplineCatmullRom SplineSegment;
+		int retval = 0;
+
+		int DataProcessing();
+		double GetDistanceMeters2D(node node1, node node2);
+
+
+	private:
+		// Node handling
 		node GetInterpolKnot();
 		node GetNode(size_t NodeItem);
-		int retval = 0;
-		int DataProcessing();
 		void InsertAdditionalNodes();
 		void CopyNodesToSplineKnots(size_t NodeItem);
 		void InsertOneAdditionalNode(size_t NodeItem, size_t NumberAdditionalNodes, node NewNode);
 		void UpdateNodeIDProperty(size_t NodeItem, size_t NumberAdditionalNodes);
 		void CalcDistanceToAllNextNode();
-		void CalcRadiusGradientData();
-		double GetDistanceMeters2D(node node1, node node2);
-		double deg2rad(double grad);
-		bool isLoop();
-
-	private:
-		void CalcHorizontalCurveRad(size_t index);
-		void CalcVerticalCurveRad(size_t index);
-		void CalcGradientPercentage(size_t index);
 		double CalcForwardDerivativeFD(node NodeCurrent, node NodeForward);
 		double CalcBackwardDerivativeFD(node NodeCurrent, node NodeBackward);
+
+		//Caluclation street characteristica
+		void CalcRadiusGradientData();
+		void CalcHorizontalCurveRadviaXYcoordinates(size_t index);
+		void CalcVerticalCurveRad(size_t index);		
+		void CalcGradientPercentage(size_t index);
+		double deg2rad(double grad);
+		bool isLoop();
 	};
 
 	static double GetDistanceMeters3D(node node1, node node2);

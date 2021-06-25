@@ -181,13 +181,17 @@ int main()
 	nodes = Drivingsim->RunSimulation();
 	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_1_Straight_Speed.csv");
 
-	Drivingsim->setInterpolationLevel(4);
+	Drivingsim->setInterpolationLevel(5);
 	nodes = Drivingsim->RunSimulation();
-	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_4_Straight_Speed.csv");
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_5_Straight_Speed.csv");
 
 	Drivingsim->setInterpolationLevel(10);
 	nodes = Drivingsim->RunSimulation();
 	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_10_Straight_Speed.csv");
+
+	Drivingsim->setInterpolationLevel(20);
+	nodes = Drivingsim->RunSimulation();
+	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresultModelS_20_Straight_Speed.csv");
 
 	nodes = ExampleHillTrack();
 	auto SimulationConfigSmart = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_SMARTe.json");
