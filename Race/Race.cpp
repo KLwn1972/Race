@@ -1,6 +1,8 @@
 // Race.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
 //
 
+// Debug auf X86 einstellen, da sonst Pfad zur NASA-Datei falsch.
+
 #include<stdio.h>
 #include <string>
 #include "Race.h"
@@ -15,7 +17,7 @@
 #include "Simulation/MiscFunctions.h"
 #include "ExampleTracks.h"
 #include "Testing.h"
-
+#include <fstream>
 #include "Soll_Fahrtbestimmung.h"
 
 #include "DatAuf.h"
@@ -53,21 +55,36 @@ int main()
 	//////////////////////////////////////////////////////////////////////////
 	//Initialisierung Testing Log
 	ErrorLog elog = ErrorLog();
+	Testing Inittest;
+	Inittest.Aufgabe = "Aufgabe";
+	Inittest.Testname = "Testname";
+	Inittest.Ergebnisse = "Ergebnisse";
+	elog.Testvektor.push_back(Inittest);
 
-	// Datenbeschaffungsteam
-	// Sued: route = "38567";
-
-	vector<node> nodes;
-	string route = "38566"; // Nord
+	//////////////////////////////////////////////////////////////////////////
+	/* Datenbeschaffung OpenStreetMap
+		Route: Eine beliebige Route
+		Nord: route = "38566" -> waysOffset = 3
+		Sued: route = "38567"
+		Gesamt: route = "Nuerburgring_nord_sued" -> Einfach die Datei in %temp% kopieren
+	*/
+	vector<node> nodes; // Alle Knoten von Route
+	string route = "38566"; // Nord Ring
 	OpenStreetMap* OSM_Nord = new OpenStreetMap(route);
-	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrasse)
+	OSM_Nord->waysOffset = 3; // Ignoriere erste 3 Wege (Verbindungsstrassen): Nur fuer die route "38566".
+	std::cout << "Start Download the route " << route << ": " << endl;
 	int retval = OSM_Nord->GetNodesFromOSM();
-	nodes = OSM_Nord->nodes;
-	delete OSM_Nord;
 	if (retval != 0) {
-		// Fehler download
+		std::cout << endl << "#####ERROR: The download failed!!!" << endl;
 		return -1;
 	}
+
+	std::cout << endl << "The download was successful." << endl;
+	nodes = OSM_Nord->nodes;
+	delete OSM_Nord;
+	OSM_Nord = nullptr;
+  
+  elog.TestDatenbeschaffung(nodes);
 
 	//////////////////////////////////////////////////////////////////////////
 	// DATENAUFBEREITUNG
@@ -76,17 +93,16 @@ int main()
 		DatAuf_Nord.nodes = nodes;
 		retval = DatAuf_Nord.DataProcessing();
 		nodes = DatAuf_Nord.nodes;
-		retval = 0;  // Asure running of program version
 		if (retval != 0) {
-			// Fehler Datenaufbereitung
-			return -1;
+			return -1;  // Fehler Datenaufbereitung
 		}
 	}
-	else {
-		// Fehler weniger wie 4 Nodes
-		return -1;
+	else {		
+		return -1;    // Fehler weniger wie 4 Nodes
 	}
 
+	elog.TestDatenAufbereitung(nodes);
+	
 	// Load Konfiguration für Sollfahrtbestimmung und Fahrphysik
 	auto SimulationConfig = new Simulation::ImportSimulationConfig("Testconfiguration/SimulationConfig_ModelSPerf.json");
 
@@ -101,14 +117,28 @@ int main()
 
 	//////////////////////////////////////////////////////////////////////////
 	//Fahrphysik
+	elog.PreTestFahrphysik(nodes);
+
 	Simulation::DrivingSimulator* Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
 	nodes.clear();
 	nodes = Drivingsim->RunSimulation();
 	Simulation::plotNodeVector(Drivingsim->ReturnModifiedTrack(), "simulationresult.csv");
 
+	elog.TestFahrphysik(nodes);
+
 	//////////////////////////////////////////////////////////////////////////
 	//Ausgabe-Visualisierung
 	ausgabe_visualisierung(nodes, "Nordschleife");
+
+	//Ausgabe Testlog
+	size_t Sizetestvektor = elog.Testvektor.size();
+	ofstream outputfile;
+	outputfile.open("ErrorLog.txt");
+	for (int i = 0; i < Sizetestvektor; i++) {
+		outputfile << elog.Testvektor[i].Aufgabe << "," << "\t" << elog.Testvektor[i].Testname << "," << "\t" << elog.Testvektor[i].Ergebnisse << "\n";
+	}
+	outputfile.close();
+
 
 #endif
 
@@ -180,7 +210,7 @@ int main()
 	nodes.at(nodes.size() / 2).speedLimit = 1;
 	nodes.at(nodes.size() / 3).speedLimit = 1;
 
-	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfig);
+	DrivingsimSmart = new Simulation::DrivingSimulator(nodes, SimulationConfigSmart);
 	nodes = DrivingsimSmart->RunSimulation();
 	Simulation::plotNodeVector(DrivingsimSmart->ReturnModifiedTrack(), "simulationresultSmart_0_Straight_Speed.csv");
 

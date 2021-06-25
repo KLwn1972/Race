@@ -185,6 +185,9 @@
     <ClInclude Include="DatAuf.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Simulation\SimulationConstants.h">
+      <Filter>Headerdateien\Simulation</Filter>
+    </ClInclude>
     <ClInclude Include="Testing.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
