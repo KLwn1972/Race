@@ -43,8 +43,9 @@
 *
 * Rückgabe:
 *	- Höhe in Metern wenn hgt file vorhanden
-*	- 0, wenn innerhalb möglicher Daten, aber File nicht vorhanden (Meer),
-*	- -32768 falls Anfrage außerhalb NR Quadrant
+*	- 0, wenn innerhalb möglicher Daten, aber File nicht vorhanden (Meer) [CURL muss aktiviert sein ? Testteam]
+*	- -32768 falls Anfrage außerhalb NE Quadrant, oder Datei nicht vorhanden und CURL deaktiviert
+
 */
 
 
