@@ -14,17 +14,16 @@ using namespace tinyxml2;
 
 // Mainfunction of ausgabe_visualisierung
 void ausgabe_visualisierung(vector<node>& track, string trackName) {
-    XMLError fault_flag_gpx, fault_flag_kml;
     
     if (track.size() > 1) {
         
         //Create Outputfiles with alle nodes
-        fault_flag_gpx = output_gpx(track, trackName,0);
-        fault_flag_kml = output_kml(track, trackName,0);
+        output_gpx(track, trackName,0);
+        output_kml(track, trackName,0);
         
         //Create Outputfiles with only main nodes
-        fault_flag_gpx = output_gpx(track, trackName+"_reduced", 1);
-        fault_flag_kml = output_kml(track, trackName+"_reduced", 1);
+        output_gpx(track, trackName+"_reduced", 1);
+        output_kml(track, trackName+"_reduced", 1);
         
     }
     else cout << "Vector-Size <2, don't execute ausgabe_visualisierung" << endl;
@@ -69,7 +68,7 @@ XMLError output_gpx(vector<node>& track, string trackName, bool reduced_resoluti
    
     if (eResult != 0)
         cout << "Error while creating gpx-File. ErrorID: " << eResult << endl;
-    else cout << "Outputfile: " << trackName << ".gpx succesfull created. " << endl;
+    else cout << "Outputfile: " << trackName << ".gpx succesfully created. " << endl;
     
     return eResult;
 }
@@ -104,8 +103,6 @@ string timeConversion(double raceTime, time_t startTime) {
 //Create KML Outputfile
 //Inputs are a vector of nodes of the Racetrack, the name of the Racetrack and a bool wether only the main nodes should be written into the outputfile
 XMLError output_kml(vector<node>& track, string trackName, bool reduced_resolution) {
-    //modeselector - Select Datatype for coloring the track: 0=elevation 1=horizontalCurveRadius 2=speedLimit 3=speedIs
-    int mode_selector = 3;
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.LinkEndChild(xmlDoc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\""));
 
@@ -114,8 +111,6 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
     XMLElement* Element_Document = xmlDoc.NewElement("Document");
 
     insertElementKML(xmlDoc, Element_Document, "name", trackName);
-    double value_min = get_min_value(track, mode_selector);
-    double value_max = get_max_value(track, mode_selector);
     double v_max = get_max_speedIs(track);
     vector<node>::iterator it = track.end() - 1;
     string description = "race time = " + to_string(it->raceTime)
@@ -124,6 +119,10 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
     insertElementKML(xmlDoc, Element_Document, "visibility", "1");
     insertElementKML(xmlDoc, Element_Document, "open", "1");
 
+    //modeselector - Select Datatype for coloring the track: 0=elevation 1=horizontalCurveRadius 2=speedLimit 3=speedIs
+    int mode_selector = 3;
+    double value_min = get_min_value(track, mode_selector);
+    double value_max = get_max_value(track, mode_selector);
     it = track.begin();
     do{
         XMLElement* Element_Placemark = xmlDoc.NewElement("Placemark");
@@ -152,10 +151,9 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
         coordinates += to_string(it->longitude) + ","
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
-        do
-        {
+        do {
             it++;
-        } while (!is_main_node(it->id) && reduced_resolution);
+        } while (reduced_resolution && !is_main_node(it->id));
         coordinates += to_string(it->longitude) + ","
             + to_string(it->latitude) + ","
             + to_string(it->elevation) + " ";
@@ -168,7 +166,7 @@ XMLError output_kml(vector<node>& track, string trackName, bool reduced_resoluti
     
     if (eResult != 0)
         cout << "Error while creating kml-File. ErrorID: " << eResult << endl;
-    else cout << "Outputfile: " << trackName << ".kml succesfull created. " << endl;
+    else cout << "Outputfile: " << trackName << ".kml succesfully created. " << endl;
 
     return eResult;
 }
