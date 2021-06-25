@@ -67,7 +67,7 @@ double Soll_Fahrtbestimmung::F_antrieb_max(double V) {
 }
 
 double Soll_Fahrtbestimmung::V_max() {
-	for (int Vel = 0; Vel <= int(vehicle->VMaxLimited/3.6); Vel++) {
+	for (int Vel = 0; Vel <= int(vehicle->VMaxLimited); Vel++) {
 		if (Vel > V_haft_quer_max() || F_normal(Vel) < 0) {
 			return (Vel - 1 < 0) ? 0 : (--Vel);
 		}
@@ -75,10 +75,10 @@ double Soll_Fahrtbestimmung::V_max() {
 			return (Vel - 1 < 0) ? 0 : (--Vel);
 		}
 	}
-	return vehicle->VMaxLimited/3.6;
+	return vehicle->VMaxLimited;
 }
 
-void Soll_Fahrtbestimmung::SpeedLimit_route(vector<node>& Strecke) { 
+void Soll_Fahrtbestimmung::SpeedLimit_route(vector<node>& Strecke) {
 	for (node& n : Strecke) {
 		gradient = n.gradient;
 		horizontalCurveRadius = n.horizontalCurveRadius;
