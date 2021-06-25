@@ -115,6 +115,8 @@ int main()
 
 	//////////////////////////////////////////////////////////////////////////
 	//Fahrphysik
+	elog.PreTestFahrphysik(nodes);
+
 	Simulation::DrivingSimulator* Drivingsim = new Simulation::DrivingSimulator(nodes, SimulationConfig);
 	nodes.clear();
 	nodes = Drivingsim->RunSimulation();
