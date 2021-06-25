@@ -9,9 +9,9 @@ double MinRadiusTest = 33; //[m]
 double MinGradientTest = -11; //[%]
 double MaxGradientTest = 18; //[%]
 double NeunzigGradSteigung = 5728; //[%] 89° da 90° undefiniert
-string IDStartpunkt = "6535972824";
-double LatitudeStartPunkt = 50.3451467;
-double LongitudeStartPunkt = 6.9264464;
+string IDStartpunkt = "6400104603";
+double LatitudeStartPunkt = 50.349058700000000;
+double LongitudeStartPunkt = 6.9738600000000002;
 double MaxSpeedTesla = 261 / 3.6;  //[m/s]
 
 void ErrorLog::TestDatenbeschaffung(vector<node>& nodes) {
@@ -19,7 +19,7 @@ void ErrorLog::TestDatenbeschaffung(vector<node>& nodes) {
 	Test2add.Aufgabe = "Datenbeschaffung";
 	Test2add.Testname = "IdStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	if (nodes[1].id != IDStartpunkt) { //
+	if (nodes[0].id != IDStartpunkt) { //
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
@@ -27,7 +27,7 @@ void ErrorLog::TestDatenbeschaffung(vector<node>& nodes) {
 	Test2add.Aufgabe = "Datenbeschaffung";
 	Test2add.Testname = "KoordinatenStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	if (nodes[1].latitude != LatitudeStartPunkt || nodes[1].longitude != LongitudeStartPunkt) {
+	if (nodes[0].latitude != LatitudeStartPunkt || nodes[0].longitude != LongitudeStartPunkt) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
@@ -118,7 +118,7 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 	Test2add.Aufgabe = "Fahrphysik";
 	Test2add.Testname = "IdStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	if (nodes[1].id != IDStartpunkt) { //
+	if (nodes[0].id != this->StartNode.id) { //
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
@@ -126,7 +126,7 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 	Test2add.Aufgabe = "Fahrphysik";
 	Test2add.Testname = "KoordinatenStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	if (nodes[1].latitude != LatitudeStartPunkt || nodes[1].longitude != LongitudeStartPunkt) {
+	if (nodes[0].latitude != this->StartNode.latitude || nodes[0].longitude != this->StartNode.longitude) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
@@ -134,7 +134,7 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 	Test2add.Aufgabe = "Fahrphysik";
 	Test2add.Testname = "GeschwindigkeitStartPunkt";
 	Test2add.Ergebnisse = "Passed";
-	if (nodes[1].speedIs != 0) {
+	if (nodes[0].speedIs != 0) {
 		Test2add.Ergebnisse = "Failed";
 	}
 	Testvektor.push_back(Test2add);
@@ -173,4 +173,9 @@ void ErrorLog::TestFahrphysik(vector<node>& nodes) {
 		index++;
 	}
 	Testvektor.push_back(Test2add);
+}
+
+void ErrorLog::PreTestFahrphysik(vector<node>& nodes)
+{
+	this->StartNode = nodes.at(0);
 }

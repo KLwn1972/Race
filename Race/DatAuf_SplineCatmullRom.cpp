@@ -1,5 +1,6 @@
-#ifndef _VECTOR_H
-#define _VECTOR_H
+// /////////////////////////////////////////////////////////////////////////
+// Team Datenaufberitung: Andreas Jakobi, Andreas Maier, Kathrin Gerhard  //
+// ///////////////////////////////////////////////////////////////////////// 
 
 #include <iostream>
 #include "DatAuf.h"
@@ -54,5 +55,3 @@ void SplineCatmullRom::SplineKnotsReset() {
 
 	return;
 }
-
-#endif
