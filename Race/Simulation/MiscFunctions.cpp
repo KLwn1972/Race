@@ -2,10 +2,11 @@
 #include <fstream>
 #include <locale>
 #include "SimulationEnvironment.h"
+#include "SimulationNode.h"
 void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 {
 	std::ofstream exportFile;
-	exportFile.open(filename, ios::trunc);
+	exportFile.open(filename);
 	if (!exportFile) {
 		cerr << "Output file could not be opened.\n\n";
 		return;
@@ -16,8 +17,8 @@ void Simulation::plotNodeVector(vector<SimulationNode> input, string filename)
 		exportFile << "AirResistance;" << "RollingResistance;" << "GradientResistance;";
 		exportFile << "\n";
 		double distance = 0 - input.at(0).distanceToNext;
-		for (auto& currentnode : input) {
-			distance += currentnode.distanceToNext;
+		for (SimulationNode& currentnode : input) {
+			distance = distance + currentnode.distanceToNext;
 			exportFile << currentnode.latitude << ";";
 			exportFile << currentnode.longitude << ";";
 			exportFile << currentnode.elevation << ";";
