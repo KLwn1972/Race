@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEBUG
+//#define DEBUG
 
 //////////////////////////////
 //Flags aus NASA Projekt --> Siehe Nasa_constant.h fuer Info

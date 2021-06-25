@@ -30,7 +30,7 @@ using namespace std;
 
 int main()
 {
-#if 1	
+#if 0	
 	///////////////////////////////////////////////////////////////////////
 	// 	   Usage Beispiele aus NASA Team
 	// 	   Beschreibung in NASA_constants.h lesen.
@@ -51,7 +51,7 @@ int main()
 #endif
 
 
-#if 0
+#if 1
 	//////////////////////////////////////////////////////////////////////////
 	//Initialisierung Testing Log
 	ErrorLog elog = ErrorLog();
