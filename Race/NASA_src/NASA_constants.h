@@ -1,6 +1,7 @@
 /*
 * Team NASA Datendownload SRTM - Petra Stedile, Manuel Marks
 * Zweck der Datei: Header zur Definition der notwendigen Konstanten
+* Fix fuer Abgabe
 */
 
 
