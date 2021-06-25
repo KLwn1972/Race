@@ -10,6 +10,9 @@
 
 /*
 * Wichtige Info für Eindung NASA Funktionalität:
+* Fuer x86 Compilierung, da andernfalls der Pfad zu den NASA-Daten falsch gesetzt wird. 
+* Pfad wird ausgehend von exe zusammengebaut.
+* 
 * Alle Funktionen in namespace NASA
 * Usage Beispiel:
 *	double long_stuttgart = 9.206802;
@@ -36,7 +39,7 @@
 * Beispiel für einen Startpunkt auf Nürburg-Ring
 * 	double long_nuerburgringstart = 6.966279;
 *	double lat_nuerburgringstart = 50.346094;
-*	cout << NASA::HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;#
+*	cout << HGT_ElevationCalculator::getElevationFromSRTM_SIRCdata(long_nuerburgringstart, lat_nuerburgringstart) << endl;#
 *
 * Rückgabe:
 *	- Höhe in Metern wenn hgt file vorhanden
